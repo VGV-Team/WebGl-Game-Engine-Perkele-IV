@@ -5,7 +5,7 @@ function gameLoop()
 	handleKeys();
 	
 	// updates all objects
-	updateCamera();
+	camera.update();
 	//updateHero();
 	//updateEnemies();
 	

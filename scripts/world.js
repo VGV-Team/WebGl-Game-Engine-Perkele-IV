@@ -9,6 +9,7 @@ function World() {
 	this.rotation = [0.0, 0.0, 0.0];
 	this.scale = [1.0, 1.0, 1.0];
 }
+
 World.prototype.load = function() {
 	load(this, "./assets/world_plane.obj");
 };

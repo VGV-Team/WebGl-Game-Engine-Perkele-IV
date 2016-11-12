@@ -18,32 +18,32 @@ function handleKeys() {
 
   if (currentlyPressedKeys[37] || currentlyPressedKeys[65]) {
     // Left cursor key or A
-    speed[x] = 0.03*kSpeed;
+    camera.direction[x] = 1;
   } else if (currentlyPressedKeys[39] || currentlyPressedKeys[68]) {
     // Right cursor key or D
-    speed[x] = -0.03*kSpeed;
+    camera.direction[x] = -1;
   } else {
-    speed[x] = 0;
+    camera.direction[x] = 0;
   }
 
   if (currentlyPressedKeys[38] || currentlyPressedKeys[87]) {
     // Up cursor key or W
-    speed[z] = 0.03*kSpeed;
+    camera.direction[z] = 1;
   } else if (currentlyPressedKeys[40] || currentlyPressedKeys[83]) {
     // Down cursor key
-    speed[z] = -0.03*kSpeed;
+    camera.direction[z] = -1;
   } else {
-    speed[z] = 0;
+    camera.direction[z] = 0;
   }
   
   if (currentlyPressedKeys[81]) {
     // Q key
-    speed[y] = 0.03*kSpeed;
+    camera.direction[y] = 1;
   } else if (currentlyPressedKeys[69]) {
     // E key
-    speed[y] = -0.03*kSpeed;
+    camera.direction[y] = -1;
   } else {
-    speed[y] = 0;
+    camera.direction[y] = 0;
   }
 }
 

@@ -10,6 +10,7 @@ var shaderProgram;
 
 var hero;
 var world;
+var camera;
 
 
 
@@ -28,7 +29,7 @@ function drawScene() {
 	//mat4.ortho(0, 1280, 0, 720, 0.01, 1000.0, pMatrix);
 	
 	//POZICIJA KAMERE
-	drawCamera();
+	camera.draw();
 	
 	//console.log(mvMatrix);
 
@@ -67,7 +68,7 @@ function start() {
     //initBuffers();
 	
 	
-	
+	camera = new Camera();
 	
 	world = new World();
 	world.load();
