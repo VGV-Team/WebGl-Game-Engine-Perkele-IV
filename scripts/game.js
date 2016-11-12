@@ -6,7 +6,7 @@ function gameLoop()
 	
 	// updates all objects
 	camera.update();
-	//updateHero();
+	hero.update();
 	//updateEnemies();
 	
 	// draws camera and all objects

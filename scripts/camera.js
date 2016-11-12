@@ -1,7 +1,7 @@
 function Camera()
 {
 	this.position = [0.0, -5.0, -10.0];
-	this.rotation = [45.0, 0.0, 0.0];
+	this.rotation = [30.0, 0.0, 0.0];
 	this.scale = [1.0, 1.0, 1.0];
 
 	this.direction = [0, 0, 0];

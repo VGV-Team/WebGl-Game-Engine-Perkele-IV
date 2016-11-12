@@ -159,9 +159,49 @@ function handleKeys() {
 		camera.direction[y] = 0;
 	}
   
+  
+	if(currentlyPressedKeys[102]) {
+		hero.direction[x]=1;
+		//hero.move=true;
+	}
+	else if(currentlyPressedKeys[100]) {
+		hero.direction[x]=-1;
+		//hero.move=false;
+	}
+	else {
+		hero.direction[x]=0;
+		//hero.move=false;
+	}
 	
-  
-  
+	if(currentlyPressedKeys[104]) {
+		hero.direction[z]=-1;
+		//hero.move=true;
+	}
+	else if(currentlyPressedKeys[98]) {
+		hero.direction[z]=1;
+		//hero.move=true;
+	}
+	else {
+		hero.direction[z]=0;
+		//hero.move=false;
+	}
+	
+	
+	if(currentlyPressedKeys[101]) {
+		hero.destination[x]=0;
+		//hero.destination[y]=hero.position[y];
+		//hero.destination[x]=1;
+		//hero.destination[z]=1;
+		hero.waypointMove=true;
+	}
+	else {
+		//hero.destination[x]=0;
+		//hero.destination[y]=0;
+		//hero.destination[z]=0;
+		//hero.waypointMove=false;
+		//hero.move=true;
+	}
+	
 }
 
 
