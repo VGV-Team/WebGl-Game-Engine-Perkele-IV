@@ -7,7 +7,7 @@ var z = 2;
 // Global variable definitionvar canvas;
 var gl;
 var shaderProgram;
-
+var canvas;
 
 
 
@@ -85,6 +85,9 @@ function start() {
 	document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
 	
+	canvas.addEventListener('click', function(event) {
+		handleMouseClick(event);
+	}, false);
 	
 	//console.log(hero.vertexPositionBuffer)
     
