@@ -162,7 +162,7 @@ function handleKeys() {
   
   
   ///////////////////////// debug only ////////////////////////////////
-  
+  /*
 	if(currentlyPressedKeys[102]) {
 		hero.direction[x]=1;
 		//hero.move=true;
@@ -207,7 +207,7 @@ function handleKeys() {
 		//hero.waypointMove=false;
 		//hero.move=true;
 	}
-	
+	*/
 }
 
 
