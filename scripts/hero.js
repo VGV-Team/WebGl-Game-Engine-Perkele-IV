@@ -3,9 +3,9 @@ function Hero() {
 	this.HPRegen = 1;
 	this.strength = 10;
 	this.fury = 0;
-	this.furyDecay = 1; //1 na sec
+	this.furyDecay = 1; //1 per sec
 	this.criticalChance = 5; //0-100%
-	this.discovery = 5; //% vecji statsi
+	this.discovery = 5; //% chance of epic drop
 	
 	this.vertexPositionBuffer = null;
 	this.vertexIndexBuffer = null;
@@ -33,5 +33,7 @@ Hero.prototype.draw = function() {
 
 Hero.prototype.update = function()
 {
-	
+	this.position[x] += this.direction[x]*this.directionVelocity[x];
+	this.position[y] += this.direction[y]*this.directionVelocity[y];
+	this.position[z] += this.direction[z]*this.directionVelocity[z];
 }
