@@ -1,10 +1,7 @@
 // useful url for input
 // https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
 
-///////HANDLE KEYS
 
-var currentlyPressedKeys = {};
-var currentlyPressedMouseCoordinates = [null, null, null];
 
 function handleKeyDown(event) {
   // storing the pressed state for individual key
@@ -165,7 +162,7 @@ function handleKeys() {
   
   
   ///////////////////////// debug only ////////////////////////////////
-  /*
+  
 	if(currentlyPressedKeys[102]) {
 		hero.direction[x]=1;
 		//hero.move=true;
@@ -210,7 +207,7 @@ function handleKeys() {
 		//hero.waypointMove=false;
 		//hero.move=true;
 	}
-	*/
+	
 }
 
 

@@ -1,24 +1,3 @@
-
-// GLOBAL DEFINE FOR COORDINATES
-var x = 0;
-var y = 1;
-var z = 2;
-
-// Global variable definitionvar canvas;
-var gl;
-var shaderProgram;
-var canvas;
-
-
-
-var hero;
-var world;
-var camera;
-
-var lastUpdateTime = 0;
-var timeTillLastUpdate = 0;
-
-
 function drawScene() {
 	//NUJNO ZLO
 	gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -80,7 +59,6 @@ function start() {
 
 	hero = new Hero();
 	hero.load();
-
 	
 	// binds keyboard events
 	document.onkeydown = handleKeyDown;

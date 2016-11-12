@@ -1,9 +1,3 @@
-// Model-view and projection matrix and model-view matrix stack
-var mvMatrixStack = [];
-var mvMatrix = mat4.create();
-var pMatrix = mat4.create();
-
-
 //
 // Matrix utility functions
 //

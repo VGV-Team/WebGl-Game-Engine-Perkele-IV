@@ -50,17 +50,19 @@ Hero.prototype.update = function()
 		currentlyPressedMouseCoordinates[z] = null;
 	}
 	
-	
-	
 
 	// if we are moving via waypoints
+	if(this.waypointMove == true) this.updateMovement();
 	
-	if(this.waypointMove == true)
-	//{
-		this.direction[x] = this.destination[x] - this.position[x];
-		this.direction[y] = this.destination[y] - this.position[y];
-		this.direction[z] = this.destination[z] - this.position[z];
-	//}
+	
+}
+
+Hero.prototype.updateMovement = function(){
+	
+	this.direction[x] = this.destination[x] - this.position[x];
+	this.direction[y] = this.destination[y] - this.position[y];
+	this.direction[z] = this.destination[z] - this.position[z];
+	
 	
 	var d = Math.sqrt(this.direction[x]*this.direction[x]+this.direction[y]*this.direction[y]+this.direction[z]*this.direction[z]);
 	
@@ -101,7 +103,4 @@ Hero.prototype.update = function()
 		else this.position[z] += updateZ;
 		
 	}
-
-
 }
-
