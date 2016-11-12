@@ -28,6 +28,9 @@ function degToRad(degrees) {
   return degrees * Math.PI / 180;
 }
 
+
+// logic utility
+
 function draw(objectToDraw)
 {
 	//TEMP color
@@ -42,8 +45,8 @@ function draw(objectToDraw)
 	// Save the current matrix, then translate, rotate and scale before we draw.
 	mvPushMatrix();	
 
-	
 	mat4.translate(mvMatrix, objectToDraw.position);
+	mat4.translate(mvMatrix, [0.0,objectToDraw.offset,0.0]);
 
 	mat4.rotateX(mvMatrix, degToRad(objectToDraw.rotation[0]));
 	mat4.rotateY(mvMatrix, degToRad(objectToDraw.rotation[1]));
@@ -125,7 +128,8 @@ function load(objectToLoad, objectURL)
 		}
 
 		// align object to world
-		objectToLoad.position[y]=-min;
+		objectToLoad.offset = -min;
+		//objectToLoad.position[y]=-min;
 
 		objectToLoad.vertexPositionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, objectToLoad.vertexPositionBuffer);
@@ -140,4 +144,11 @@ function load(objectToLoad, objectURL)
 		objectToLoad.vertexIndexBuffer.itemSize = 1;
 		objectToLoad.vertexIndexBuffer.numItems = indexCount;
 	}
+}
+
+
+function calculateTime()
+{
+	timeTillLastUpdate = (new Date().getTime() - lastUpdateTime)/1000;
+	lastUpdateTime = new Date().getTime();
 }

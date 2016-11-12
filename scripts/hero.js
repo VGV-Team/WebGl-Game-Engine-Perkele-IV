@@ -13,15 +13,15 @@ function Hero() {
 	//temporary
 	this.vec4Color = [1.0, 0.0, 0.0, 1.0];
 	
-	
-	this.position = [0.0, 10.0, 0.0];
+	this.offset = 0;
+	this.position = [0.0, 0.0, 0.0];
 	this.rotation = [0.0, 0.0, 0.0];
 	this.scale = [1.0, 1.0, 1.0];
 	
 	this.waypointMove = false;
 	this.destination = [0.0, 0.0, 0.0];
 	this.direction = [0.0, 0.0, 0.0];
-	this.directionVelocity = [0.025, 0.025, 0.025];
+	this.directionVelocity = [10.0, 10.0, 10.0];
 	
 	
 }
@@ -37,53 +37,69 @@ Hero.prototype.draw = function() {
 
 Hero.prototype.update = function()
 {
-
-	if(this.waypointMove == true)
+	// checks for mouse input
+	if(currentlyPressedMouseCoordinates[x]!=null)
 	{
+		this.destination[x] = currentlyPressedMouseCoordinates[x];
+		this.destination[y] = currentlyPressedMouseCoordinates[y];
+		this.destination[z] = currentlyPressedMouseCoordinates[z];
+		this.waypointMove = true;
+		
+		currentlyPressedMouseCoordinates[x] = null;
+		currentlyPressedMouseCoordinates[y] = null;
+		currentlyPressedMouseCoordinates[z] = null;
+	}
+	
+	
+	
+
+	// if we are moving via waypoints
+	
+	if(this.waypointMove == true)
+	//{
 		this.direction[x] = this.destination[x] - this.position[x];
 		this.direction[y] = this.destination[y] - this.position[y];
 		this.direction[z] = this.destination[z] - this.position[z];
-		
-		
-	}
-	var d = Math.sqrt(this.direction[x]*this.direction[x]+this.destination[y]*this.position[y]+this.direction[z]*this.direction[z]);
-
-	console.log(d + " " + this.direction[y] + " " + this.destination[y] + " " + this.position[y]);
+	//}
+	
+	var d = Math.sqrt(this.direction[x]*this.direction[x]+this.direction[y]*this.direction[y]+this.direction[z]*this.direction[z]);
+	
+	// checks if we already reached our destination
 	if(d==0) {
-		this.direction[x] = 0;
-		this.direction[y] = 0;
-		this.direction[z] = 0;
-		this.destination[x] = 0;
-		this.destination[y] = 0;
-		this.destination[z] = 0;
 		this.waypointMove=false;
-		return;
 	}
 	else {
-		
 		this.direction[x] = this.direction[x]/d;
 		this.direction[y] = this.direction[y]/d;
 		this.direction[z] = this.direction[z]/d;
 	
-		//console.log(this.direction[x] + " " + this.direction[y] + " " + this.direction[z]);
-		//console.log(this.position[x] + " " + this.position[y] + " " + this.position[z]);
+	
+		var updateX = this.direction[x]*this.directionVelocity[x]*timeTillLastUpdate;
+		var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
+		var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;
 		
-		if(Math.abs(this.position[x] + this.direction[x]*this.directionVelocity[x] - this.destination[x]) < 0.01) {
-			this.direction[x]=0;
+		// checks if we already passed our destination
+		if((this.direction[x]>=0 && this.position[x] + updateX > this.destination[x]) || 
+			(this.direction[x]<0 && this.position[x] + updateX < this.destination[x]))
+		{
 			this.position[x]=this.destination[x];
 		}
-		if(Math.abs(this.position[y] + this.direction[y]*this.directionVelocity[y] - this.destination[y]) < 0.01) {
-			this.direction[y]=0;
+		else this.position[x] += updateX;
+		
+		if((this.direction[y]>=0 && this.position[y] + updateY > this.destination[y]) || 
+			(this.direction[y]<0 && this.position[y] + updateY < this.destination[y]))
+		{
 			this.position[y]=this.destination[y];
 		}
-		if(Math.abs(this.position[z] + this.direction[z]*this.directionVelocity[z] - this.destination[z]) < 0.01) {
-			this.direction[z]=0;
+		else this.position[y] += updateY;
+		
+		if((this.direction[z]>=0 && this.position[z] + updateZ > this.destination[z]) || 
+			(this.direction[z]<0 && this.position[z] + updateZ < this.destination[z]))
+		{
 			this.position[z]=this.destination[z];
 		}
+		else this.position[z] += updateZ;
 		
-		this.position[x] += this.direction[x]*this.directionVelocity[x];
-		this.position[y] += this.direction[y]*this.directionVelocity[y];
-		this.position[z] += this.direction[z]*this.directionVelocity[z];
 	}
 
 

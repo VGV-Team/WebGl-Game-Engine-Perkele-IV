@@ -1,5 +1,8 @@
 function gameLoop()
 {
+	
+	requestAnimationFrame(calculateTime);
+	
 	//requestAnimationFrame(animate);
 	
 	handleKeys();

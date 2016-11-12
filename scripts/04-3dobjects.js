@@ -15,6 +15,8 @@ var hero;
 var world;
 var camera;
 
+var lastUpdateTime = 0;
+var timeTillLastUpdate = 0;
 
 
 function drawScene() {
@@ -75,7 +77,6 @@ function start() {
 	
 	world = new World();
 	world.load();
-
 
 	hero = new Hero();
 	hero.load();

@@ -35,7 +35,7 @@ function handleMouseClick(event) {
 	var rect = canvas.getBoundingClientRect();
 	var mouse_x = event.clientX - rect.left;
 	var mouse_y = event.clientY - rect.top;
-	console.log("x: " + mouse_x + " y: " + mouse_y);
+	//console.log("x: " + mouse_x + " y: " + mouse_y);
 	
 	//Black magic, leave as it is!
 	var mx = (2.0 * mouse_x) / canvas.width - 1.0;
@@ -53,9 +53,9 @@ function handleMouseClick(event) {
 	ray_clip[z] = -1.0;
 	ray_clip[3] = 1.0;
 	
-	console.log(ray_clip);
+	//console.log(ray_clip);
 	var ray_eye = matrixVectorMultiply4(mat4.inverse(pMatrix),ray_clip);	
-	console.log(ray_eye);
+	//console.log(ray_eye);
 	ray_eye[z] = -1.0;
 	ray_eye[3] = 0.0;
 	
@@ -69,7 +69,7 @@ function handleMouseClick(event) {
 	
 	
 	var ray_wor = matrixVectorMultiply4(mat4.inverse(viewMatrix), ray_eye);
-	console.log(ray_wor);
+	//console.log(ray_wor);
 	
 	var final_vector = vec3.create();
 	final_vector[x] = ray_wor[x];
@@ -102,7 +102,7 @@ function handleMouseClick(event) {
 	
 	//We pass the values to the mouseCorrdinate variable for further use.
 	currentlyPressedMouseCoordinates[x] = currentPos[x];
-	currentlyPressedMouseCoordinates[y] = currentPos[y];
+	currentlyPressedMouseCoordinates[y] = world.position[y];
 	currentlyPressedMouseCoordinates[z] = currentPos[z];
 	
 	//Testing: draw an object where we clicked
@@ -160,6 +160,12 @@ function handleKeys() {
 	}
   
   
+  
+  
+  
+  
+  ///////////////////////// debug only ////////////////////////////////
+  /*
 	if(currentlyPressedKeys[102]) {
 		hero.direction[x]=1;
 		//hero.move=true;
@@ -188,7 +194,10 @@ function handleKeys() {
 	
 	
 	if(currentlyPressedKeys[101]) {
-		hero.destination[x]=0;
+		
+		hero.destination[x]=-8.1360884308815;
+		hero.destination[z]=1.0930535793304443;
+		//hero.destination[x]=0;
 		//hero.destination[y]=hero.position[y];
 		//hero.destination[x]=1;
 		//hero.destination[z]=1;
@@ -201,7 +210,7 @@ function handleKeys() {
 		//hero.waypointMove=false;
 		//hero.move=true;
 	}
-	
+	*/
 }
 
 
