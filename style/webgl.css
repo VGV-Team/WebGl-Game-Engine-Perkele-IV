@@ -1,0 +1,33 @@
+#content {
+	width: 100%;
+	text-align: center;
+}
+
+canvas {
+	display: inline;
+	border: 1px solid black;
+}
+
+h1 {
+	text-align: left;
+}
+
+h2 {
+	text-align: left;
+}
+
+ul {
+	text-align: left;
+}
+
+td {
+	width: 200px;
+}
+
+#loadingtext {
+	position:absolute;
+	top:250px;
+	left:150px;
+	font-size:2em;
+	color: white;
+}
