@@ -3,7 +3,7 @@ function Camera()
 	Entity.call(this);
 	
 	this.offset = [0.0, -10.0, -10.0];
-	this.rotation = [45.0, 0.0, 0.0];
+	this.rotation = [50.0, 0.0, 0.0];
 	
 	//this.position = [0.0, -5.0, -10.0];
 	//this.scale = [1.0, 1.0, 1.0];
