@@ -68,9 +68,6 @@ function draw(objectToDraw)
 	
 	//ZA IZOMETRIÈNO
 	//mat4.scale(mvMatrix, [50.0,1.0,50.0]);
-
-
-
 	//mat4.rotate(mvMatrix, degToRad(rotationCube), [1, 1, 1]);
 
 	// Draw the cube by binding the array buffer to the cube's vertices
@@ -79,8 +76,10 @@ function draw(objectToDraw)
 	gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, objectToDraw.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 	// Set the colors attribute for the vertices.
-	/*gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
-	gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);*/
+	/*
+	gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
+	gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+	*/
 
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objectToDraw.vertexIndexBuffer);
 
@@ -203,7 +202,7 @@ function calculateTime()
 
 
 //////////////////////////////// NEW COLLISION DETECTION ////////////////////////////////
-// problem with rotation of box and then calculating collision 
+// problem with rotation of box and then calculating collision
 
 // Checks for collision between two objects
 function checkCollisionBetweenTwoObjects(object1, object2)
@@ -243,7 +242,7 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	//console.log(object1.collisionBox);
 	//console.log(newVec);
 	
-	
+	// checks collision for all three axises, if all three collide then we have collision
 	var collisionDirection = [0,0,0];
 	
 	/*
@@ -256,8 +255,6 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	var x12 = object1.position[x]+object1NewCollisionBox[x]/2;
 	var x21 = object2.position[x]-object2NewCollisionBox[x]/2;
 	var x22 = object2.position[x]+object2NewCollisionBox[x]/2;
-	
-	//console.log(x11 + " " + x12 + " || " + x21 + " " + x22);
 	if(
 		x12>x21 && x12<x22 ||
 		x11>x21 && x11<x22 ||
@@ -265,8 +262,6 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 		x11<x22 && x12>x22
 	)
 	{
-		console.log(x11 + " " + x12 + "." + object1.position[x] + " " + object1.collisionBox[x]/2 + "   " +  + x21 + " " + x22);
-		//console.log("XXX");
 		collisionDirection[x] = 1;
 	}
 	
@@ -280,7 +275,6 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	var y12 = object1.position[y]+object1NewCollisionBox[y]/2;
 	var y21 = object2.position[y]-object2NewCollisionBox[y]/2;
 	var y22 = object2.position[y]+object2NewCollisionBox[y]/2;
-	//console.log(y11 + " " + y12 + " || " + y21 + " " + y22);
 	if(
 		y12>y21 && y12<y22 ||
 		y11>y21 && y11<y22 ||
@@ -288,7 +282,6 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 		y11<y22 && y12>y22
 	)
 	{
-		//console.log("YYY");
 		collisionDirection[y] = 1;
 	}
 	
@@ -302,7 +295,6 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	var z12 = object1.position[z]+object1NewCollisionBox[z]/2;
 	var z21 = object2.position[z]-object2NewCollisionBox[z]/2;
 	var z22 = object2.position[z]+object2NewCollisionBox[z]/2;
-	//console.log(z11 + " " + z12 + " || " + z21 + " " + z22);
 	if(
 		z12>z21 && z12<z22 ||
 		z11>z21 && z11<z22 ||
@@ -310,48 +302,22 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 		z11<z22 && z12>z22
 	)
 	{
-		//console.log("ZZZ");
 		collisionDirection[z] = 1;
 	}
 	
+	// if all there collide then we have collision
 	if(collisionDirection[x] == 1 && collisionDirection[y] == 1 && collisionDirection[z] == 1) return true;
 	return false;
 }
 
 function checkCollisionBetweenAllObjects(object)
 {
-	for(var i in enemy)
-	{
-		if(checkCollisionBetweenTwoObjects(object, enemy[i]))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-
-//////////////////////////////// OLD COLLISION DETECTION ////////////////////////////////
-// used only for vector collision - should be only used for mouse
-
-// coordinates - x,y,z coordinates to check
-// returns x,y,z and clicked object. Null if no results found
-function checkCollisionWithObjects(coordinates)
-{
 	//////////////// check if click collides with any object ////////////////
 		
 	//////// check for enemy ////////
 	for(var i in enemy)
 	{
-		//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
-		if(
-		(enemy[i].position[x]-enemy[i].collisionBox[x]/2) <= coordinates[x] &&
-		(enemy[i].position[x]+enemy[i].collisionBox[x]/2) > coordinates[x] &&
-		(enemy[i].position[y]-enemy[i].collisionBox[y]/2) <= coordinates[y] &&
-		(enemy[i].position[y]+enemy[i].collisionBox[y]/2) > coordinates[y] &&
-		(enemy[i].position[z]-enemy[i].collisionBox[z]/2) <= coordinates[z] &&
-		(enemy[i].position[z]+enemy[i].collisionBox[z]/2) > coordinates[z]
-		)
+		if(checkCollisionBetweenTwoObjects(object, enemy[i]))
 		{
 			return enemy[i];
 		}
@@ -362,6 +328,31 @@ function checkCollisionWithObjects(coordinates)
 	//////// check for world objects ////////
 	
 	
-	
 	return null;
+}
+
+
+
+
+
+
+//////////////////////////////// OLD COLLISION DETECTION ////////////////////////////////
+// used only for vector collision - should NOT be used anymore
+// coordinates - x,y,z coordinates to check, object - object to check with
+// returns true if coordinates collide, else returns false
+function checkCollisionWithObject(coordinates, object)
+{
+	//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
+	if(
+		(object.position[x]-object.collisionBox[x]/2) <= coordinates[x] &&
+		(object.position[x]+object.collisionBox[x]/2) > coordinates[x] &&
+		(object.position[y]-object.collisionBox[y]/2) <= coordinates[y] &&
+		(object.position[y]+object.collisionBox[y]/2) > coordinates[y] &&
+		(object.position[z]-object.collisionBox[z]/2) <= coordinates[z] &&
+		(object.position[z]+object.collisionBox[z]/2) > coordinates[z]
+	)
+	{
+		return true;
+	}
+	return false;
 }

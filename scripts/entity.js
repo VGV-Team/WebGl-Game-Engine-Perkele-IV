@@ -73,11 +73,10 @@ Entity.prototype.updateMovement = function() {
 		// checks if we collide with other objects
 		
 		//// OLD COLLISION DETECTION
-		//var collision = checkCollisionWithObjects([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
+		//var collision = checkCollisionWithObject([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
 		//if(collision!=null) return;
 		
-		
-		//// FOR NEW COLLISION DETECTION
+		//// NEW COLLISION DETECTION
 		// we need to fo fake update, calculate and then revert changes
 		this.position[x] += updateX;
 		this.position[y] += updateY;
@@ -86,7 +85,7 @@ Entity.prototype.updateMovement = function() {
 		this.position[x] -= updateX;
 		this.position[y] -= updateY;
 		this.position[z] -= updateZ;
-		if(collision) return; // no move if we collide
+		if(collision!=null) return; // no move if we collide
 		
 		
 		// checks if we already passed our destination

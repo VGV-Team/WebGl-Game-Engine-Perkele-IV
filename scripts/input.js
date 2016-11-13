@@ -85,8 +85,12 @@ function handleMouseClick(event) {
 		currentPos[y] += final_vector[y];
 		currentPos[z] += final_vector[z];
 
-		
-		var clickedObject = checkCollisionWithObjects(currentPos);
+		// creates new temp class Entity as collision detection requires object
+		var tempObjectMouse = new Entity();
+		tempObjectMouse.position = currentPos;
+		var clickedObject = checkCollisionBetweenAllObjects(tempObjectMouse);
+		delete tempObjectMouse;
+		//var clickedObject = checkCollisionWithObject(currentPos);
 		if(clickedObject != null)
 		{
 			currentPos[x] = clickedObject.position[x];
