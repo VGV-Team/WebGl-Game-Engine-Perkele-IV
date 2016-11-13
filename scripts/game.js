@@ -17,6 +17,13 @@ function gameLoop()
 	
 	// draws camera and all objects
     drawScene();
+	/*
+	for(var i in enemy)
+	{
+		var tmp = checkCollisionBetweenTwoObjects(hero, enemy[i]);
+		if(tmp) console.log("col " + enemy[i].name);
+	}
+	*/
 }
 
 function drawScene() {

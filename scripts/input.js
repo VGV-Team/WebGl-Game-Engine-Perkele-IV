@@ -13,18 +13,6 @@ function handleKeyUp(event) {
   currentlyPressedKeys[event.keyCode] = false;
 }
 
-//Utility function cuz vec4 doesen't work?
-function matrixVectorMultiply4(matrix, vector) {
-	var result = [];
-	for (var i = 0; i < 4; i++) {
-		var sum = 0;
-		for (var j = 0; j < 4; j++) {
-			sum += (matrix[i*4+j] * vector[j]);
-		}
-		result[i] = sum;
-	}
-	return result;
-}
 
 function handleMouseClick(event) {
 
