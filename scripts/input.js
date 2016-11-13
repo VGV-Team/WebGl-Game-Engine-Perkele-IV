@@ -91,6 +91,7 @@ function handleMouseClick(event) {
 	//console.log((enemy.position[z]-enemy.collisionBox[y]/2) + " " + (enemy.position[y]+enemy.collisionBox[y]/2));
 	//console.log((enemy.position[z]-enemy.collisionBox[z]/2) + " " + (enemy.position[z]+enemy.collisionBox[z]/2));
 	
+	currentlyPressedEntity = null;
 	while (currentPos[y] > world.position[y]) {
 		currentPos[x] += final_vector[x];
 		currentPos[y] += final_vector[y];
