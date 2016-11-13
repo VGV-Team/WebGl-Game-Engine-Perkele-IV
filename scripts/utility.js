@@ -43,7 +43,7 @@ function draw(objectToDraw)
 	mvPushMatrix();	
 
 	mat4.translate(mvMatrix, objectToDraw.position);
-	mat4.translate(mvMatrix, [0.0,objectToDraw.offset,0.0]);
+	mat4.translate(mvMatrix, objectToDraw.offset);
 
 	mat4.rotateX(mvMatrix, degToRad(objectToDraw.rotation[0]));
 	mat4.rotateY(mvMatrix, degToRad(objectToDraw.rotation[1]));
@@ -91,8 +91,15 @@ function load(objectToLoad, objectURL)
 
 	var handleLoad = function(data) {
 
-		// align object to world
-		var min = 9999;
+		// to calculate collision box
+		var minX = 9999;
+		var maxX = -9999;
+		var minY = 9999;
+		var maxY = -9999;
+		var minZ = 9999;
+		var maxZ = -9999;
+		
+		
 
 		var lines = data.split("\n");
 		var vertexCount = 0;
@@ -109,10 +116,33 @@ function load(objectToLoad, objectURL)
 				vertexPositions.push(parseFloat(vals[3]));		
 				vertexCount += 1;
 
-				// align object to world
-				if(parseFloat(vals[2])<min)
+				
+				
+				if(parseFloat(vals[1])<minX)
 				{
-					min = parseFloat(vals[2]);
+					minX = parseFloat(vals[1]);
+				}
+				else if(parseFloat(vals[1])>maxX)
+				{
+					maxX = parseFloat(vals[1]);
+				}
+				if(parseFloat(vals[2])<minY)
+				{
+					minY = parseFloat(vals[2]);
+				}
+				else if(parseFloat(vals[2])>maxY)
+				{
+					maxY = parseFloat(vals[2]);
+					
+					
+				}
+				if(parseFloat(vals[3])<minZ)
+				{
+					minZ = parseFloat(vals[3]);
+				}
+				else if(parseFloat(vals[3])>maxZ)
+				{
+					maxZ = parseFloat(vals[3]);
 				}
 			  
 			  
@@ -125,8 +155,14 @@ function load(objectToLoad, objectURL)
 		}
 
 		// align object to world
-		objectToLoad.offset = -min;
-		//objectToLoad.position[y]=-min;
+		//objectToLoad.offset[x] = -minY;
+		objectToLoad.offset[y] = -minY;
+		//objectToLoad.offset[z] = -minY;
+		
+
+		// calculate collision
+		objectToLoad.collisionBox = [maxX-minX, maxY-minY, maxZ-minZ];
+		
 
 		objectToLoad.vertexPositionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, objectToLoad.vertexPositionBuffer);
@@ -149,3 +185,5 @@ function calculateTime()
 	timeTillLastUpdate = (new Date().getTime() - lastUpdateTime)/1000;
 	lastUpdateTime = new Date().getTime();
 }
+
+

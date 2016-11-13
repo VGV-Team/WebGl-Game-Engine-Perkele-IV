@@ -1,23 +1,28 @@
 function World() {
-	this.vertexPositionBuffer = null;
-	this.vertexIndexBuffer = null;
+	Entity.call(this);
+	
+	
+	//this.vertexPositionBuffer = null;
+	//this.vertexIndexBuffer = null;
 	//this.vertexTextureCoordBuffer;
 	
 	this.vec4Color = [1.0, 1.0, 1.0, 1.0];
 	
-	this.offset = 0;
-	this.position = [0.0, 0.0, 0.0];
-	this.rotation = [0.0, 0.0, 0.0];
-	this.scale = [1.0, 1.0, 1.0];
+	
+	//this.position = [0.0, 0.0, 0.0];
+	//this.rotation = [0.0, 0.0, 0.0];
+	//this.scale = [1.0, 1.0, 1.0];
 }
+World.prototype = Object.create(Entity.prototype);
 
-World.prototype.load = function() {
-	load(this, "./assets/world_plane.obj");
+World.prototype.load = function(objectLocation) {
+	Entity.prototype.load.call(this, objectLocation);
+	//load(this, "./assets/world_plane.obj");
 };
 
 World.prototype.draw = function() {
-	
-	draw(this);
+	Entity.prototype.draw.call(this);
+	//draw(this);
 }
 
 //

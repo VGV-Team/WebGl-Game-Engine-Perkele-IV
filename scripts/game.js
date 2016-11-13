@@ -8,9 +8,9 @@ function gameLoop()
 	handleKeys();
 	
 	// updates all objects
-	camera.update();
-	hero.update();
 	
+	hero.update();
+	camera.update();
 	//updateEnemies();
 	
 	// draws camera and all objects
@@ -36,7 +36,12 @@ function drawScene() {
 
 	////// OBJECT DRAWING
 	hero.draw();
+	
+	for(var i in enemy) enemy[i].draw();
+	
 	world.draw();
+	
+	
 }
 
 //
@@ -78,11 +83,20 @@ function start() {
 	camera = new Camera();
 	
 	world = new World();
-	world.load();
+	world.load("./assets/world_plane.obj");
 
 	hero = new Hero();
-	hero.load();
+	hero.load("./assets/hero.obj");
 
+	enemy = [];
+	enemy.push(new Entity());
+	enemy[enemy.length-1].load("./assets/buca.obj");
+	enemy[enemy.length-1].name = "Evil Pumpkin";
+	enemy[enemy.length-1].position[x] -= 5;
+	enemy.push(new Entity());
+	enemy[enemy.length-1].load("./assets/buca.obj");
+	enemy[enemy.length-1].name = "Evil Pumpkin";
+	enemy[enemy.length-1].position[z] += 5;
 	
     // Set up to draw the scene periodically.
 	setInterval(gameLoop, 15);

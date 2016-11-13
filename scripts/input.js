@@ -63,7 +63,7 @@ function handleMouseClick(event) {
 	mat4.rotateY(viewMatrix, degToRad(-camera.rotation[y]));
 	mat4.rotateZ(viewMatrix, degToRad(-camera.rotation[z]));
 	mat4.translate(viewMatrix, camera.position);
-	
+	mat4.translate(viewMatrix, camera.offset);
 	
 	var ray_wor = matrixVectorMultiply4(mat4.inverse(viewMatrix), ray_eye);
 	//console.log(ray_wor);
@@ -78,19 +78,58 @@ function handleMouseClick(event) {
 	//final_vector represents direction where the camera is looking
 	
 	var currentPos = []
-	currentPos[x] = -camera.position[x];
-	currentPos[y] = -camera.position[y];
-	currentPos[z] = -camera.position[z];
+	currentPos[x] = -camera.position[x]-camera.offset[x];
+	currentPos[y] = -camera.position[y]-camera.offset[y];
+	currentPos[z] = -camera.position[z]-camera.offset[z];
 	
 	//We get the camera position and keep adding the direction vector to it.
 	//When we "pierce" the world plane, we stop and get our x and z coordinates.
 	//There is also a threshold for safety if something happens or we click outside of the world plane.
 	var limit = 10000;
 	var count = 0;
+	//console.log((enemy.position[x]-enemy.collisionBox[x]/2) + " " + (enemy.position[x]+enemy.collisionBox[x]/2));
+	//console.log((enemy.position[z]-enemy.collisionBox[y]/2) + " " + (enemy.position[y]+enemy.collisionBox[y]/2));
+	//console.log((enemy.position[z]-enemy.collisionBox[z]/2) + " " + (enemy.position[z]+enemy.collisionBox[z]/2));
+	
 	while (currentPos[y] > world.position[y]) {
 		currentPos[x] += final_vector[x];
 		currentPos[y] += final_vector[y];
 		currentPos[z] += final_vector[z];
+
+		//////////////// check if click collides with any object ////////////////
+		
+		//////// check for enemy ////////
+		for(var i in enemy)
+		{
+			if(
+			(enemy[i].position[x]-enemy[i].collisionBox[x]/2) < currentPos[x] &&
+			(enemy[i].position[x]+enemy[i].collisionBox[x]/2) > currentPos[x] &&
+			(enemy[i].position[y]-enemy[i].collisionBox[y]/2) < currentPos[y] &&
+			(enemy[i].position[y]+enemy[i].collisionBox[y]/2) > currentPos[y] &&
+			(enemy[i].position[z]-enemy[i].collisionBox[z]/2) < currentPos[z] &&
+			(enemy[i].position[z]+enemy[i].collisionBox[z]/2) > currentPos[z]
+			)
+			{
+				currentlyPressedEntity = enemy[i];
+				//console.log(currentPos[x] + " qwe " + currentPos[y] + " qwe " + currentPos[z]);
+				console.log("Clicked entity " + enemy[i].name);
+				
+				currentPos[x] = enemy[i].position[x];
+				currentPos[y] = enemy[i].position[y];
+				currentPos[z] = enemy[i].position[z];
+				
+				//console.log(enemy.offset);
+				break;
+			}
+		}
+		
+		//////// check for pickable items ////////
+		
+		//////// check for world objects ////////
+		
+		
+		
+		
 		count++;
 		if (count > limit) break;
 	}
@@ -98,9 +137,11 @@ function handleMouseClick(event) {
 	else console.log("BAD CLICKED POSITION");
 	
 	//We pass the values to the mouseCorrdinate variable for further use.
+	
 	currentlyPressedMouseCoordinates[x] = currentPos[x];
-	currentlyPressedMouseCoordinates[y] = world.position[y];
+	currentlyPressedMouseCoordinates[y] = world.position[y]+world.offset[y];
 	currentlyPressedMouseCoordinates[z] = currentPos[z];
+	
 	
 	//Testing: draw an object where we clicked
 	//CAN BE DELETED

@@ -14,6 +14,7 @@ var hero;
 var world;
 var camera;
 
+var enemy;
 
 
 
@@ -26,6 +27,7 @@ var timeTillLastUpdate = 0;
 
 var currentlyPressedKeys = {};
 var currentlyPressedMouseCoordinates = [null, null, null];
+var currentlyPressedEntity = null;
 
 
 
