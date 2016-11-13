@@ -89,6 +89,7 @@ function start() {
 
 	hero = new Hero();
 	hero.load("./assets/hero.obj");
+	hero.name = "Hero";
 
 	enemy = [];
 
@@ -102,7 +103,7 @@ function start() {
 	enemy[enemy.length-1].position[z] += 5;
 	
 	//HARDCODED
-	enemy[0].HP = 75;
+	enemy[0].HP = 100;
 	enemy[0].maxHP = 100;
 	enemy[1].HP = 30;
 	enemy[1].maxHP = 100;

@@ -11,6 +11,10 @@ function Hero() {
 	this.criticalChance = 5; //0-100%
 	this.discovery = 5; //% chance of epic drop
 	
+	//abilities
+	this.abilities = [];
+	this.abilities["BasicAttack"] = new Ability("BasicAttack", 1500, 0);
+	this.abilities.length = 1;
 	
 	//temporary
 	this.vec4Color = [1.0, 0.0, 0.0, 1.0];
@@ -20,6 +24,8 @@ function Hero() {
 	// movement waypoint object
 	this.waypoint;
 	
+	// So we don't keep attacking the monster every frame
+	this.alreadyAttacked = true;
 	
 }
 Hero.prototype = Object.create(Entity.prototype);
@@ -45,6 +51,10 @@ Hero.prototype.draw = function() {
 Hero.prototype.update = function()
 {
 	
+	for (var i in this.abilities) {
+		this.abilities[i].update();
+	}
+	
 	// checks for mouse input
 	if(currentlyPressedMouseCoordinates[x]!=null)
 	{
@@ -53,11 +63,15 @@ Hero.prototype.update = function()
 		this.destination[z] = currentlyPressedMouseCoordinates[z];
 		this.waypointMove = true;
 		
+		if (this.abilities["BasicAttack"].ready)
+			this.alreadyAttacked = false;
+		
 		// prepare mouse for next input
 		currentlyPressedMouseCoordinates[x] = null;
 		currentlyPressedMouseCoordinates[y] = null;
 		currentlyPressedMouseCoordinates[z] = null;
-		currentlyClickedEntity = null;
+		// We need this var for drawin UI
+		//currentlyPressedEntity = null;
 		
 		this.waypoint.drawObject = true;
 		this.waypoint.offset = [0.0,0.0,0.0]; // to make sure it is half clipping through terrain
@@ -65,4 +79,14 @@ Hero.prototype.update = function()
 	}
 	
 	Entity.prototype.update.call(this);
+	
+	if (this.alreadyAttacked == false) {
+		if (this.waypointMove == false && this.abilities["BasicAttack"].ready == true && currentlyPressedEntity != null) {
+			this.alreadyAttacked = true;
+			// No fury cost so we don't need an else
+			if (this.abilities["BasicAttack"].use(this))
+				basicAttack(this, currentlyPressedEntity);
+		}
+	}
+	
 }

@@ -19,6 +19,7 @@ function Entity() {
 	
 	
 	this.drawObject = true;
+	this.calculateCollision = true;
 }
 Entity.prototype.load = function(objectLocation) {
 	load(this, objectLocation);
@@ -59,7 +60,11 @@ Entity.prototype.updateMovement = function() {
 		
 		// checks if we collide with other objects
 		var collision = checkCollisionWithObjects([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
-		if(collision!=null) return;
+		if(collision!=null) {
+			this.waypointMove=false;
+			this.waypoint.drawObject = false;
+			return;
+		}
 		
 		// checks if we already passed our destination
 		if((this.direction[x]>=0 && this.position[x] + updateX > this.destination[x]) || 
