@@ -14,6 +14,10 @@ var hero;
 var world;
 var camera;
 
+
+
+
+
 var lastUpdateTime = 0;
 var timeTillLastUpdate = 0;
 

@@ -10,6 +10,7 @@ function gameLoop()
 	// updates all objects
 	camera.update();
 	hero.update();
+	
 	//updateEnemies();
 	
 	// draws camera and all objects
@@ -71,6 +72,8 @@ function start() {
 
 	
 	//////////////// OBJECT LOADING AND INITIALIZING ////////////////
+	
+	
 	
 	camera = new Camera();
 	

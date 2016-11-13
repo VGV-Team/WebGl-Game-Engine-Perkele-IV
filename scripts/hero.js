@@ -24,15 +24,24 @@ function Hero() {
 	this.directionVelocity = [10.0, 10.0, 10.0];
 	
 	
+	
+	// movement waypoint object
+	this.waypoint;
 }
 
 Hero.prototype.load = function() {
 	load(this, "./assets/hero.obj");
+	
+	waypoint = new Entity();
+	waypoint.load("./assets/mouse_click_waypoint.obj");
+	waypoint.drawObject = false;
+	
 };
 
 
 Hero.prototype.draw = function() {
 	draw(this);
+	waypoint.draw();
 }
 
 Hero.prototype.update = function()
@@ -48,6 +57,10 @@ Hero.prototype.update = function()
 		currentlyPressedMouseCoordinates[x] = null;
 		currentlyPressedMouseCoordinates[y] = null;
 		currentlyPressedMouseCoordinates[z] = null;
+		
+		waypoint.drawObject = true;
+		waypoint.offset = 0; // to make sure it is half clipping through terrain
+		waypoint.position = this.destination;
 	}
 	
 
@@ -69,6 +82,7 @@ Hero.prototype.updateMovement = function(){
 	// checks if we already reached our destination
 	if(d==0) {
 		this.waypointMove=false;
+		waypoint.drawObject = false;
 	}
 	else {
 		this.direction[x] = this.direction[x]/d;
@@ -86,21 +100,39 @@ Hero.prototype.updateMovement = function(){
 		{
 			this.position[x]=this.destination[x];
 		}
-		else this.position[x] += updateX;
+		else 
+		{
+			this.position[x] += updateX;
+		}
 		
 		if((this.direction[y]>=0 && this.position[y] + updateY > this.destination[y]) || 
 			(this.direction[y]<0 && this.position[y] + updateY < this.destination[y]))
 		{
 			this.position[y]=this.destination[y];
 		}
-		else this.position[y] += updateY;
+		else 
+		{
+			
+			
+			this.position[y] += updateY;
+		}
 		
 		if((this.direction[z]>=0 && this.position[z] + updateZ > this.destination[z]) || 
 			(this.direction[z]<0 && this.position[z] + updateZ < this.destination[z]))
 		{
 			this.position[z]=this.destination[z];
 		}
-		else this.position[z] += updateZ;
+		else 
+		{
+			this.position[z] += updateZ;
+		}
 		
+		// rotation towards waypoint
+		if(this.direction[x] > 0 && this.direction[z] > 0 ||
+			this.direction[x] < 0 && this.direction[z] > 0)
+			this.rotation[y] = radToDeg(Math.asin(this.direction[x]));
+		if(this.direction[x] < 0 && this.direction[z] < 0 ||
+			this.direction[x] > 0 && this.direction[z] < 0)
+			this.rotation[y] = 180-radToDeg(Math.asin(this.direction[x]));
 	}
 }
