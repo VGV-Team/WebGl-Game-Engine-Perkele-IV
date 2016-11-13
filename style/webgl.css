@@ -39,17 +39,21 @@ td {
 /* UI ELEMENTS */
 
 #topBar {
+	display:none;
 	z-index:1;
 	position:absolute;
 	height:50px;
-	min-width:100%;
+	width:400px;
 	top:0px;
-	left:0px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
 	background-color:transparent;
 }
 #enemyHealthBar {
 	
-	display:none;
+	/*display:none;*/
 	
 	width:400px;
 	height:100%;
@@ -62,7 +66,7 @@ td {
 }
 #enemyHealthBarPercentage {
 	
-	display:none;
+	/*display:none;*/
 	
 	background-color:red;
 	width:75%;
@@ -73,7 +77,7 @@ td {
 }
 #enemyHealthBarName {
 	
-	display:none;
+	/*display:none;*/
 	
 	position:absolute;
 	margin-left: auto;

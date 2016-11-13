@@ -1,4 +1,5 @@
 function UI() {
+	this.topBar = document.getElementById("topBar");
 	this.enemyHealthBar = document.getElementById("enemyHealthBar");
 	this.enemyHealthBarPercentage = document.getElementById("enemyHealthBarPercentage");
 	this.enemyHealthBarName = document.getElementById("enemyHealthBarName");
@@ -18,13 +19,15 @@ UI.prototype.update = function() {
 }
 
 UI.prototype.hideEnemyHealthBar = function() {
-	this.enemyHealthBar.style.display = "none";
-	this.enemyHealthBarPercentage.style.display = "none";
-	this.enemyHealthBarName.style.display = "none";
+	this.topBar.style.display = "none";
+	//this.enemyHealthBar.style.display = "none";
+	//this.enemyHealthBarPercentage.style.display = "none";
+	//this.enemyHealthBarName.style.display = "none";
 }
 
 UI.prototype.showEnemyHealthBar = function() {
-	this.enemyHealthBar.style.display = "block";
-	this.enemyHealthBarPercentage.style.display = "block";
-	this.enemyHealthBarName.style.display = "block";
+	this.topBar.style.display = "block";
+	//this.enemyHealthBar.style.display = "block";
+	//this.enemyHealthBarPercentage.style.display = "block";
+	//this.enemyHealthBarName.style.display = "block";
 }
