@@ -26,6 +26,20 @@ function radToDeg(radians) {
   return radians * 180 / Math.PI;
 }
 
+//Utility function cuz vec4 doesen't work?
+function matrixVectorMultiply4(matrix, vector) {
+	var result = [];
+	for (var i = 0; i < 4; i++) {
+		var sum = 0;
+		for (var j = 0; j < 4; j++) {
+			sum += (matrix[i*4+j] * vector[j]);
+		}
+		result[i] = sum;
+	}
+	return result;
+}
+
+
 // logic utility
 
 function draw(objectToDraw)
@@ -54,9 +68,6 @@ function draw(objectToDraw)
 	
 	//ZA IZOMETRIÈNO
 	//mat4.scale(mvMatrix, [50.0,1.0,50.0]);
-
-
-
 	//mat4.rotate(mvMatrix, degToRad(rotationCube), [1, 1, 1]);
 
 	// Draw the cube by binding the array buffer to the cube's vertices
@@ -65,8 +76,10 @@ function draw(objectToDraw)
 	gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, objectToDraw.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 	// Set the colors attribute for the vertices.
-	/*gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
-	gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);*/
+	/*
+	gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexColorBuffer);
+	gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, cubeVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+	*/
 
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objectToDraw.vertexIndexBuffer);
 
@@ -188,33 +201,123 @@ function calculateTime()
 
 
 
+//////////////////////////////// NEW COLLISION DETECTION ////////////////////////////////
+// problem with rotation of box and then calculating collision
+
+// Checks for collision between two objects
 function checkCollisionBetweenTwoObjects(object1, object2)
 {
+	var object1NewCollisionBox = null;
+	var object2NewCollisionBox = null;
+	var m = mat4.create();
+	
+	//// rotate collision box to object rotation
+	
+	// rotate collision box of object1 to object1 rotation
+	mat4.identity(m);
+	mat4.translate(m, [-object1.collisionBox[x]/2, -object1.collisionBox[y]/2, -object1.collisionBox[z]/2]);
+	mat4.rotateX(m, degToRad(object1.rotation[x]));
+	mat4.rotateY(m, degToRad(object1.rotation[y]));
+	mat4.rotateZ(m, degToRad(object1.rotation[z]));
+	mat4.translate(m, [object1.collisionBox[x]/2,object1.collisionBox[y]/2,object1.collisionBox[z]/2]);
+	object1.collisionBox[3] = 0;
+	object1NewCollisionBox = matrixVectorMultiply4(m, object1.collisionBox);
+	object1NewCollisionBox[x] = Math.abs(object1NewCollisionBox[x]);
+	object1NewCollisionBox[y] = Math.abs(object1NewCollisionBox[y]);
+	object1NewCollisionBox[z] = Math.abs(object1NewCollisionBox[z]);
+	
+	// rotate collision box of object2 to object2 rotation
+	mat4.identity(m);
+	mat4.translate(m, [-object2.collisionBox[x]/2, -object2.collisionBox[y]/2, -object2.collisionBox[z]/2]);
+	mat4.rotateX(m, degToRad(object2.rotation[x]));
+	mat4.rotateY(m, degToRad(object2.rotation[y]));
+	mat4.rotateZ(m, degToRad(object2.rotation[z]));
+	mat4.translate(m, [object2.collisionBox[x]/2,object2.collisionBox[y]/2,object2.collisionBox[z]/2]);
+	object2.collisionBox[3] = 0;
+	object2NewCollisionBox = matrixVectorMultiply4(m, object2.collisionBox);
+	object2NewCollisionBox[x] = Math.abs(object2NewCollisionBox[x]);
+	object2NewCollisionBox[y] = Math.abs(object2NewCollisionBox[y]);
+	object2NewCollisionBox[z] = Math.abs(object2NewCollisionBox[z]);
+	
+	//console.log(object1.collisionBox);
+	//console.log(newVec);
+	
+	// checks collision for all three axises, if all three collide then we have collision
+	var collisionDirection = [0,0,0];
+	
 	/*
-	object.position
-	object.collisionBox
+	x12>x21 && x12<x22
+	x11>x21 && x11<x22
+	x11<x21 && x12>x21
+	x11<x22 && x12>x22
 	*/
+	var x11 = object1.position[x]-object1NewCollisionBox[x]/2;
+	var x12 = object1.position[x]+object1NewCollisionBox[x]/2;
+	var x21 = object2.position[x]-object2NewCollisionBox[x]/2;
+	var x22 = object2.position[x]+object2NewCollisionBox[x]/2;
+	if(
+		x12>x21 && x12<x22 ||
+		x11>x21 && x11<x22 ||
+		x11<x21 && x12>x21 ||
+		x11<x22 && x12>x22
+	)
+	{
+		collisionDirection[x] = 1;
+	}
+	
+	/*
+	y12>y21 && y12<y22
+	y11>y21 && y11<y22
+	y11<y21 && y12>y21
+	y11<y22 && y12>y22
+	*/
+	var y11 = object1.position[y]-object1NewCollisionBox[y]/2;
+	var y12 = object1.position[y]+object1NewCollisionBox[y]/2;
+	var y21 = object2.position[y]-object2NewCollisionBox[y]/2;
+	var y22 = object2.position[y]+object2NewCollisionBox[y]/2;
+	if(
+		y12>y21 && y12<y22 ||
+		y11>y21 && y11<y22 ||
+		y11<y21 && y12>y21 ||
+		y11<y22 && y12>y22
+	)
+	{
+		collisionDirection[y] = 1;
+	}
+	
+	/*
+	z12>z21 && z12<z22
+	z11>z21 && z11<z22
+	z11<z21 && z12>z21
+	z11<z22 && z12>z22
+	*/
+	var z11 = object1.position[z]-object1NewCollisionBox[z]/2;
+	var z12 = object1.position[z]+object1NewCollisionBox[z]/2;
+	var z21 = object2.position[z]-object2NewCollisionBox[z]/2;
+	var z22 = object2.position[z]+object2NewCollisionBox[z]/2;
+	if(
+		z12>z21 && z12<z22 ||
+		z11>z21 && z11<z22 ||
+		z11<z21 && z12>z21 ||
+		z11<z22 && z12>z22
+	)
+	{
+		collisionDirection[z] = 1;
+	}
+	
+	// if all there collide then we have collision
+	if(collisionDirection[x] == 1 && collisionDirection[y] == 1 && collisionDirection[z] == 1) return true;
+	return false;
 }
 
-
-// coordinates - x,y,z coordinates to check
-// returns x,y,z and clicked object. Null if no results found
-function checkCollisionWithObjects(coordinates)
+function checkCollisionBetweenAllObjects(object)
 {
 	//////////////// check if click collides with any object ////////////////
 		
 	//////// check for enemy ////////
 	for(var i in enemy)
 	{
-		//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
-		if(
-		(enemy[i].position[x]-enemy[i].collisionBox[x]/2) <= coordinates[x] &&
-		(enemy[i].position[x]+enemy[i].collisionBox[x]/2) > coordinates[x] &&
-		(enemy[i].position[y]-enemy[i].collisionBox[y]/2) <= coordinates[y] &&
-		(enemy[i].position[y]+enemy[i].collisionBox[y]/2) > coordinates[y] &&
-		(enemy[i].position[z]-enemy[i].collisionBox[z]/2) <= coordinates[z] &&
-		(enemy[i].position[z]+enemy[i].collisionBox[z]/2) > coordinates[z]
-		)
+		if(checkCollisionBetweenTwoObjects(object, enemy[i]))
 		{
 			return enemy[i];
 		}
@@ -225,6 +328,31 @@ function checkCollisionWithObjects(coordinates)
 	//////// check for world objects ////////
 	
 	
-	
 	return null;
+}
+
+
+
+
+
+
+//////////////////////////////// OLD COLLISION DETECTION ////////////////////////////////
+// used only for vector collision - should NOT be used anymore
+// coordinates - x,y,z coordinates to check, object - object to check with
+// returns true if coordinates collide, else returns false
+function checkCollisionWithObject(coordinates, object)
+{
+	//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
+	if(
+		(object.position[x]-object.collisionBox[x]/2) <= coordinates[x] &&
+		(object.position[x]+object.collisionBox[x]/2) > coordinates[x] &&
+		(object.position[y]-object.collisionBox[y]/2) <= coordinates[y] &&
+		(object.position[y]+object.collisionBox[y]/2) > coordinates[y] &&
+		(object.position[z]-object.collisionBox[z]/2) <= coordinates[z] &&
+		(object.position[z]+object.collisionBox[z]/2) > coordinates[z]
+	)
+	{
+		return true;
+	}
+	return false;
 }

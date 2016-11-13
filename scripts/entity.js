@@ -49,6 +49,10 @@ Entity.prototype.updateMovement = function() {
 		this.waypoint.drawObject = false;
 	}
 	else {
+		
+		
+		
+		
 		this.direction[x] = this.direction[x]/d;
 		this.direction[y] = this.direction[y]/d;
 		this.direction[z] = this.direction[z]/d;
@@ -58,13 +62,36 @@ Entity.prototype.updateMovement = function() {
 		var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
 		var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;
 		
+		// rotation towards waypoint
+		if(this.direction[x] >= 0 && this.direction[z] >= 0 ||
+			this.direction[x] < 0 && this.direction[z] >= 0)
+			this.rotation[y] = radToDeg(Math.asin(this.direction[x]));
+		if(this.direction[x] < 0 && this.direction[z] < 0 ||
+			this.direction[x] >= 0 && this.direction[z] < 0)
+			this.rotation[y] = 180-radToDeg(Math.asin(this.direction[x]));
+		
+		
 		// checks if we collide with other objects
-		var collision = checkCollisionWithObjects([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
+		
+		//// OLD COLLISION DETECTION
+		//var collision = checkCollisionWithObject([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
+		//if(collision!=null) return;
+		
+		//// NEW COLLISION DETECTION
+		// we need to fo fake update, calculate and then revert changes
+		this.position[x] += updateX;
+		this.position[y] += updateY;
+		this.position[z] += updateZ;
+		var collision = checkCollisionBetweenAllObjects(this);
+		this.position[x] -= updateX;
+		this.position[y] -= updateY;
+		this.position[z] -= updateZ;
 		if(collision!=null) {
-			this.waypointMove=false;
 			this.waypoint.drawObject = false;
-			return;
+			this.waypointMove = false;
+			return; // no move if we collide
 		}
+
 		
 		// checks if we already passed our destination
 		if((this.direction[x]>=0 && this.position[x] + updateX > this.destination[x]) || 
@@ -97,12 +124,6 @@ Entity.prototype.updateMovement = function() {
 			this.position[z] += updateZ;
 		}
 		
-		// rotation towards waypoint
-		if(this.direction[x] >= 0 && this.direction[z] >= 0 ||
-			this.direction[x] < 0 && this.direction[z] >= 0)
-			this.rotation[y] = radToDeg(Math.asin(this.direction[x]));
-		if(this.direction[x] < 0 && this.direction[z] < 0 ||
-			this.direction[x] >= 0 && this.direction[z] < 0)
-			this.rotation[y] = 180-radToDeg(Math.asin(this.direction[x]));
+		
 	}
 }

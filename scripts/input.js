@@ -13,18 +13,6 @@ function handleKeyUp(event) {
   currentlyPressedKeys[event.keyCode] = false;
 }
 
-//Utility function cuz vec4 doesen't work?
-function matrixVectorMultiply4(matrix, vector) {
-	var result = [];
-	for (var i = 0; i < 4; i++) {
-		var sum = 0;
-		for (var j = 0; j < 4; j++) {
-			sum += (matrix[i*4+j] * vector[j]);
-		}
-		result[i] = sum;
-	}
-	return result;
-}
 
 function handleMouseClick(event) {
 
@@ -97,8 +85,12 @@ function handleMouseClick(event) {
 		currentPos[y] += final_vector[y];
 		currentPos[z] += final_vector[z];
 
-		
-		var clickedObject = checkCollisionWithObjects(currentPos);
+		// creates new temp class Entity as collision detection requires object
+		var tempObjectMouse = new Entity();
+		tempObjectMouse.position = currentPos;
+		var clickedObject = checkCollisionBetweenAllObjects(tempObjectMouse);
+		delete tempObjectMouse;
+		//var clickedObject = checkCollisionWithObject(currentPos);
 		if(clickedObject != null)
 		{
 			currentPos[x] = clickedObject.position[x];

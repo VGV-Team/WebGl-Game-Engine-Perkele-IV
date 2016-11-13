@@ -17,6 +17,7 @@ function gameLoop()
 	
 	// draws camera and all objects
     drawScene();
+
 }
 
 function drawScene() {
@@ -88,8 +89,9 @@ function start() {
 	world.load("./assets/world_plane.obj");
 
 	hero = new Hero();
-	hero.load("./assets/hero.obj");
 	hero.name = "Hero";
+	hero.load("./assets/heroNew.obj");
+
 
 	enemy = [];
 

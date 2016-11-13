@@ -81,7 +81,9 @@ Hero.prototype.update = function()
 	Entity.prototype.update.call(this);
 	
 	if (this.alreadyAttacked == false) {
+		console.log("ATT1");
 		if (this.waypointMove == false && this.abilities["BasicAttack"].ready == true && currentlyPressedEntity != null) {
+			console.log("ATT2");
 			this.alreadyAttacked = true;
 			// No fury cost so we don't need an else
 			if (this.abilities["BasicAttack"].use(this))
