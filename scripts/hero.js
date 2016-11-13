@@ -3,6 +3,7 @@ function Hero() {
 	Entity.call(this);
 	
 	this.HP = 100;
+	this.maxHP = 100;
 	this.HPRegen = 1;
 	this.strength = 10;
 	this.fury = 0;

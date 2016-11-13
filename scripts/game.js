@@ -13,6 +13,8 @@ function gameLoop()
 	camera.update();
 	//updateEnemies();
 	
+	ui.update();
+	
 	// draws camera and all objects
     drawScene();
 }
@@ -91,12 +93,20 @@ function start() {
 	enemy = [];
 	enemy.push(new Entity());
 	enemy[enemy.length-1].load("./assets/buca.obj");
-	enemy[enemy.length-1].name = "Evil Pumpkin";
-	enemy[enemy.length-1].position[x] -= 5;
+	enemy[enemy.length-1].name = "Evil Pumpkin Master";
+	enemy[enemy.length-1].position[x] -= 5;	
 	enemy.push(new Entity());
 	enemy[enemy.length-1].load("./assets/buca.obj");
-	enemy[enemy.length-1].name = "Evil Pumpkin";
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave";
 	enemy[enemy.length-1].position[z] += 5;
+	//HARDCODED
+	enemy[0].HP = 75;
+	enemy[0].maxHP = 100;
+	enemy[1].HP = 30;
+	enemy[1].maxHP = 100;
+
+	
+	ui = new UI();
 	
     // Set up to draw the scene periodically.
 	setInterval(gameLoop, 15);

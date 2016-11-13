@@ -1,11 +1,15 @@
 #content {
-	width: 100%;
+	width: 1280px;
 	text-align: center;
+	position: relative;
+	margin:0px auto;
 }
 
 canvas {
+	position:relative;
 	display: inline;
 	border: 1px solid black;
+	z-index:0;
 }
 
 h1 {
@@ -26,8 +30,57 @@ td {
 
 #loadingtext {
 	position:absolute;
-	top:250px;
+	top:-250px;
 	left:150px;
 	font-size:2em;
 	color: white;
+}
+
+/* UI ELEMENTS */
+
+#topBar {
+	z-index:1;
+	position:absolute;
+	height:50px;
+	min-width:100%;
+	top:0px;
+	left:0px;
+	background-color:transparent;
+}
+#enemyHealthBar {
+	
+	display:none;
+	
+	width:400px;
+	height:100%;
+	margin:0px auto;
+	background-color:white;
+	border:3px solid red;
+	
+	
+	border-radius:20px;
+}
+#enemyHealthBarPercentage {
+	
+	display:none;
+	
+	background-color:red;
+	width:75%;
+	height:100%;
+	
+	border-top-left-radius:15px;
+	border-bottom-left-radius:15px;
+}
+#enemyHealthBarName {
+	
+	display:none;
+	
+	position:absolute;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	font-weight:bold;
+	font-size:30px;
+	padding-top:6px;
 }

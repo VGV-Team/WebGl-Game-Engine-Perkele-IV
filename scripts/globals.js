@@ -16,7 +16,7 @@ var camera;
 
 var enemy;
 
-
+var ui;
 
 
 var lastUpdateTime = 0;
