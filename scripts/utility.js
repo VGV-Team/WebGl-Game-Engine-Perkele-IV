@@ -187,3 +187,33 @@ function calculateTime()
 }
 
 
+// coordinates - x,y,z coordinates to check
+// returns x,y,z and clicked object. Null if no results found
+function checkCollisionWithObjects(coordinates)
+{
+	//////////////// check if click collides with any object ////////////////
+		
+	//////// check for enemy ////////
+	for(var i in enemy)
+	{
+		if(
+		(enemy[i].position[x]-enemy[i].collisionBox[x]/2) < coordinates[x] &&
+		(enemy[i].position[x]+enemy[i].collisionBox[x]/2) > coordinates[x] &&
+		(enemy[i].position[y]-enemy[i].collisionBox[y]/2) < coordinates[y] &&
+		(enemy[i].position[y]+enemy[i].collisionBox[y]/2) > coordinates[y] &&
+		(enemy[i].position[z]-enemy[i].collisionBox[z]/2) < coordinates[z] &&
+		(enemy[i].position[z]+enemy[i].collisionBox[z]/2) > coordinates[z]
+		)
+		{
+			return [enemy[i].position[x], enemy[i].position[y], enemy[i].position[z], enemy[i]];
+		}
+	}
+	
+	//////// check for pickable items ////////
+	
+	//////// check for world objects ////////
+	
+	
+	
+	return null;
+}

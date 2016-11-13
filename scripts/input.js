@@ -97,38 +97,18 @@ function handleMouseClick(event) {
 		currentPos[y] += final_vector[y];
 		currentPos[z] += final_vector[z];
 
-		//////////////// check if click collides with any object ////////////////
 		
-		//////// check for enemy ////////
-		for(var i in enemy)
+		var clickedObject = checkCollisionWithObjects(currentPos);
+		if(clickedObject != null)
 		{
-			if(
-			(enemy[i].position[x]-enemy[i].collisionBox[x]/2) < currentPos[x] &&
-			(enemy[i].position[x]+enemy[i].collisionBox[x]/2) > currentPos[x] &&
-			(enemy[i].position[y]-enemy[i].collisionBox[y]/2) < currentPos[y] &&
-			(enemy[i].position[y]+enemy[i].collisionBox[y]/2) > currentPos[y] &&
-			(enemy[i].position[z]-enemy[i].collisionBox[z]/2) < currentPos[z] &&
-			(enemy[i].position[z]+enemy[i].collisionBox[z]/2) > currentPos[z]
-			)
-			{
-				currentlyPressedEntity = enemy[i];
-				//console.log(currentPos[x] + " qwe " + currentPos[y] + " qwe " + currentPos[z]);
-				console.log("Clicked entity " + enemy[i].name);
-				
-				currentPos[x] = enemy[i].position[x];
-				currentPos[y] = enemy[i].position[y];
-				currentPos[z] = enemy[i].position[z];
-				
-				//console.log(enemy.offset);
-				break;
-			}
+			currentPos[x] = clickedObject[x];
+			currentPos[y] = clickedObject[y];
+			currentPos[z] = clickedObject[z];
+			currentlyPressedEntity = clickedObject[3];
+			console.log("Clicked entity " + currentlyPressedEntity.name);
+			
+			break;
 		}
-		
-		//////// check for pickable items ////////
-		
-		//////// check for world objects ////////
-		
-		
 		
 		
 		count++;
