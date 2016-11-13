@@ -91,11 +91,13 @@ function start() {
 	enemy = [];
 	enemy.push(new Entity());
 	enemy[enemy.length-1].load("./assets/buca.obj");
-	enemy[enemy.length-1].name = "Evil Pumpkin";
+	enemy[enemy.length-1].name = "Evil Pumpkin 1";
 	enemy[enemy.length-1].position[x] -= 5;
+	//enemy[enemy.length-1].position[z] -= 5;
+	
 	enemy.push(new Entity());
 	enemy[enemy.length-1].load("./assets/buca.obj");
-	enemy[enemy.length-1].name = "Evil Pumpkin";
+	enemy[enemy.length-1].name = "Evil Pumpkin 2";
 	enemy[enemy.length-1].position[z] += 5;
 	
     // Set up to draw the scene periodically.

@@ -187,6 +187,16 @@ function calculateTime()
 }
 
 
+
+function checkCollisionBetweenTwoObjects(object1, object2)
+{
+	/*
+	object.position
+	object.collisionBox
+	*/
+}
+
+
 // coordinates - x,y,z coordinates to check
 // returns x,y,z and clicked object. Null if no results found
 function checkCollisionWithObjects(coordinates)
@@ -196,16 +206,17 @@ function checkCollisionWithObjects(coordinates)
 	//////// check for enemy ////////
 	for(var i in enemy)
 	{
+		//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
 		if(
-		(enemy[i].position[x]-enemy[i].collisionBox[x]/2) < coordinates[x] &&
+		(enemy[i].position[x]-enemy[i].collisionBox[x]/2) <= coordinates[x] &&
 		(enemy[i].position[x]+enemy[i].collisionBox[x]/2) > coordinates[x] &&
-		(enemy[i].position[y]-enemy[i].collisionBox[y]/2) < coordinates[y] &&
+		(enemy[i].position[y]-enemy[i].collisionBox[y]/2) <= coordinates[y] &&
 		(enemy[i].position[y]+enemy[i].collisionBox[y]/2) > coordinates[y] &&
-		(enemy[i].position[z]-enemy[i].collisionBox[z]/2) < coordinates[z] &&
+		(enemy[i].position[z]-enemy[i].collisionBox[z]/2) <= coordinates[z] &&
 		(enemy[i].position[z]+enemy[i].collisionBox[z]/2) > coordinates[z]
 		)
 		{
-			return [enemy[i].position[x], enemy[i].position[y], enemy[i].position[z], enemy[i]];
+			return enemy[i];
 		}
 	}
 	

@@ -100,10 +100,10 @@ function handleMouseClick(event) {
 		var clickedObject = checkCollisionWithObjects(currentPos);
 		if(clickedObject != null)
 		{
-			currentPos[x] = clickedObject[x];
-			currentPos[y] = clickedObject[y];
-			currentPos[z] = clickedObject[z];
-			currentlyPressedEntity = clickedObject[3];
+			currentPos[x] = clickedObject.position[x];
+			currentPos[y] = clickedObject.position[y];
+			currentPos[z] = clickedObject.position[z];
+			currentlyPressedEntity = clickedObject;
 			console.log("Clicked entity " + currentlyPressedEntity.name);
 			
 			break;

@@ -33,7 +33,7 @@ Entity.prototype.update = function() {
 	if(this.waypointMove == true) Entity.prototype.updateMovement.call(this);
 }
 
-Entity.prototype.updateMovement = function(){
+Entity.prototype.updateMovement = function() {
 	
 	this.direction[x] = this.destination[x] - this.position[x];
 	this.direction[y] = this.destination[y] - this.position[y];
@@ -57,6 +57,10 @@ Entity.prototype.updateMovement = function(){
 		var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
 		var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;
 		
+		// checks if we collide with other objects
+		var collision = checkCollisionWithObjects([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
+		if(collision!=null) return;
+		
 		// checks if we already passed our destination
 		if((this.direction[x]>=0 && this.position[x] + updateX > this.destination[x]) || 
 			(this.direction[x]<0 && this.position[x] + updateX < this.destination[x]))
@@ -68,15 +72,13 @@ Entity.prototype.updateMovement = function(){
 			this.position[x] += updateX;
 		}
 		
-		if((this.direction[y]>=0 && this.position[y] + updateY > this.destination[y]) || 
+		if((this.direction[y]>=0 && this.position[x] + updateX > this.destination[y]) || 
 			(this.direction[y]<0 && this.position[y] + updateY < this.destination[y]))
 		{
 			this.position[y]=this.destination[y];
 		}
 		else 
 		{
-			
-			
 			this.position[y] += updateY;
 		}
 		
