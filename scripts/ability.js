@@ -1,10 +1,11 @@
-function Ability(aname, acooldown, afuryreq) {
+function Ability(aname, acooldown, afuryreq, range) {
 	
 	this.abilityName = aname;
 	this.cooldown = acooldown;
 	this.timeReady = 0;
 	this.furyRequired = afuryreq;
 	this.ready = true;
+	this.range = range;
 }
 
 Ability.prototype.update = function() {
@@ -32,6 +33,9 @@ Ability.prototype.use = function(casterObject) {
 	this.ready = false;
 	this.timeReady = lastUpdateTime + this.cooldown;
 	casterObject.fury -= this.furyRequired;
+	
+	casterObject.waypointMove = false;
+	casterObject.waypoint.drawObject = false;
 	
 	return true;
 }

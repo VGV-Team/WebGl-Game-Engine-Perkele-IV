@@ -82,9 +82,6 @@ function draw(objectToDraw)
 		objectToDraw.vec4Color[3]
 	);
 
-	// Save the current matrix, then translate, rotate and scale before we draw.
-	
-
 	
 	//ZA IZOMETRIÈNO
 	//mat4.scale(mvMatrix, [50.0,1.0,50.0]);
@@ -215,7 +212,8 @@ function load(objectToLoad, objectURL)
 	request.send();
 
 	var handleLoad = function(data) {
-
+		
+		
 		// to calculate collision box
 		var minX = 9999;
 		var maxX = -9999;
@@ -253,13 +251,18 @@ function load(objectToLoad, objectURL)
 		
 		var vertexF = [];
 		var indexCount = 0;
+				
+		
 		for (var i in lines) {
 			var vals = lines[i].split(" ");
 			if (vals.length == 4 && vals[0] == "v") {
 				// It is a line describing a vertex; get X, Y and Z first
-				vertexPositions.push(parseFloat(vals[1]));
-				vertexPositions.push(parseFloat(vals[2]));
-				vertexPositions.push(parseFloat(vals[3]));		
+				//vertexPositions.push(parseFloat(vals[1]));
+				//vertexPositions.push(parseFloat(vals[2]));
+				//vertexPositions.push(parseFloat(vals[3]));	
+				vertexPositions[vertexPositions.length] = parseFloat(vals[1]);
+				vertexPositions[vertexPositions.length] = parseFloat(vals[2]);
+				vertexPositions[vertexPositions.length] = parseFloat(vals[3]);				
 				vertexCount += 1;
 
 				if(parseFloat(vals[1])<minX)
@@ -301,16 +304,12 @@ function load(objectToLoad, objectURL)
 				vertexNormalCoords.push(parseFloat(vals[3]));		
 				vertexNormalCount += 1;
 			} else if (vals.length == 4 && vals[0] == "f") {
-				
-				
 				var faces;
 				for (var i = 1; i <= 3; i++) {
-					
 					if(vals[i] in unpacked.cache){
 						unpacked.indexMatrix.push(unpacked.cache[vals[i]]);
 						continue;
 					}
-					
 					faces = vals[i].split("/");
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 0]);
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 1]);
@@ -394,12 +393,66 @@ function calculateTime()
 
 
 
-//////////////////////////////// NEW COLLISION DETECTION ////////////////////////////////
-// problem with rotation of box and then calculating collision
+function getRange(object1, object2)
+{
+	var dist = Math.sqrt(
+		(object1.position[x] - object2.position[x]) * (object1.position[x] - object2.position[x]) +
+		(object1.position[y] - object2.position[y]) * (object1.position[y] - object2.position[y]) +
+		(object1.position[z] - object2.position[z]) * (object1.position[z] - object2.position[z])
+	);
+	//console.log(dist);
+	return dist;
+}
 
+
+//////////////////////////////// NEW SIMPLE COLLISION DETECTION ////////////////////////////////
+function checkCollisionBetweenTwoObjectsSimple(object1, object2)
+{
+	
+	var range = getRange(object1, object2);
+	var dist1 = Math.min(object1.collisionBox[x], object1.collisionBox[z])/2;
+	var dist2 = Math.min(object2.collisionBox[x], object2.collisionBox[z])/2;
+	var coll = range - dist1 - dist2;
+	
+	console.log(object1.name + " " + object2.name + " " + range + " " + dist1 + " " + dist2 + " " + coll);
+	if(coll<0) return true;
+	else return false;
+}
+
+
+
+function checkCollisionBetweenAllObjects(object)
+{
+	//////////////// check if click collides with any object ////////////////
+		
+	//////// check for enemy ////////
+	for(var i in enemy)
+	{
+		//if(checkCollisionBetweenTwoObjects(object, enemy[i]))
+		if(checkCollisionBetweenTwoObjectsSimple(object, enemy[i]))
+		{
+			return enemy[i];
+		}
+	}
+	
+	//////// check for pickable items ////////
+	
+	//////// check for world objects ////////
+	
+	
+	return null;
+}
+
+
+
+
+//////////////////////////////// OLD COLLISION DETECTION 2 ////////////////////////////////
+// problem with rotation of box and then calculating collision
+//////////////// IMPLEMENT SEPERATING AXIS THEOREM TO MAKE THIS WORK ////////////////
 // Checks for collision between two objects
 function checkCollisionBetweenTwoObjects(object1, object2)
 {
+	if(!object1.calculateCollision || !object2.calculateCollision) return false;
 	var object1NewCollisionBox = null;
 	var object2NewCollisionBox = null;
 	var m = mat4.create();
@@ -502,32 +555,6 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	if(collisionDirection[x] == 1 && collisionDirection[y] == 1 && collisionDirection[z] == 1) return true;
 	return false;
 }
-
-function checkCollisionBetweenAllObjects(object)
-{
-	//////////////// check if click collides with any object ////////////////
-		
-	//////// check for enemy ////////
-	for(var i in enemy)
-	{
-		if(checkCollisionBetweenTwoObjects(object, enemy[i]))
-		{
-			return enemy[i];
-		}
-	}
-	
-	//////// check for pickable items ////////
-	
-	//////// check for world objects ////////
-	
-	
-	return null;
-}
-
-
-
-
-
 
 //////////////////////////////// OLD COLLISION DETECTION ////////////////////////////////
 // used only for vector collision - should NOT be used anymore

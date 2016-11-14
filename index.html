@@ -46,8 +46,10 @@
 		    varying vec3 vTransformedNormal;
 		    varying vec4 vPosition;
 			varying vec2 vTextureCoord;
+			
 		    uniform bool uUseLighting;	// lighting switch
 		    uniform bool uUseTextures;	// textre switch
+			
 		    uniform vec3 uAmbientColor;	// ambient color uniform
 		    uniform vec3 uPointLightingLocation;	// light direction uniform
 		    uniform vec3 uPointLightingColor;		// light color
@@ -102,11 +104,13 @@
 		    attribute vec3 aVertexPosition;
 		    attribute vec3 aVertexNormal;
 		    attribute vec2 aTextureCoord;
+			
 		    uniform mat4 uMVMatrix;	// model-view matrix
 		    uniform mat4 uPMatrix;	// projection matrix
 		    uniform mat3 uNMatrix;	// normal matrix
 			// variable for passing texture coordinates and lighting weights
 			// from vertex shader to fragment shader
+
 		    varying vec2 vTextureCoord;
 		    varying vec3 vTransformedNormal;
 		    varying vec4 vPosition;
@@ -151,6 +155,10 @@
 		
 		<div>
 		<h4>TODO:</h4>
+		implement items <br/>
+		implement enemy class <br/>
+		implement dead enemy deliting/collision ignoring <br/>
+		implement enemy attacking via range <br/>
 		implement meta data for classes <br/>
 		enemy evil pumpkin <br />
 		entity name, entity id <br />

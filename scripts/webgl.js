@@ -125,6 +125,7 @@ function initShaders() {
   // TO JE NEKI ZA TEKSTURE?
   shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
   shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, "uUseTextures");
+
   
   // BOOLEAN ZA UPORABO LIGHTINGA NA OBJEKTU
   shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
@@ -140,6 +141,7 @@ function initShaders() {
     // TEXTURE KOORDINATE
   shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
   gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+
 
 }
 

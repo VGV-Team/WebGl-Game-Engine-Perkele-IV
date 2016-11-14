@@ -1,5 +1,6 @@
 function gameLoop()
 {
+	//var t0 = performance.now();
 	
 	requestAnimationFrame(calculateTime);
 	
@@ -10,13 +11,20 @@ function gameLoop()
 	// updates all objects
 	
 	hero.update();
-	camera.update();
-	//updateEnemies();
+	for(var i in enemy) enemy[i].update();
 	
+	
+	camera.update();
+	
+
 	ui.update();
 	
 	// draws camera and all objects
     drawScene();
+	
+	//var t1 = performance.now();
+	//console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
+					
 
 }
 
@@ -86,23 +94,41 @@ function start() {
 	camera = new Camera();
 	
 	world = new World();
+	world.name = "World";
 	world.load("./assets/world_plane_new.obj");
 
 	hero = new Hero();
 	hero.name = "Hero";
+	hero.isPlayer = true;
+	hero.directionVelocity[x] = hero.directionVelocity[x]*1.2;
+	hero.directionVelocity[y] = hero.directionVelocity[y]*1.2;
+	hero.directionVelocity[z] = hero.directionVelocity[z]*1.2;
 	hero.load("./assets/ironman.obj");
 
 
 	enemy = [];
 
-	enemy.push(new Entity());
+
+	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/slasher.obj");
-	enemy[enemy.length-1].name = "Evil Pumpkin Master";
-	enemy[enemy.length-1].position[x] -= 5;	
-	enemy.push(new Entity());
+	enemy[enemy.length-1].name = "Slasher";
+	enemy[enemy.length-1].position[x] -= 10;
+	enemy[enemy.length-1].position[z] -= 0;	
+	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+	
+	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/feralGhoul.obj");
+	enemy[enemy.length-1].name = "Feral Ghoul";
+	enemy[enemy.length-1].position[x] -= 10;
+	enemy[enemy.length-1].position[z] -= 5;
+	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+	
+	enemy.push(new Hero());
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
 	enemy[enemy.length-1].name = "Evil Pumpkin Slave";
-	enemy[enemy.length-1].position[z] += 5;
+	enemy[enemy.length-1].position[x] -= 10;
+	enemy[enemy.length-1].position[z] -= 10;
+	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
 	
 	//HARDCODED
 	enemy[0].HP = 100;

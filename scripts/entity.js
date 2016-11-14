@@ -21,6 +21,10 @@ function Entity() {
 	
 
 	
+
+	
+
+	
 	this.vec4Color = [0.5, 0.5, 0.5, 1.0];
 	this.collisionBox = [0.0,0.0,0.0]; // width, height, depth
 	
