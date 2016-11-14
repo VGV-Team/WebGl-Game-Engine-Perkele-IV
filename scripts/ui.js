@@ -30,6 +30,7 @@ UI.prototype.update = function() {
 	// Update abilities bar
 	var abilities = hero.abilities;
 	var cd = Math.floor(((abilities["BasicAttack"].timeReady - lastUpdateTime) / abilities["BasicAttack"].cooldown) * 100);
+	if (cd < 0) cd = 0;
 	this.abilityBasicAttackCooldownBar.style.width = cd + "%";
 	
 }

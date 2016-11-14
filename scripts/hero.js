@@ -13,7 +13,7 @@ function Hero() {
 	
 	//abilities
 	this.abilities = [];
-	this.abilities["BasicAttack"] = new Ability("BasicAttack", 1500, 0);
+	this.abilities["BasicAttack"] = new Ability("BasicAttack", 500, 0);
 	this.abilities.length = 1;
 	
 	//temporary
