@@ -38,7 +38,7 @@ function drawScene() {
 	camera.draw();
 
 	////// OBJECT DRAWING
-	hero.draw();
+	 hero.draw();
 	
 	for(var i in enemy) enemy[i].draw();
 	
@@ -86,6 +86,7 @@ function start() {
 	camera = new Camera();
 	
 	world = new World();
+	world.name = "World";
 	world.load("./assets/world_plane_new.obj");
 
 	hero = new Hero();

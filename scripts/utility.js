@@ -76,7 +76,7 @@ function draw(objectToDraw)
 		gl.disableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 	} else {
 
-		console.log(objectToDraw.name + " using lighting!");
+		//console.log(objectToDraw.name + " using lighting!");
 		gl.uniform1i(shaderProgram.useLightingUniform, 1);
 		gl.uniform3f(
 		  shaderProgram.ambientColorUniform,
@@ -93,7 +93,7 @@ function draw(objectToDraw)
 		  camera.position[z]
 		);*/
 		//LIGHT ON HERO
-		console.log( hero.position[x] + " " + hero.position[y] + " " + hero.position[z]);
+		//console.log( hero.position[x] + " " + hero.position[y] + " " + hero.position[z]);
 
 		
 		gl.uniform3f(
@@ -164,7 +164,8 @@ function load(objectToLoad, objectURL)
 	request.send();
 
 	var handleLoad = function(data) {
-
+		
+		
 		// to calculate collision box
 		var minX = 9999;
 		var maxX = -9999;
@@ -202,13 +203,18 @@ function load(objectToLoad, objectURL)
 		
 		var vertexF = [];
 		var indexCount = 0;
+				
+		
 		for (var i in lines) {
 			var vals = lines[i].split(" ");
 			if (vals.length == 4 && vals[0] == "v") {
 				// It is a line describing a vertex; get X, Y and Z first
-				vertexPositions.push(parseFloat(vals[1]));
-				vertexPositions.push(parseFloat(vals[2]));
-				vertexPositions.push(parseFloat(vals[3]));		
+				//vertexPositions.push(parseFloat(vals[1]));
+				//vertexPositions.push(parseFloat(vals[2]));
+				//vertexPositions.push(parseFloat(vals[3]));	
+				vertexPositions[vertexPositions.length] = parseFloat(vals[1]);
+				vertexPositions[vertexPositions.length] = parseFloat(vals[2]);
+				vertexPositions[vertexPositions.length] = parseFloat(vals[3]);				
 				vertexCount += 1;
 
 				if(parseFloat(vals[1])<minX)
@@ -238,41 +244,53 @@ function load(objectToLoad, objectURL)
 					maxZ = parseFloat(vals[3]);
 				}
 			} else if (vals.length == 3 && vals[0] == "vt") {
-				vertexTextureCoords.push(parseFloat(vals[1]));
-				vertexTextureCoords.push(parseFloat(vals[2]));		
+				vertexTextureCoords[vertexTextureCoords.length] = parseFloat(vals[1]);
+				vertexTextureCoords[vertexTextureCoords.length] = parseFloat(vals[2]);		
 				vertexTextureCount += 1;	
 			} else if (vals.length == 4 && vals[0] == "vn") {
-				vertexNormalCoords.push(parseFloat(vals[1]));
-				vertexNormalCoords.push(parseFloat(vals[2]));
-				vertexNormalCoords.push(parseFloat(vals[3]));		
+				vertexNormalCoords[vertexNormalCoords.length] = parseFloat(vals[1]);
+				vertexNormalCoords[vertexNormalCoords.length] = parseFloat(vals[2]);
+				vertexNormalCoords[vertexNormalCoords.length] = parseFloat(vals[3]);		
 				vertexNormalCount += 1;
 			} else if (vals.length == 4 && vals[0] == "f") {
 				
 				
+				
+				
 				var faces;
 				for (var i = 1; i <= 3; i++) {
+					
+					
 					
 					if(vals[i] in unpacked.cache){
 						unpacked.indexMatrix.push(unpacked.cache[vals[i]]);
 						continue;
 					}
 					
+					
+					
 					faces = vals[i].split("/");
-					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 0]);
-					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 1]);
-					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 2]);
+					unpacked.vertexPositions[unpacked.vertexPositions.length] = vertexPositions[(faces[0] - 1) * 3 + 0];
+					unpacked.vertexPositions[unpacked.vertexPositions.length] = vertexPositions[(faces[0] - 1) * 3 + 1];
+					unpacked.vertexPositions[unpacked.vertexPositions.length] = vertexPositions[(faces[0] - 1) * 3 + 2];
 					
+					
+					//var t0 = performance.now();
 					if (vertexTextureCoords.length != 0) {
-						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 0]);
-						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 1]);
+						unpacked.vertexTextureCoords[unpacked.vertexTextureCoords.length] = vertexTextureCoords[(faces[1] - 1) * 2 + 0];
+						unpacked.vertexTextureCoords[unpacked.vertexTextureCoords.length] = vertexTextureCoords[(faces[1] - 1) * 2 + 1];
 					}
-					if (vertexNormalCoords != 0) {
-						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 0]);
-						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 1]);
-						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 2]);
+					if (vertexNormalCoords.length != 0) {
+						
+						unpacked.vertexNormalCoords[unpacked.vertexNormalCoords.length] = vertexNormalCoords[(faces[2] - 1) * 3 + 0];
+						unpacked.vertexNormalCoords[unpacked.vertexNormalCoords.length] = vertexNormalCoords[(faces[2] - 1) * 3 + 1];
+						unpacked.vertexNormalCoords[unpacked.vertexNormalCoords.length] = vertexNormalCoords[(faces[2] - 1) * 3 + 2];
 					}
+					//var t1 = performance.now();
+					//console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 					
-					unpacked.indexMatrix.push(unpacked.index);
+					
+					unpacked.indexMatrix[unpacked.indexMatrix.length] = unpacked.index;
 					unpacked.cache[vals[i]] = unpacked.index;
 					unpacked.index += 1;
 				}
@@ -281,6 +299,8 @@ function load(objectToLoad, objectURL)
 				vertexF.push(parseInt(vals[2]) - 1);
 				vertexF.push(parseInt(vals[3]) - 1);*/
 				//indexCount += 3;
+				
+				
 			}
 		}
 
@@ -328,6 +348,10 @@ function load(objectToLoad, objectURL)
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(unpacked.indexMatrix), gl.STATIC_DRAW);
 		objectToLoad.vertexIndexBuffer.itemSize = 1;
 		objectToLoad.vertexIndexBuffer.numItems = unpacked.indexMatrix.length;
+		
+		
+		
+		
 	}
 }
 
