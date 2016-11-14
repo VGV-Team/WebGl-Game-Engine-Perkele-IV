@@ -114,6 +114,33 @@ function initShaders() {
   
   //VARIABLE za TEMP COLOR
   shaderProgram.tempColor = gl.getUniformLocation(shaderProgram, "tempColor");
+
+  // ZA NORMALE
+  shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
+  gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+
+  // MATRIKA NORMAL - TO JE VBISTVU INVERZ MVMATRIKE V FUNKCIJI SETMATRIXUNIFORMS
+  shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
+  
+  // TO JE NEKI ZA TEKSTURE?
+  shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+  shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, "uUseTextures");
+  
+  // BOOLEAN ZA UPORABO LIGHTINGA NA OBJEKTU
+  shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
+  
+  // AMBIENT LIGHT
+  shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
+  
+  // POINT LIGHT POZICIJA
+  shaderProgram.pointLightingLocationUniform = gl.getUniformLocation(shaderProgram, "uPointLightingLocation");
+  // BARVA POINT LIGHTA
+  shaderProgram.pointLightingColorUniform = gl.getUniformLocation(shaderProgram, "uPointLightingColor");
+  
+    // TEXTURE KOORDINATE
+  shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+  gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+
 }
 
 //
@@ -124,4 +151,9 @@ function initShaders() {
 function setMatrixUniforms() {
   gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
   gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+
+  var normalMatrix = mat3.create();
+  mat4.toInverseMat3(mvMatrix, normalMatrix);
+  mat3.transpose(normalMatrix);
+  gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
 }

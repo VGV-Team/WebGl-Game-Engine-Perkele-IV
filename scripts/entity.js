@@ -12,7 +12,14 @@ function Entity() {
 	this.directionVelocity = [1.0, 1.0, 1.0];
 	
 	this.vertexPositionBuffer = null;
+	this.textureBufer = null;
+	this.normalBuffer = null;
 	this.vertexIndexBuffer = null;
+	this.textureFile = null;
+	
+
+	
+
 	
 	this.vec4Color = [0.5, 0.5, 0.5, 1.0];
 	this.collisionBox = [0.0,0.0,0.0]; // width, height, depth

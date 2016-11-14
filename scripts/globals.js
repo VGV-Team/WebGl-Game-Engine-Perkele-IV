@@ -19,6 +19,9 @@ var enemy;
 var ui;
 
 
+var textureArray = {};
+
+
 var lastUpdateTime = 0;
 var timeTillLastUpdate = 0;
 
