@@ -364,12 +364,66 @@ function calculateTime()
 
 
 
-//////////////////////////////// NEW COLLISION DETECTION ////////////////////////////////
-// problem with rotation of box and then calculating collision
+function getRange(object1, object2)
+{
+	var dist = Math.sqrt(
+		(object1.position[x] - object2.position[x]) * (object1.position[x] - object2.position[x]) +
+		(object1.position[y] - object2.position[y]) * (object1.position[y] - object2.position[y]) +
+		(object1.position[z] - object2.position[z]) * (object1.position[z] - object2.position[z])
+	);
+	//console.log(dist);
+	return dist;
+}
 
+
+//////////////////////////////// NEW SIMPLE COLLISION DETECTION ////////////////////////////////
+function checkCollisionBetweenTwoObjectsSimple(object1, object2)
+{
+	
+	var range = getRange(object1, object2);
+	var dist1 = Math.min(object1.collisionBox[x], object1.collisionBox[z])/2;
+	var dist2 = Math.min(object2.collisionBox[x], object2.collisionBox[z])/2;
+	var coll = range - dist1 - dist2;
+	
+	console.log(object1.name + " " + object2.name + " " + range + " " + dist1 + " " + dist2 + " " + coll);
+	if(coll<0) return true;
+	else return false;
+}
+
+
+
+function checkCollisionBetweenAllObjects(object)
+{
+	//////////////// check if click collides with any object ////////////////
+		
+	//////// check for enemy ////////
+	for(var i in enemy)
+	{
+		//if(checkCollisionBetweenTwoObjects(object, enemy[i]))
+		if(checkCollisionBetweenTwoObjectsSimple(object, enemy[i]))
+		{
+			return enemy[i];
+		}
+	}
+	
+	//////// check for pickable items ////////
+	
+	//////// check for world objects ////////
+	
+	
+	return null;
+}
+
+
+
+
+//////////////////////////////// OLD COLLISION DETECTION 2 ////////////////////////////////
+// problem with rotation of box and then calculating collision
+//////////////// IMPLEMENT SEPERATING AXIS THEOREM TO MAKE THIS WORK ////////////////
 // Checks for collision between two objects
 function checkCollisionBetweenTwoObjects(object1, object2)
 {
+	if(!object1.calculateCollision || !object2.calculateCollision) return false;
 	var object1NewCollisionBox = null;
 	var object2NewCollisionBox = null;
 	var m = mat4.create();
@@ -472,32 +526,6 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	if(collisionDirection[x] == 1 && collisionDirection[y] == 1 && collisionDirection[z] == 1) return true;
 	return false;
 }
-
-function checkCollisionBetweenAllObjects(object)
-{
-	//////////////// check if click collides with any object ////////////////
-		
-	//////// check for enemy ////////
-	for(var i in enemy)
-	{
-		if(checkCollisionBetweenTwoObjects(object, enemy[i]))
-		{
-			return enemy[i];
-		}
-	}
-	
-	//////// check for pickable items ////////
-	
-	//////// check for world objects ////////
-	
-	
-	return null;
-}
-
-
-
-
-
 
 //////////////////////////////// OLD COLLISION DETECTION ////////////////////////////////
 // used only for vector collision - should NOT be used anymore
