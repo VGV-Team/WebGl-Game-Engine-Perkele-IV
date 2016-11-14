@@ -86,21 +86,21 @@ function start() {
 	camera = new Camera();
 	
 	world = new World();
-	world.load("./assets/world_plane.obj");
+	world.load("./assets/world_plane_new.obj");
 
 	hero = new Hero();
 	hero.name = "Hero";
-	hero.load("./assets/heroNew.obj");
+	hero.load("./assets/heroNewer.obj");
 
 
 	enemy = [];
 
 	enemy.push(new Entity());
-	enemy[enemy.length-1].load("./assets/buca.obj");
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
 	enemy[enemy.length-1].name = "Evil Pumpkin Master";
 	enemy[enemy.length-1].position[x] -= 5;	
 	enemy.push(new Entity());
-	enemy[enemy.length-1].load("./assets/buca.obj");
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
 	enemy[enemy.length-1].name = "Evil Pumpkin Slave";
 	enemy[enemy.length-1].position[z] += 5;
 	

@@ -54,8 +54,77 @@ function draw(objectToDraw)
 	);
 
 	// Save the current matrix, then translate, rotate and scale before we draw.
-	mvPushMatrix();	
+	
 
+	
+	//ZA IZOMETRIÈNO
+	//mat4.scale(mvMatrix, [50.0,1.0,50.0]);
+	//mat4.rotate(mvMatrix, degToRad(rotationCube), [1, 1, 1]);
+
+	///////////////////////////////////////////////--------------------------------------------------------
+	
+	
+		// Draw the cube by binding the array buffer to the cube's vertices
+	// array, setting attributes, and pushing it to GL.
+	gl.bindBuffer(gl.ARRAY_BUFFER, objectToDraw.vertexPositionBuffer);
+	gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, objectToDraw.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+
+	// If object doesen't have a normal bufffer, we won't use lighting on it
+	if (objectToDraw.normalBuffer == null) {
+		gl.uniform1i(shaderProgram.useLightingUniform, 0);
+		gl.disableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+	} else {
+
+		console.log(objectToDraw.name + " using lighting!");
+		gl.uniform1i(shaderProgram.useLightingUniform, 1);
+		gl.uniform3f(
+		  shaderProgram.ambientColorUniform,
+		  0.0,
+		  0.0,
+		  0.0
+		);
+
+		//LIGHT ON CAMERA - NOT WORKING
+		/*gl.uniform3f(
+		  shaderProgram.pointLightingLocationUniform,
+		  camera.position[x],
+		  -camera.position[y],
+		  camera.position[z]
+		);*/
+		//LIGHT ON HERO
+		console.log( hero.position[x] + " " + hero.position[y] + " " + hero.position[z]);
+
+		
+		gl.uniform3f(
+		  shaderProgram.pointLightingLocationUniform,
+		  //hero.position[x],
+		  0.0,
+		  5.0,
+		  0.0
+		  //hero.position[z]
+		  
+		);
+
+		gl.uniform3f(
+		  shaderProgram.pointLightingColorUniform,
+		  0.5,
+		  0.5,
+		  0.5
+		);
+		
+		
+		// Set the normals attribute for the vertices.
+		gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+		gl.bindBuffer(gl.ARRAY_BUFFER, objectToDraw.normalBuffer);
+		gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, objectToDraw.normalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+		
+
+	}
+
+	
+	
+	mvPushMatrix();
 	mat4.translate(mvMatrix, objectToDraw.position);
 	mat4.translate(mvMatrix, objectToDraw.offset);
 
@@ -64,16 +133,8 @@ function draw(objectToDraw)
 	mat4.rotateZ(mvMatrix, degToRad(objectToDraw.rotation[2]));
 
 	mat4.scale(mvMatrix, objectToDraw.scale);
-
+	//---------------------------------------------------------------------------------------------------
 	
-	//ZA IZOMETRIÈNO
-	//mat4.scale(mvMatrix, [50.0,1.0,50.0]);
-	//mat4.rotate(mvMatrix, degToRad(rotationCube), [1, 1, 1]);
-
-	// Draw the cube by binding the array buffer to the cube's vertices
-	// array, setting attributes, and pushing it to GL.
-	gl.bindBuffer(gl.ARRAY_BUFFER, objectToDraw.vertexPositionBuffer);
-	gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, objectToDraw.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 	// Set the colors attribute for the vertices.
 	/*
@@ -115,9 +176,30 @@ function load(objectToLoad, objectURL)
 		
 
 		var lines = data.split("\n");
-		var vertexCount = 0;
+		
+		
 		var vertexPositions = [];
+		var vertexCount = 0;
 		var vertexTextureCoords = [];
+		var vertexTextureCount = 0;
+		var vertexNormalCoords = [];
+		var vertexNormalCount = 0;
+		
+		/*var vertexIndex = [];
+		var textureIndex = [];
+		var normalIndex = [];*/
+		
+		
+		var unpacked = {};
+		unpacked.vertexPositions = [];
+		unpacked.vertexTextureCoords = [];
+		unpacked.vertexNormalCoords = [];
+		unpacked.indexMatrix = [];
+		unpacked.index = 0;
+		unpacked.cache = {};
+		
+		console.log("LOADING " + objectToLoad.name);
+		
 		var vertexF = [];
 		var indexCount = 0;
 		for (var i in lines) {
@@ -129,8 +211,6 @@ function load(objectToLoad, objectURL)
 				vertexPositions.push(parseFloat(vals[3]));		
 				vertexCount += 1;
 
-				
-				
 				if(parseFloat(vals[1])<minX)
 				{
 					minX = parseFloat(vals[1]);
@@ -157,13 +237,50 @@ function load(objectToLoad, objectURL)
 				{
 					maxZ = parseFloat(vals[3]);
 				}
-			  
-			  
+			} else if (vals.length == 3 && vals[0] == "vt") {
+				vertexTextureCoords.push(parseFloat(vals[1]));
+				vertexTextureCoords.push(parseFloat(vals[2]));		
+				vertexTextureCount += 1;	
+			} else if (vals.length == 4 && vals[0] == "vn") {
+				vertexNormalCoords.push(parseFloat(vals[1]));
+				vertexNormalCoords.push(parseFloat(vals[2]));
+				vertexNormalCoords.push(parseFloat(vals[3]));		
+				vertexNormalCount += 1;
 			} else if (vals.length == 4 && vals[0] == "f") {
-				vertexF.push(parseInt(vals[1]) - 1);
+				
+				
+				var faces;
+				for (var i = 1; i <= 3; i++) {
+					
+					if(vals[i] in unpacked.cache){
+						unpacked.indexMatrix.push(unpacked.cache[vals[i]]);
+						continue;
+					}
+					
+					faces = vals[i].split("/");
+					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 0]);
+					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 1]);
+					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 2]);
+					
+					if (vertexTextureCoords.length != 0) {
+						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 0]);
+						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 1]);
+					}
+					if (vertexNormalCoords != 0) {
+						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 0]);
+						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 1]);
+						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 2]);
+					}
+					
+					unpacked.indexMatrix.push(unpacked.index);
+					unpacked.cache[vals[i]] = unpacked.index;
+					unpacked.index += 1;
+				}
+
+				/*vertexF.push(parseInt(vals[1]) - 1);
 				vertexF.push(parseInt(vals[2]) - 1);
-				vertexF.push(parseInt(vals[3]) - 1);
-				indexCount += 3;
+				vertexF.push(parseInt(vals[3]) - 1);*/
+				//indexCount += 3;
 			}
 		}
 
@@ -176,19 +293,41 @@ function load(objectToLoad, objectURL)
 		// calculate collision
 		objectToLoad.collisionBox = [maxX-minX, maxY-minY, maxZ-minZ];
 		
+		//console.log(textureIndex.length + " " + normalIndex.length);
 
+		//console.log(unpacked.vertexPositions);
+		
 		objectToLoad.vertexPositionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, objectToLoad.vertexPositionBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexPositions), gl.STATIC_DRAW);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexPositions), gl.STATIC_DRAW);
 		objectToLoad.vertexPositionBuffer.itemSize = 3;
-		objectToLoad.vertexPositionBuffer.numItems = vertexCount;
+		objectToLoad.vertexPositionBuffer.numItems = unpacked.vertexPositions.length;
+		
+		//Load normals
+		if (vertexNormalCoords.length != 0) {
+			objectToLoad.normalBuffer = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, objectToLoad.normalBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexNormalCoords), gl.STATIC_DRAW);
+			objectToLoad.normalBuffer.itemSize = 3;
+			objectToLoad.normalBuffer.numItems = unpacked.vertexNormalCoords.length;
+		}
+		
+		//Load textures
+		if (vertexTextureCoords.length != 0) {
+			objectToLoad.textureBuffer = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, objectToLoad.textureBuffer);
+			// Pass the texture coordinates into WebGL
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexTextureCoords), gl.STATIC_DRAW);
+			objectToLoad.textureBuffer.itemSize = 2;
+			objectToLoad.textureBuffer.numItems = unpacked.vertexTextureCoords;
+		}
 
 		// Now send the element array to GL
 		objectToLoad.vertexIndexBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objectToLoad.vertexIndexBuffer);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(vertexF), gl.STATIC_DRAW);
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(unpacked.indexMatrix), gl.STATIC_DRAW);
 		objectToLoad.vertexIndexBuffer.itemSize = 1;
-		objectToLoad.vertexIndexBuffer.numItems = indexCount;
+		objectToLoad.vertexIndexBuffer.numItems = unpacked.indexMatrix.length;
 	}
 }
 

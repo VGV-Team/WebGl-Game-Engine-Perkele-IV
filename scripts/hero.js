@@ -17,7 +17,7 @@ function Hero() {
 	this.abilities.length = 1;
 	
 	//temporary
-	this.vec4Color = [1.0, 0.0, 0.0, 1.0];
+	this.vec4Color = [0.5, 0.0, 0.0, 1.0];
 	
 	this.directionVelocity = [10.0, 10.0, 10.0];
 	

@@ -27,7 +27,7 @@
 		
 	    <!-- Fragment shader program -->
 	    <script id="shader-fs" type="x-shader/x-fragment">
-		    // set medium percision 
+		    /*// set medium percision 
 		    precision mediump float;
 			
 			uniform vec4 tempColor;
@@ -38,14 +38,50 @@
 		    void main(void) {
 	        	// Setting color of fragments to input color
 		        gl_FragColor = tempColor;//vec4(1.0,1.0,1.0,1.0);//vColor;
+		    }*/
+			
+			precision mediump float;
+    		// atributes for setting vertex position, normals and texture coordinates
+		    //varying vec2 vTextureCoord;
+		    varying vec3 vTransformedNormal;
+		    varying vec4 vPosition;
+		    uniform bool uUseLighting;	// lighting switch
+		    //uniform bool uUseTextures;	// textre switch
+		    uniform vec3 uAmbientColor;	// ambient color uniform
+		    uniform vec3 uPointLightingLocation;	// light direction uniform
+		    uniform vec3 uPointLightingColor;		// light color
+			// uniform attribute for setting 2D sampler
+		    uniform sampler2D uSampler;
+			
+			uniform vec4 tempColor;
+		    void main(void) {
+		        vec3 lightWeighting;
+		        if (!uUseLighting) {
+		            lightWeighting = vec3(1.0, 1.0, 1.0);
+		        } else {
+		        	// transform normals
+		            vec3 lightDirection = normalize(uPointLightingLocation - vPosition.xyz);
+		            // calculate weight for directional light
+		            float directionalLightWeighting = max(dot(normalize(vTransformedNormal), lightDirection), 0.0);
+		            // calculate lighting
+		            lightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
+		        }
+		        vec4 fragmentColor;
+		        //if (uUseTextures) {
+		        //    fragmentColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+		        //} else {
+		            fragmentColor = tempColor;//vec4(1.0, 1.0, 1.0, 1.0);
+		        //}
+		        gl_FragColor = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a);
 		    }
+			
 	    </script>
 
     
 	    <!-- Vertex shader program -->	    
 	    <script id="shader-vs" type="x-shader/x-vertex">
     		// atributes for setting vertex position and color
-		    attribute vec3 aVertexPosition;
+		    /*attribute vec3 aVertexPosition;
 		    attribute vec4 aVertexColor;
 
 		    uniform mat4 uMVMatrix;	// model-view matrix
@@ -58,6 +94,27 @@
 		    	// calculate the vertex position
 		        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
 		        //vColor = aVertexColor;
+		    }*/
+			
+			
+			// atributes for setting vertex position, normals and texture coordinates
+		    attribute vec3 aVertexPosition;
+		    attribute vec3 aVertexNormal;
+		    //attribute vec2 aTextureCoord;
+		    uniform mat4 uMVMatrix;	// model-view matrix
+		    uniform mat4 uPMatrix;	// projection matrix
+		    uniform mat3 uNMatrix;	// normal matrix
+			// variable for passing texture coordinates and lighting weights
+			// from vertex shader to fragment shader
+		    //varying vec2 vTextureCoord;
+		    varying vec3 vTransformedNormal;
+		    varying vec4 vPosition;
+		    void main(void) {
+		    	// calculate the vertex position
+		        vPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+		        gl_Position = uPMatrix * vPosition;
+		        //vTextureCoord = aTextureCoord;
+		        vTransformedNormal = uNMatrix * aVertexNormal;
 		    }
 	    </script>
 	</head>
