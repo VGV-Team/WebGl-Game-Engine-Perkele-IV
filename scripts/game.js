@@ -56,11 +56,6 @@ function drawScene() {
 	
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
 	//console.log(hero.HP);
-<<<<<<< HEAD
-	//world.normalBuffer = null;
-	//console.log(world.normalBuffer)
-=======
->>>>>>> origin/master
 	
 	world.draw();
 	
@@ -121,9 +116,8 @@ function start() {
 	hero.position[z] -= 5;
 	//hero.position[x] -= 10;
 	hero.load("./assets/ironman.obj");
-<<<<<<< HEAD
 
-=======
+	
 	// Fury decay
 	// TODO: better location
 	setInterval(function() {
@@ -131,9 +125,7 @@ function start() {
 		if (hero.fury < 0) hero.fury = 0;
 	}, 1000);
 	
-	
-	
->>>>>>> origin/master
+
 	
 	enemy = [];
 
