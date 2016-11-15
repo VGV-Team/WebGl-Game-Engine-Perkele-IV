@@ -7,13 +7,14 @@ function Hero() {
 	this.HPRegen = 1;
 	this.strength = 10;
 	this.fury = 0;
-	this.furyDecay = 1; //1 per sec
+	this.maxFury = 100;
+	this.furyDecay = 3; //1 per sec
 	this.criticalChance = 5; //0-100%
 	this.discovery = 5; //% chance of epic drop
 	
 	//abilities
 	this.abilities = [];
-	this.abilities["BasicAttack"] = new Ability("BasicAttack", 500, 0, 1);
+	this.abilities["BasicAttack"] = new Ability("BasicAttack", 500, -10, 1);
 	this.abilities.length = 1;
 	
 	//temporary
@@ -33,9 +34,12 @@ function Hero() {
 	this.viewRange = 10;
 	this.target = null;
 	
+	// Temporarily filled with items
+	this.inventory = [];
+	this.equippedWeapon = null;
+	
 }
 Hero.prototype = Object.create(Entity.prototype);
-
 
 Hero.prototype.load = function(objectLocation) {
 	Entity.prototype.load.call(this, objectLocation);
@@ -45,14 +49,55 @@ Hero.prototype.load = function(objectLocation) {
 	Entity.prototype.load.call(this.waypoint, "./assets/mouse_click_waypoint.obj");
 	this.waypoint.vec4Color = [1.0,0.25,0.25,1.0];
 	this.waypoint.drawObject = false;
+
+	this.inventory.push({
+		itemName: "SHOVEL",
+		attack: 1,
+		criticalChance: 0,
+		rarity: "COMMON"
+	});
+	this.inventory.push({
+		itemName: "GUARD SWORD",
+		attack: 5,
+		criticalChance: 2,
+		rarity: "RARE"
+	});
+	this.inventory.push({
+		itemName: "SWORD OF PALADINS",
+		attack: 15,
+		criticalChance: 5,
+		rarity: "LEGENDARY"
+	});
+	this.inventory.push({
+		itemName: "BANISHER OF DEMONS",
+		attack: 25,
+		criticalChance: 10,
+		rarity: "EPIC"
+	});
+
+	this.changeEquippedWeapon(0);
+
+	
 };
 
+Hero.prototype.changeEquippedWeapon = function (itemIndex) {
+	if (this.equippedWeapon) {
+		this.strength -= this.equippedWeapon.attack;
+		this.criticalChance -= this.equippedWeapon.criticalChance;
+	}
+	this.equippedWeapon = this.inventory[itemIndex];
+	this.strength += this.equippedWeapon.attack;
+	this.criticalChance += this.equippedWeapon.criticalChance;
+	ui.updateWeaponDescription();
+	ui.updateInventoryItemList();
+}
 
 Hero.prototype.draw = function() {
 	this.waypoint.draw();
 	Entity.prototype.draw.call(this);
 	
 }
+
 
 Hero.prototype.updatePlayer = function()
 {

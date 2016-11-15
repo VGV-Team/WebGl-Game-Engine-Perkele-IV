@@ -56,8 +56,11 @@ function drawScene() {
 	
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
 	//console.log(hero.HP);
+<<<<<<< HEAD
 	//world.normalBuffer = null;
 	//console.log(world.normalBuffer)
+=======
+>>>>>>> origin/master
 	
 	world.draw();
 	
@@ -101,6 +104,8 @@ function start() {
 	
 	camera = new Camera();
 	
+	ui = new UI();
+	
 	world = new World();
 	world.name = "World";
 	world.load("./assets/world_plane_new.obj");
@@ -116,7 +121,19 @@ function start() {
 	hero.position[z] -= 5;
 	//hero.position[x] -= 10;
 	hero.load("./assets/ironman.obj");
+<<<<<<< HEAD
 
+=======
+	// Fury decay
+	// TODO: better location
+	setInterval(function() {
+		hero.fury -= hero.furyDecay;
+		if (hero.fury < 0) hero.fury = 0;
+	}, 1000);
+	
+	
+	
+>>>>>>> origin/master
 	
 	enemy = [];
 
@@ -154,7 +171,8 @@ function start() {
 	//enemy[1].maxHP = 100;
 
 	
-	ui = new UI();
+	
+	ui.updateInventoryItemList();
 	
 	// Set up to draw the scene periodically.
 	setInterval(gameLoop, 15);

@@ -6,6 +6,11 @@
 function handleKeyDown(event) {
   // storing the pressed state for individual key
   currentlyPressedKeys[event.keyCode] = true;
+  
+  // Drugace se vsak frame odpre/zapre
+  if (event.keyCode == 73) {
+	  ui.toggleInventory();
+  }
 }
 
 function handleKeyUp(event) {
@@ -176,8 +181,6 @@ function handleKeys() {
 	else {
 		camera.direction[y] = 0;
 	}
-  
-  
   
   
   
