@@ -43,7 +43,16 @@ Entity.prototype.draw = function() {
 
 Entity.prototype.update = function() {
 	
-	if(this.waypointMove == true) this.updateMovement();
+	if(this.waypointMove == true) 
+	{
+		this.direction[x] = this.destination[x] - this.position[x];
+		this.direction[y] = this.destination[y] - this.position[y];
+		this.direction[z] = this.destination[z] - this.position[z];
+	
+		this.updateMovement();
+		
+	}
+	
 }
 
 
@@ -52,11 +61,7 @@ Entity.prototype.update = function() {
 
 Entity.prototype.updateMovement = function() {
 	
-	this.direction[x] = this.destination[x] - this.position[x];
-	this.direction[y] = this.destination[y] - this.position[y];
-	this.direction[z] = this.destination[z] - this.position[z];
-	
-	
+	//console.log("s: " + this.direction[x] + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
 	var d = Math.sqrt(this.direction[x]*this.direction[x]+this.direction[y]*this.direction[y]+this.direction[z]*this.direction[z]);
 	
 	// checks if we already reached our destination
@@ -80,30 +85,6 @@ Entity.prototype.updateMovement = function() {
 		var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;
 		
 		
-		
-		
-		// checks if we collide with other objects
-		
-		//// OLD COLLISION DETECTION
-		//var collision = checkCollisionWithObject([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
-		//if(collision!=null) return;
-		
-		//// NEW COLLISION DETECTION
-		// we need to fo fake update, calculate and then revert changes
-		this.position[x] += updateX;
-		this.position[y] += updateY;
-		this.position[z] += updateZ;
-		var collision = checkCollisionBetweenAllObjects(this);
-		this.position[x] -= updateX;
-		this.position[y] -= updateY;
-		this.position[z] -= updateZ;
-		if(collision!=null) {
-			this.waypoint.drawObject = false;
-			this.waypointMove = false;
-			return; // no move if we collide
-		}
-		
-		
 		// rotation towards waypoint
 		/*
 		if(this.direction[x] >= 0 && this.direction[z] >= 0 ||
@@ -115,6 +96,189 @@ Entity.prototype.updateMovement = function() {
 		*/
 		if(this.direction[z] >= 0) this.rotation[y] = radToDeg(Math.asin(this.direction[x]));
 		else this.rotation[y] = 180-radToDeg(Math.asin(this.direction[x]));
+		
+		
+		
+		
+		// checks if we collide with other objects
+		
+		//// OLD COLLISION DETECTION
+		//var collision = checkCollisionWithObject([this.position[x] + updateX, this.position[y] + updateY, this.position[z] + updateZ]);
+		//if(collision!=null) return;
+		
+		//// NEW COLLISION DETECTION
+		// we need to fo fake update, calculate and then revert changes
+	
+		this.position[x] += updateX;
+		this.position[y] += updateY;
+		this.position[z] += updateZ;
+		var collision = checkCollisionBetweenAllObjects(this);
+		this.position[x] -= updateX;
+		this.position[y] -= updateY;
+		this.position[z] -= updateZ;
+		//console.log("sp: " + this.direction[x] + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
+	
+		if(collision!=null) {
+			
+			// try 90% in way of collision
+			var dir = getDirectionBetweenVectors(this.position, collision.position);
+			
+			
+			console.log(getVectorAngle(this.direction,dir) + " " + dir[x] + " " + this.direction[x] + " | " + dir[z] + " " + this.direction[z]);
+			
+			
+			
+			/*
+			var Qvec1 = [dir[x], 0, dir[z]];
+			var Qvec1dis = Qvec1[x]*Qvec1[x]+Qvec1[z]*Qvec1[z];
+			Qvec1[x] = Qvec1[x] / Qvec1dis;
+			Qvec1[z] = Qvec1[z] / Qvec1dis;
+			var Qvec2 = [dir.position[x], 0, dir.position[z]];
+			var Qvec2dis = Qvec2[x]*Qvec2[x]+Qvec2[z]*Qvec2[z];
+			Qvec2[x] = Qvec2[x] / Qvec2dis;
+			Qvec2[z] = Qvec2[z] / Qvec2dis;
+			*/
+			
+			//console.log(getVectorAngle(hero.position, enemy[0].position));
+			
+			/*
+			if(this.direction[x]<=0 &&
+				this.direction[z]<=0 &&
+				
+				dir[x] <= this.direction[x] && 
+				dir[z] >= this.direction[z] && 
+				collision.position[x]<=this.position[x] &&
+				collision.position[z]<=this.position[z]
+				) // bottom-right -> top-right
+			{
+				
+				this.direction[x] = -dir[z];
+				this.direction[z] = dir[x];
+			}
+			else if(this.direction[x]<=0 &&
+				this.direction[z]<=0 &&
+				dir[x] >= this.direction[x] &&  
+				dir[z] <= this.direction[z] &&
+				collision.position[x]<=this.position[x] &&
+				collision.position[z]<=this.position[z]) // bottom-right -> bottom-left
+			{
+				this.direction[x] = dir[z];
+				this.direction[z] = -dir[x];
+			}
+			
+			else if(this.direction[x]<=0 &&
+				this.direction[z]<=0 &&
+				dir[x] <= this.direction[x] && 
+				dir[z] >= this.direction[z] &&
+				collision.position[x]<=this.position[x] &&
+				collision.position[z]>this.position[z]) // bottom-right -> top-right past
+			{
+				this.direction[x] = -dir[z];
+				this.direction[z] = dir[x];
+			}
+			else if(this.direction[x]<=0 &&
+				this.direction[z]<=0 &&
+				dir[x] >= this.direction[x] && 
+				dir[z] <= this.direction[z] &&
+				collision.position[x]>this.position[x] &&
+				collision.position[z]<=this.position[z]) // bottom-right -> bottom-left past
+			{
+				this.direction[x] = dir[z];
+				this.direction[z] = -dir[x];
+			}
+			*/
+			
+			
+			
+			/*
+			if(this.direction[x]>=0 &&
+				this.direction[z]>=0 &&
+				
+				dir[x] >= this.direction[x] && 
+				dir[z] <= this.direction[z] && 
+				collision.position[x]>=this.position[x] &&
+				collision.position[z]>=this.position[z]
+				) // bottom-right -> top-right
+			{
+				
+				//this.direction[x] = -dir[z];
+				//this.direction[z] = dir[x];
+			}
+			if(this.direction[x]>=0 &&
+				this.direction[z]>=0 &&
+				dir[x] <= this.direction[x] &&  
+				dir[z] <= this.direction[z] &&
+				collision.position[x]>=this.position[x] &&
+				collision.position[z]>=this.position[z]) // bottom-right -> bottom-left
+			{
+				//this.direction[x] = dir[z];
+				//this.direction[z] = -dir[x];
+			}
+			
+			if(this.direction[x]>=0 &&
+				this.direction[z]>=0 &&
+				dir[x] >= this.direction[x] && 
+				dir[z] <= this.direction[z] &&
+				collision.position[x]>=this.position[x] &&
+				collision.position[z]<=this.position[z]) // bottom-right -> top-right past
+			{
+				//this.direction[x] = -dir[z];
+				//this.direction[z] = dir[x];
+			}
+			if(this.direction[x]>=0 &&
+				this.direction[z]>=0 &&
+				dir[x] >= this.direction[x] && 
+				dir[z] <= this.direction[z] &&
+				collision.position[x]>this.position[x] &&
+				collision.position[z]<=this.position[z]) // bottom-right -> bottom-left past
+			{
+				//this.direction[x] = dir[z];
+				//this.direction[z] = -dir[x];
+			}
+			*/
+			
+			
+			
+			
+			
+			
+			/*
+			console.log(
+				this.direction[x] + " " + 
+				this.direction[z] + " " + 
+				this.position[x] + " " + 
+				this.position[z]
+			);
+			*/
+			
+			var updateX = this.direction[x]*this.directionVelocity[x]*timeTillLastUpdate;
+			var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
+			var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;	
+			this.position[x] += updateX;
+			this.position[y] += updateY;
+			this.position[z] += updateZ;
+			var collision1 = checkCollisionBetweenAllObjects(this);
+			if(collision1!=null)
+			{
+				this.position[x] -= updateX;
+				this.position[y] -= updateY;
+				this.position[z] -= updateZ;
+				return;
+			}
+			else return;
+			
+			
+			
+			
+			//this.updateMovement();
+			
+			this.waypoint.drawObject = false;
+			this.waypointMove = false;
+			return; // no move if we collide
+		}
+		
+		
+		
 		
 		//console.log(this.direction[x] + " " + this.direction[y] + " " + this.direction[z] + " " + this.destination[y] + " " + this.position[y]);
 		//console.log(this.destination[y]);
@@ -132,7 +296,7 @@ Entity.prototype.updateMovement = function() {
 			this.position[x] += updateX;
 		}
 		
-		if((this.direction[y]>=0 && this.position[x] + updateX > this.destination[y]) || 
+		if((this.direction[y]>=0 && this.position[y] + updateY > this.destination[y]) || 
 			(this.direction[y]<0 && this.position[y] + updateY < this.destination[y]))
 		{
 			reached[y] = 1;
@@ -153,12 +317,13 @@ Entity.prototype.updateMovement = function() {
 		{
 			this.position[z] += updateZ;
 		}
-		
+		//console.log("qq: " + reached + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
+	
 		if(reached[x]==1 && reached[y]==1 && reached[z]==1)
 		{
 			//console.log("qwe");
-			this.waypointMove=false;
-			this.waypoint.drawObject = false;
+			//this.waypointMove=false;
+			//this.waypoint.drawObject = false;
 		}
 	}
 }

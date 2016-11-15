@@ -20,7 +20,7 @@ function Hero() {
 	this.vec4Color = [1.0, 1.0, 1.0, 1.0];
 
 	
-	this.directionVelocity = [10.0, 10.0, 10.0];
+	this.directionVelocity = [2.0, 2.0, 2.0];
 	
 	// movement waypoint object
 	this.waypoint;
@@ -104,6 +104,8 @@ Hero.prototype.updateAI = function()
 Hero.prototype.update = function()
 {
 	//if(!this.isPlayer) return;
+	
+	
 	if(!this.isActive) return;
 	
 	

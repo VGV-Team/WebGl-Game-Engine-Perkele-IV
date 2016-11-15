@@ -1,6 +1,7 @@
 function gameLoop()
 {
 	//var t0 = performance.now();
+	//console.log(textureBuffer);
 	
 	requestAnimationFrame(calculateTime);
 	
@@ -15,16 +16,19 @@ function gameLoop()
 	
 	
 	camera.update();
-	
+	//console.log(getVectorAngle(hero.position, enemy[0].position));
 
 	ui.update();
 	
 	// draws camera and all objects
     drawScene();
 	
+	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + getDirectionBetweenVectors(hero.position, enemy[0].position));
+	
 	//var t1 = performance.now();
 	//console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
-					
+	
+	//console.log(hero.position[x] + " " + hero.position[z])
 
 }
 
@@ -51,7 +55,9 @@ function drawScene() {
 	for(var i in enemy) enemy[i].draw();
 	
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
-	console.log(hero.HP);
+	//console.log(hero.HP);
+	//world.normalBuffer = null;
+	//console.log(world.normalBuffer)
 	
 	world.draw();
 	
@@ -93,23 +99,25 @@ function start() {
 	//////////////// OBJECT LOADING AND INITIALIZING ////////////////
 	
 	
-	
 	camera = new Camera();
 	
 	world = new World();
 	world.name = "World";
 	world.load("./assets/world_plane_new.obj");
-
+	// world.normalBuffer = null; - not working because load is async
+	
 	hero = new Hero();
 	hero.name = "Hero";
 	hero.isPlayer = true;
 	hero.directionVelocity[x] = hero.directionVelocity[x]*1.2;
 	hero.directionVelocity[y] = hero.directionVelocity[y]*1.2;
 	hero.directionVelocity[z] = hero.directionVelocity[z]*1.2;
+	hero.position[x] -= 5;
+	hero.position[z] -= 5;
 	//hero.position[x] -= 10;
 	hero.load("./assets/ironman.obj");
 
-
+	
 	enemy = [];
 
 	/*
@@ -134,8 +142,8 @@ function start() {
 	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/bucaNew.obj");
 	enemy[enemy.length-1].name = "Evil Pumpkin Slave";
-	enemy[enemy.length-1].position[x] -= 10;
-	enemy[enemy.length-1].position[z] -= 10;
+	enemy[enemy.length-1].position[x] += 5;
+	enemy[enemy.length-1].position[z] += 5;
 	//enemy[enemy.length-1].rotation[y] = -90;
 	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
 	
@@ -148,7 +156,10 @@ function start() {
 	
 	ui = new UI();
 	
-    // Set up to draw the scene periodically.
+	// Set up to draw the scene periodically.
 	setInterval(gameLoop, 15);
+
+	
+	
   }
 }

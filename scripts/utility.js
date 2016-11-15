@@ -26,6 +26,41 @@ function radToDeg(radians) {
   return radians * 180 / Math.PI;
 }
 
+function getVectorAngle(vec1, vec2)
+{
+	/*
+	return Math.acos((vec1[x]*vec2[x]+vec1[y]*vec2[y]+vec1[z]*vec2[z]) / 
+		(
+			Math.sqrt(vec1[x]*vec1[x]+vec1[y]*vec1[y]+vec1[z]*vec1[z])+
+			Math.sqrt(vec2[x]*vec2[x]+vec2[y]*vec2[y]+vec2[z]*vec2[z])
+		)
+	)
+	*/
+	
+	
+	var Va = [];
+	Va[x] = vec1[x]/Math.sqrt(vec1[x]*vec1[x]+vec1[z]*vec1[z]);
+	Va[y] = 0;
+	Va[z] = vec1[z]/Math.sqrt(vec1[x]*vec1[x]+vec1[z]*vec1[z]);
+	
+	var Vb = [];
+	Vb[x] = vec2[x]/Math.sqrt(vec2[x]*vec2[x]+vec2[z]*vec2[z]);
+	Vb[y] = 0;
+	Vb[z] = vec2[z]/Math.sqrt(vec2[x]*vec2[x]+vec2[z]*vec2[z]);
+	
+	var angle = radToDeg(Math.acos((Va[x]*Vb[x]+Va[z]*Vb[z])));
+	var cross = [];
+	cross[x] = Va[y]*Vb[z]-Va[z]*Vb[y];
+	cross[y] = Va[z]*Vb[x]+Va[x]*Vb[z];
+	cross[z] = Va[x]*Vb[y]+Va[y]*Vb[x];
+	
+	var Vn = [0,1,0];
+	
+	if((Vn[x]*cross[x] + Vn[y]*cross[y] + Vn[z]*cross[z])<0) angle -= angle;
+	console.log(cross[y]);
+	return angle;
+}
+
 //Utility function cuz vec4 doesen't work?
 function matrixVectorMultiply4(matrix, vector) {
 	var result = [];
@@ -37,6 +72,13 @@ function matrixVectorMultiply4(matrix, vector) {
 		result[i] = sum;
 	}
 	return result;
+}
+
+function getDirectionBetweenVectors(pos1, pos2)
+{
+	var posX = pos2[x]-pos1[x];
+	var posZ = pos2[z]-pos1[z];
+	return [posX/Math.sqrt(posX*posX+posZ*posZ), 0, posZ/Math.sqrt(posX*posX+posZ*posZ)];
 }
 
 
@@ -70,6 +112,9 @@ function handleTextureLoaded(texture) {
 }
 
 // logic utility
+
+
+
 
 function draw(objectToDraw)
 {
@@ -200,6 +245,210 @@ function draw(objectToDraw)
 	mvPopMatrix();
 }
 
+
+//// TEST LOAD TO LOAD TEXTURES ONLY ONCE ////
+/*
+function load(objectToLoad, objectURL)
+{
+	objectToLoad.vertexPositionBuffer = vertexPositionBuffer[objectURL];
+	objectToLoad.textureBufer = textureBufer[objectURL];
+	objectToLoad.normalBuffer = normalBuffer[objectURL];
+	objectToLoad.vertexIndexBuffer = vertexIndexBuffer[objectURL];
+	objectToLoad.textureFile = textureFile[objectURL];
+	objectToLoad.collisionBox = objectCollisionBox[objectURL];
+	objectToLoad.offset = objectOffset[objectURL];
+}
+*/
+/*
+function loadModels(objectURL)
+{
+	var request = new XMLHttpRequest();
+	request.open("GET", objectURL);
+	request.onreadystatechange = function () {
+		if (request.readyState == 4) {
+			handleLoad(request.responseText);
+		}
+	}
+	request.send();
+
+	var handleLoad = function(data) {
+		
+		
+		// to calculate collision box
+		var minX = 9999;
+		var maxX = -9999;
+		var minY = 9999;
+		var maxY = -9999;
+		var minZ = 9999;
+		var maxZ = -9999;
+		
+		
+
+		var lines = data.split("\n");
+		
+		
+		var vertexPositions = [];
+		var vertexCount = 0;
+		var vertexTextureCoords = [];
+		var vertexTextureCount = 0;
+		var vertexNormalCoords = [];
+		var vertexNormalCount = 0;
+		
+		//var vertexIndex = [];
+		//var textureIndex = [];
+		//var normalIndex = [];
+		
+		
+		var unpacked = {};
+		unpacked.vertexPositions = [];
+		unpacked.vertexTextureCoords = [];
+		unpacked.vertexNormalCoords = [];
+		unpacked.indexMatrix = [];
+		unpacked.index = 0;
+		unpacked.cache = {};
+		
+		console.log("LOADING " + objectURL);
+		
+		var vertexF = [];
+		var indexCount = 0;
+				
+		
+		for (var i in lines) {
+			var vals = lines[i].split(" ");
+			if (vals.length == 4 && vals[0] == "v") {
+				// It is a line describing a vertex; get X, Y and Z first
+				//vertexPositions.push(parseFloat(vals[1]));
+				//vertexPositions.push(parseFloat(vals[2]));
+				//vertexPositions.push(parseFloat(vals[3]));	
+				vertexPositions[vertexPositions.length] = parseFloat(vals[1]);
+				vertexPositions[vertexPositions.length] = parseFloat(vals[2]);
+				vertexPositions[vertexPositions.length] = parseFloat(vals[3]);				
+				vertexCount += 1;
+
+				if(parseFloat(vals[1])<minX)
+				{
+					minX = parseFloat(vals[1]);
+				}
+				else if(parseFloat(vals[1])>maxX)
+				{
+					maxX = parseFloat(vals[1]);
+				}
+				if(parseFloat(vals[2])<minY)
+				{
+					minY = parseFloat(vals[2]);
+				}
+				else if(parseFloat(vals[2])>maxY)
+				{
+					maxY = parseFloat(vals[2]);
+					
+					
+				}
+				if(parseFloat(vals[3])<minZ)
+				{
+					minZ = parseFloat(vals[3]);
+				}
+				else if(parseFloat(vals[3])>maxZ)
+				{
+					maxZ = parseFloat(vals[3]);
+				}
+			} else if (vals.length == 2 && vals[0] == "usemtl") {
+				textureFile[objectURL] = vals[1];
+				initTexture(vals[1]);
+			} else if (vals.length == 3 && vals[0] == "vt") {
+				vertexTextureCoords.push(parseFloat(vals[1]));
+				vertexTextureCoords.push(parseFloat(vals[2]));		
+				vertexTextureCount += 1;	
+			} else if (vals.length == 4 && vals[0] == "vn") {
+				vertexNormalCoords.push(parseFloat(vals[1]));
+				vertexNormalCoords.push(parseFloat(vals[2]));
+				vertexNormalCoords.push(parseFloat(vals[3]));		
+				vertexNormalCount += 1;
+			} else if (vals.length == 4 && vals[0] == "f") {
+				var faces;
+				for (var i = 1; i <= 3; i++) {
+					if(vals[i] in unpacked.cache){
+						unpacked.indexMatrix.push(unpacked.cache[vals[i]]);
+						continue;
+					}
+					faces = vals[i].split("/");
+					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 0]);
+					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 1]);
+					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 2]);
+					
+					if (vertexTextureCoords.length != 0) {
+						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 0]);
+						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 1]);
+					}
+					if (vertexNormalCoords.length != 0) {
+						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 0]);
+						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 1]);
+						unpacked.vertexNormalCoords.push(vertexNormalCoords[(faces[2] - 1) * 3 + 2]);
+					}
+					
+					unpacked.indexMatrix.push(unpacked.index);
+					unpacked.cache[vals[i]] = unpacked.index;
+					unpacked.index += 1;
+				}
+
+				//vertexF.push(parseInt(vals[1]) - 1);
+				//vertexF.push(parseInt(vals[2]) - 1);
+				//vertexF.push(parseInt(vals[3]) - 1);
+				//indexCount += 3;
+			}
+		}
+
+		// align object to world
+		objectOffset[objectURL] = [];
+		objectOffset[objectURL][x] = 0;
+		objectOffset[objectURL][y] = -minY;
+		objectOffset[objectURL][z] = 0;
+		
+
+		// calculate collision
+		objectCollisionBox[objectURL] = [maxX-minX, maxY-minY, maxZ-minZ];
+		
+		//console.log(textureIndex.length + " " + normalIndex.length);
+
+		//console.log(unpacked.vertexPositions);
+		
+		vertexPositionBuffer[objectURL] = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer[objectURL]);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexPositions), gl.STATIC_DRAW);
+		vertexPositionBuffer[objectURL].itemSize = 3;
+		vertexPositionBuffer[objectURL].numItems = unpacked.vertexPositions.length;
+		
+		//Load normals
+		if (vertexNormalCoords.length != 0) {
+			normalBuffer[objectURL] = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer[objectURL]);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexNormalCoords), gl.STATIC_DRAW);
+			normalBuffer[objectURL].itemSize = 3;
+			normalBuffer[objectURL].numItems = unpacked.vertexNormalCoords.length;
+		}
+		
+		//Load textures
+		if (vertexTextureCoords.length != 0 && textureFile[objectURL] != null) {
+			textureBuffer[objectURL] = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[objectURL]);
+			// Pass the texture coordinates into WebGL
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexTextureCoords), gl.STATIC_DRAW);
+			textureBuffer[objectURL].itemSize = 2;
+			textureBuffer[objectURL].numItems = unpacked.vertexTextureCoords;
+		}
+		
+console.log(textureBuffer[objectURL]);
+
+		// Now send the element array to GL
+		vertexIndexBuffer[objectURL] = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer[objectURL]);
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(unpacked.indexMatrix), gl.STATIC_DRAW);
+		vertexIndexBuffer[objectURL].itemSize = 1;
+		vertexIndexBuffer[objectURL].numItems = unpacked.indexMatrix.length;
+	}
+}
+*/
+
+
 function load(objectToLoad, objectURL)
 {
 	var request = new XMLHttpRequest();
@@ -234,9 +483,9 @@ function load(objectToLoad, objectURL)
 		var vertexNormalCoords = [];
 		var vertexNormalCount = 0;
 		
-		/*var vertexIndex = [];
-		var textureIndex = [];
-		var normalIndex = [];*/
+		//var vertexIndex = [];
+		//var textureIndex = [];
+		//var normalIndex = [];
 		
 		
 		var unpacked = {};
@@ -330,9 +579,9 @@ function load(objectToLoad, objectURL)
 					unpacked.index += 1;
 				}
 
-				/*vertexF.push(parseInt(vals[1]) - 1);
-				vertexF.push(parseInt(vals[2]) - 1);
-				vertexF.push(parseInt(vals[3]) - 1);*/
+				//vertexF.push(parseInt(vals[1]) - 1);
+				//vertexF.push(parseInt(vals[2]) - 1);
+				//vertexF.push(parseInt(vals[3]) - 1);
 				//indexCount += 3;
 			}
 		}
@@ -383,7 +632,6 @@ function load(objectToLoad, objectURL)
 		objectToLoad.vertexIndexBuffer.numItems = unpacked.indexMatrix.length;
 	}
 }
-
 
 function calculateTime()
 {
@@ -458,6 +706,8 @@ function getObjectCollisionDistance(object1, object2)
 	//var dist3 = object1.collisionBox[y]/2 + object2.collisionBox[y]/2;
 	return (range - (dist1/2 + dist2/2));
 }
+
+
 
 
 function checkCollisionBetweenAllObjects(object)
