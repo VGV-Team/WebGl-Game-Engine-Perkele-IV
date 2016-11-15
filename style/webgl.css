@@ -94,27 +94,32 @@ td {
 	display:block;
 	z-index:1;
 	position:absolute;
-	height:30px;
+	height:160px;
 	width:100%;
-	bottom:5px;
-	left: 3px;
+	bottom:0px;
+	left: 0px;
 	background-color:transparent;
 }
 #abilityBar {
 	
 	/*display:none;*/
 	
-	height:100%;
-	background-color:transparent;
+
+	background-color:blue;
+	width:620px;
+	margin:0px auto;
+
 }
 
 .abilityBox {
 	float:left;
 	display:inline;
-	width:200px;
-	height:100%;
+	width:180px;
+	margin-left:20px;
+	height:50%;
 	background-color:white;
 	border:1px solid black;
+	margin-top:40px;
 }
 
 .abilityCooldown {
@@ -129,8 +134,133 @@ td {
 	
 	position:absolute;
 	font-weight:bold;
-	font-size:18px;
+	font-size:22px;
 	padding-top:3px;
 	color:skyblue;
-	margin-left:-40px;
+	margin-left:-50px;
+}
+
+/* CENTER BAR - INVENTORY */
+#inventoryBar {
+	display:none;
+	z-index:1;
+	position:absolute;
+	height:500px;
+	width:500px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top:80px;
+	background-color:transparent;
+	border:4px solid gold;
+	border-radius:10px;
+}
+#inventory {
+	
+	/*display:none;*/
+	
+	height:100%;
+	background-color:transparent;
+	background: rgba(243,226,199,1);
+background: -moz-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1) 47%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(243,226,199,1)), color-stop(47%, rgba(193,158,103,1)), color-stop(51%, rgba(182,141,76,1)), color-stop(100%, rgba(233,212,179,1)));
+background: -webkit-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1) 47%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%);
+background: -o-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1) 47%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%);
+background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1) 47%, rgba(182,141,76,1) 51%, rgba(233,212,179,1) 100%);
+}
+
+#itemList {
+	float:left;
+	width:50%;
+	height:100%;
+	background-color:transparent;
+}
+
+.inventoryItem:hover {
+	border-color:white !important;
+	cursor:pointer !important;
+}
+
+.inventoryItem {
+	border:3px solid black;
+	margin:20px;
+	height:50px;
+	background-color:purple;
+}
+
+.itemImg {
+	float:left;
+	width:50px;
+	height:50px;
+}
+
+.itemName {
+	margin-left:10px;
+	padding-top:4px;
+	float:left;
+	width:140px;
+	height:50px;
+}
+
+#itemDescriptionWrapper {
+	float:left;
+	width:50%;
+	height:100%;
+	background-color:transparent;
+	text-align:center;
+}
+
+.inventoryHeading {
+	font-weight:bold;
+	font-size:24;
+}
+
+#itemDescription {
+	margin:10px;
+	text-align:center;
+}
+
+#weaponRarity {
+	font-weight:bold;
+	font-size:18;
+	font-style:italic;
+}
+
+#selectedWeaponName {
+	line-height: 1.5em;
+    height: 3em; 
+}
+
+/* HEALTH AND FURY UI */
+#healthBox, #furyBox{
+	width:150px;
+	height:150px;
+	border:5px solid black;
+	background-color:transaprent;
+}
+#healthBox {
+	float:left;
+}
+#furyBox {
+	float:right;
+}
+
+#furyPercentage, #healthPercentage {
+	position:absolute;
+	width:150px;
+	bottom:6px;
+	max-height:150px;
+}
+
+#furyPercentage {
+	background-color:orange;
+	height:0%;
+	position:absolute;
+	
+}
+#healthPercentage {
+	background-color:red;
+	height:100%;
+	
 }
