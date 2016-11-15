@@ -46,7 +46,7 @@ function handleMouseClick(event) {
 	
 	var viewMatrix = mat4.create();
 	mat4.identity(viewMatrix);
-
+	
 	mat4.rotateX(viewMatrix, degToRad(-camera.rotation[x]));
 	mat4.rotateY(viewMatrix, degToRad(-camera.rotation[y]));
 	mat4.rotateZ(viewMatrix, degToRad(-camera.rotation[z]));
@@ -81,17 +81,24 @@ function handleMouseClick(event) {
 	
 	currentlyPressedEntity = null;
 	while (currentPos[y] > world.position[y]) {
-		currentPos[x] += final_vector[x];
-		currentPos[y] += final_vector[y];
-		currentPos[z] += final_vector[z];
-
+		currentPos[x] += final_vector[x]*0.5;
+		currentPos[y] += final_vector[y]*0.5;
+		currentPos[z] += final_vector[z]*0.5;
+		//console.log(currentPos[y] + " " + final_vector[y] + " " + (final_vector[y]*0.5))
 		// creates new temp class Entity as collision detection requires object
+		
 		var tempObjectMouse = new Entity();
-		tempObjectMouse.position = currentPos;
+		tempObjectMouse.position[x] = currentPos[x];
+		tempObjectMouse.position[y] = currentPos[y];
+		//tempObjectMouse.offset[y] = currentPos[y];
+		tempObjectMouse.position[z] = currentPos[z];
+		
 		var clickedObject = checkCollisionBetweenAllObjects(tempObjectMouse);
 		delete tempObjectMouse;
+		
 		//var clickedObject = checkCollisionWithObject(currentPos);
-		if(clickedObject != null)
+		//var clickedObject = rayTracingCheckCollision(currentPos);
+		if(clickedObject != null && clickedObject != hero)
 		{
 			currentPos[x] = clickedObject.position[x];
 			currentPos[y] = clickedObject.position[y];

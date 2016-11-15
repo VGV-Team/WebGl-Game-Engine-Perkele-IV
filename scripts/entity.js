@@ -31,6 +31,7 @@ function Entity() {
 	
 	this.drawObject = true;
 	this.calculateCollision = true;
+	this.isActive = true;
 }
 Entity.prototype.load = function(objectLocation) {
 	load(this, objectLocation);
@@ -42,8 +43,12 @@ Entity.prototype.draw = function() {
 
 Entity.prototype.update = function() {
 	
-	if(this.waypointMove == true) Entity.prototype.updateMovement.call(this);
+	if(this.waypointMove == true) this.updateMovement();
 }
+
+
+
+
 
 Entity.prototype.updateMovement = function() {
 	
@@ -62,7 +67,8 @@ Entity.prototype.updateMovement = function() {
 	else {
 		
 		
-		
+		//console.log(this.destination[y] + " " + this.position[y] + " " + d + " " + this.direction[x] + " " + this.direction[y] + " " + this.direction[z]);
+
 		
 		this.direction[x] = this.direction[x]/d;
 		this.direction[y] = this.direction[y]/d;
@@ -73,13 +79,7 @@ Entity.prototype.updateMovement = function() {
 		var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
 		var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;
 		
-		// rotation towards waypoint
-		if(this.direction[x] >= 0 && this.direction[z] >= 0 ||
-			this.direction[x] < 0 && this.direction[z] >= 0)
-			this.rotation[y] = radToDeg(Math.asin(this.direction[x]));
-		if(this.direction[x] < 0 && this.direction[z] < 0 ||
-			this.direction[x] >= 0 && this.direction[z] < 0)
-			this.rotation[y] = 180-radToDeg(Math.asin(this.direction[x]));
+		
 		
 		
 		// checks if we collide with other objects
@@ -102,12 +102,29 @@ Entity.prototype.updateMovement = function() {
 			this.waypointMove = false;
 			return; // no move if we collide
 		}
-
 		
+		
+		// rotation towards waypoint
+		/*
+		if(this.direction[x] >= 0 && this.direction[z] >= 0 ||
+			this.direction[x] < 0 && this.direction[z] >= 0)
+			this.rotation[y] = radToDeg(Math.asin(this.direction[x]));
+		if(this.direction[x] < 0 && this.direction[z] < 0 ||
+			this.direction[x] >= 0 && this.direction[z] < 0)
+			this.rotation[y] = 180-radToDeg(Math.asin(this.direction[x]));
+		*/
+		if(this.direction[z] >= 0) this.rotation[y] = radToDeg(Math.asin(this.direction[x]));
+		else this.rotation[y] = 180-radToDeg(Math.asin(this.direction[x]));
+		
+		//console.log(this.direction[x] + " " + this.direction[y] + " " + this.direction[z] + " " + this.destination[y] + " " + this.position[y]);
+		//console.log(this.destination[y]);
+		
+		var reached = [0,0,0];
 		// checks if we already passed our destination
 		if((this.direction[x]>=0 && this.position[x] + updateX > this.destination[x]) || 
 			(this.direction[x]<0 && this.position[x] + updateX < this.destination[x]))
 		{
+			reached[x] = 1;
 			this.position[x]=this.destination[x];
 		}
 		else 
@@ -118,6 +135,7 @@ Entity.prototype.updateMovement = function() {
 		if((this.direction[y]>=0 && this.position[x] + updateX > this.destination[y]) || 
 			(this.direction[y]<0 && this.position[y] + updateY < this.destination[y]))
 		{
+			reached[y] = 1;
 			this.position[y]=this.destination[y];
 		}
 		else 
@@ -128,6 +146,7 @@ Entity.prototype.updateMovement = function() {
 		if((this.direction[z]>=0 && this.position[z] + updateZ > this.destination[z]) || 
 			(this.direction[z]<0 && this.position[z] + updateZ < this.destination[z]))
 		{
+			reached[z] = 1;
 			this.position[z]=this.destination[z];
 		}
 		else 
@@ -135,6 +154,11 @@ Entity.prototype.updateMovement = function() {
 			this.position[z] += updateZ;
 		}
 		
-		
+		if(reached[x]==1 && reached[y]==1 && reached[z]==1)
+		{
+			//console.log("qwe");
+			this.waypointMove=false;
+			this.waypoint.drawObject = false;
+		}
 	}
 }

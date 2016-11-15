@@ -12,7 +12,7 @@ function Camera()
 	this.directionVelocity = [0.25, 0.25, 0.25];
 	// multiplier of camera speed
 	
-	this.freeCamera = false;
+	this.freeCamera = true;
 }
 Camera.prototype = Object.create(Entity.prototype);
 

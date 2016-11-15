@@ -13,7 +13,7 @@ function Hero() {
 	
 	//abilities
 	this.abilities = [];
-	this.abilities["BasicAttack"] = new Ability("BasicAttack", 500, 0, 3);
+	this.abilities["BasicAttack"] = new Ability("BasicAttack", 500, 0, 1);
 	this.abilities.length = 1;
 	
 	//temporary
@@ -49,7 +49,6 @@ Hero.prototype.load = function(objectLocation) {
 
 
 Hero.prototype.draw = function() {
-	//console.log(this.waypoint.position);
 	this.waypoint.draw();
 	Entity.prototype.draw.call(this);
 	
@@ -65,7 +64,6 @@ Hero.prototype.updatePlayer = function()
 		this.destination[z] = currentlyPressedMouseCoordinates[z];
 		this.waypointMove = true;
 		this.target = currentlyPressedEntity;
-		
 		if (this.abilities["BasicAttack"].ready)
 			this.alreadyAttacked = false;
 		
@@ -89,9 +87,11 @@ Hero.prototype.updateAI = function()
 	// if is in range -> attacking
 	if(getRange(this, hero) < this.viewRange)
 	{
-		console.log("I see you and I dont like you.");
+		//console.log("I see you and I dont like you.");
 		this.target = hero;
 		this.waypointMove = true;
+		if (this.abilities["BasicAttack"].ready)
+			this.alreadyAttacked = false;
 	}
 	else
 	{
@@ -103,12 +103,16 @@ Hero.prototype.updateAI = function()
 
 Hero.prototype.update = function()
 {
-	if(!this.isPlayer) return;
+	//if(!this.isPlayer) return;
+	if(!this.isActive) return;
 	
-	//Entity.prototype.update.call(this);
+	
+	
+	
 	
 	if(this.isPlayer) this.updatePlayer();
 	else this.updateAI();
+	
 	
 	
 	if(this.target!=null)
@@ -125,17 +129,22 @@ Hero.prototype.update = function()
 	}
 	
 	//console.log(isInRange(hero, enemy[0], this.abilities["BasicAttack"]));
-	
+	//console.log(getObjectCollisionDistance(this, enemy[0]));
 	if (this.alreadyAttacked == false) {
+		//if(this.target != null) console.log(getRange(hero, this.target) + " " + this.abilities["BasicAttack"].range);
+		//if(this.target != null) console.log(getObjectCollisionDistance(hero, this.target));
+		
 		//console.log("ATT1");
 		//if (this.waypointMove == false && this.abilities["BasicAttack"].ready == true && currentlyPressedEntity != null) {
 		if (//this.waypointMove == false && 
 			this.abilities["BasicAttack"].ready == true && 
 			this.target != null &&
-			getRange(hero, this.target) - this.abilities["BasicAttack"].range <= 0
+			//getRange(hero, this.target) - this.abilities["BasicAttack"].range <= 0
+			getObjectCollisionDistance(this, this.target) - this.abilities["BasicAttack"].range <= 0
 		) 
 		{
-			console.log("ATT2");
+			
+			//console.log("ATT2");
 			this.alreadyAttacked = true;
 			// No fury cost so we don't need an else
 			if (this.abilities["BasicAttack"].use(this))
@@ -143,5 +152,6 @@ Hero.prototype.update = function()
 		}
 	}
 	
+	Entity.prototype.update.call(this);
 }
 

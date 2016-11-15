@@ -50,6 +50,9 @@ function drawScene() {
 	
 	for(var i in enemy) enemy[i].draw();
 	
+	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
+	console.log(hero.HP);
+	
 	world.draw();
 	
 	
@@ -103,12 +106,13 @@ function start() {
 	hero.directionVelocity[x] = hero.directionVelocity[x]*1.2;
 	hero.directionVelocity[y] = hero.directionVelocity[y]*1.2;
 	hero.directionVelocity[z] = hero.directionVelocity[z]*1.2;
+	//hero.position[x] -= 10;
 	hero.load("./assets/ironman.obj");
 
 
 	enemy = [];
 
-
+	/*
 	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/slasher.obj");
 	enemy[enemy.length-1].name = "Slasher";
@@ -116,25 +120,30 @@ function start() {
 	enemy[enemy.length-1].position[z] -= 0;	
 	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
 	
+	
 	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/feralGhoul.obj");
 	enemy[enemy.length-1].name = "Feral Ghoul";
-	enemy[enemy.length-1].position[x] -= 10;
-	enemy[enemy.length-1].position[z] -= 5;
+	//enemy[enemy.length-1].position[x] -= 10;
+	enemy[enemy.length-1].position[z] -= 10;
 	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+	*/
+	
+	
 	
 	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/bucaNew.obj");
 	enemy[enemy.length-1].name = "Evil Pumpkin Slave";
 	enemy[enemy.length-1].position[x] -= 10;
 	enemy[enemy.length-1].position[z] -= 10;
+	//enemy[enemy.length-1].rotation[y] = -90;
 	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
 	
 	//HARDCODED
-	enemy[0].HP = 100;
+	enemy[0].HP = 50;
 	enemy[0].maxHP = 100;
-	enemy[1].HP = 30;
-	enemy[1].maxHP = 100;
+	//enemy[1].HP = 30;
+	//enemy[1].maxHP = 100;
 
 	
 	ui = new UI();

@@ -48,7 +48,7 @@ function initTexture(textureFile) {
     handleTextureLoaded(textureArray[textureFile])
   }; // async loading
   var path = "./assets/" + textureFile;
-  console.log(path)
+  //console.log(path)
   textureArray[textureFile].image.src = path;
 }
 
@@ -155,7 +155,7 @@ function draw(objectToDraw)
 		gl.uniform1i(shaderProgram.useTexturesUniform, 0);
 		gl.disableVertexAttribArray(shaderProgram.textureCoordAttribute);
 	} else {
-		console.log("Drawing textures on: " + objectToDraw.name);
+		//console.log("Drawing textures on: " + objectToDraw.name);
 		gl.uniform1i(shaderProgram.useTexturesUniform, 1);
 		gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
 		
@@ -397,39 +397,78 @@ function getRange(object1, object2)
 {
 	var dist = Math.sqrt(
 		(object1.position[x] - object2.position[x]) * (object1.position[x] - object2.position[x]) +
-		(object1.position[y] - object2.position[y]) * (object1.position[y] - object2.position[y]) +
+		//(object1.position[y] - object2.position[y]) * (object1.position[y] - object2.position[y]) +
 		(object1.position[z] - object2.position[z]) * (object1.position[z] - object2.position[z])
 	);
 	//console.log(dist);
 	return dist;
 }
 
-
+//var cnt1 = 0;
+//var cnt2 = 0;
 //////////////////////////////// NEW SIMPLE COLLISION DETECTION ////////////////////////////////
 function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 {
 	
-	var range = getRange(object1, object2);
-	var dist1 = Math.min(object1.collisionBox[x], object1.collisionBox[z])/2;
-	var dist2 = Math.min(object2.collisionBox[x], object2.collisionBox[z])/2;
-	var coll = range - dist1 - dist2;
+	var yDir = false;
+	var y11 = object1.position[y]+object1.offset[y]-object1.collisionBox[y]/2;
+	var y12 = object1.position[y]+object1.offset[y]+object1.collisionBox[y]/2;
+	var y21 = object2.position[y]+object2.offset[y]-object2.collisionBox[y]/2;
+	var y22 = object2.position[y]+object2.offset[y]+object2.collisionBox[y]/2;
+	if(
+		y12>y21 && y12<y22 ||
+		y11>y21 && y11<y22 ||
+		y11<y21 && y12>y21 ||
+		y11<y22 && y12>y22
+	)
+	{
+		//console.log(y11 + " " + y12 + " " + y21 + " " + y22);
+		//console.log(object1.position[x] + " " + object1.position[z] + " " + object2.position[x] + " " + object2.position[z]);
+		
+		//cnt1++;
+		yDir = true;
+	}
+	/*
+	cnt2++;
 	
-	console.log(object1.name + " " + object2.name + " " + range + " " + dist1 + " " + dist2 + " " + coll);
-	if(coll<0) return true;
+	if(yDir)
+	{
+		//console.log(getObjectCollisionDistance(object1, object2) +  " " + object1.position[x] + " " + object1.position[z] + " " + object2.position[x] + " " + object2.position[z]);
+	
+	}	
+	*/
+	//console.log(getObjectCollisionDistance(object1, object2) +  " " + y11 + " " + y22 + " ");
+	
+	
+		
+	//console.log(object1.name + " " + object2.name + " " + range + " " + dist1 + " " + dist2 + " " + coll);
+	if(getObjectCollisionDistance(object1, object2)<0 && yDir) return true;
 	else return false;
 }
 
+// circle distance based on x and z transformed to radius
+function getObjectCollisionDistance(object1, object2)
+{
+	var range = getRange(object1, object2);
+	//var dist1 = Math.max(object1.collisionBox[x], object1.collisionBox[z])/2;
+	//var dist2 = Math.max(object2.collisionBox[x], object2.collisionBox[z])/2;
+	
+	var dist1 = (object1.collisionBox[x] + object1.collisionBox[z])/2;
+	var dist2 = (object2.collisionBox[x] + object2.collisionBox[z])/2;
+	//var dist3 = object1.collisionBox[y]/2 + object2.collisionBox[y]/2;
+	return (range - (dist1/2 + dist2/2));
+}
 
 
 function checkCollisionBetweenAllObjects(object)
 {
+	if(!object.calculateCollision) return null;
 	//////////////// check if click collides with any object ////////////////
-		
 	//////// check for enemy ////////
 	for(var i in enemy)
 	{
 		//if(checkCollisionBetweenTwoObjects(object, enemy[i]))
-		if(checkCollisionBetweenTwoObjectsSimple(object, enemy[i]))
+		if(object != enemy[i] && enemy[i].calculateCollision && checkCollisionBetweenTwoObjectsSimple(object, enemy[i]))
 		{
 			return enemy[i];
 		}
@@ -439,11 +478,15 @@ function checkCollisionBetweenAllObjects(object)
 	
 	//////// check for world objects ////////
 	
-	
+	//////// check for player ////////
+	if(object != hero && hero.calculateCollision && checkCollisionBetweenTwoObjectsSimple(object, hero))
+	{
+		
+		return hero;
+	}
+	//console.log("WTF");
 	return null;
 }
-
-
 
 
 //////////////////////////////// OLD COLLISION DETECTION 2 ////////////////////////////////
@@ -517,10 +560,10 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	y11<y21 && y12>y21
 	y11<y22 && y12>y22
 	*/
-	var y11 = object1.position[y]-object1NewCollisionBox[y]/2;
-	var y12 = object1.position[y]+object1NewCollisionBox[y]/2;
-	var y21 = object2.position[y]-object2NewCollisionBox[y]/2;
-	var y22 = object2.position[y]+object2NewCollisionBox[y]/2;
+	var y11 = object1.position[y]+object1.offset[y]-object1NewCollisionBox[y]/2;
+	var y12 = object1.position[y]+object1.offset[y]+object1NewCollisionBox[y]/2;
+	var y21 = object2.position[y]+object2.offset[y]-object2NewCollisionBox[y]/2;
+	var y22 = object2.position[y]+object2.offset[y]+object2NewCollisionBox[y]/2;
 	if(
 		y12>y21 && y12<y22 ||
 		y11>y21 && y11<y22 ||

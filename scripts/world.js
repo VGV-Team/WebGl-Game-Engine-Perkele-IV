@@ -10,7 +10,7 @@ function World() {
 	
 	
 	//this.position = [0.0, 0.0, 0.0];
-	//this.rotation = [0.0, 0.0, 0.0];
+	//this.rotation = [2.0, 0.0, 0.0];
 	//this.scale = [1.0, 1.0, 1.0];
 }
 World.prototype = Object.create(Entity.prototype);
