@@ -105,6 +105,7 @@ function start() {
 	world.name = "World";
 	world.load("./assets/world_plane_new.obj");
 	// world.normalBuffer = null; - not working because load is async
+	//world.position[y]+=10;
 	
 	hero = new Hero();
 	hero.name = "Hero";
@@ -156,6 +157,20 @@ function start() {
 	//enemy[enemy.length-1].rotation[y] = -90;
 	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
 	
+	enemy.push(new Hero());
+	enemy[enemy.length-1].load("./assets/feralGhoul.obj");
+	enemy[enemy.length-1].name = "Feral Ghoul";
+	enemy[enemy.length-1].position[x] -= 5;
+	enemy[enemy.length-1].position[z] += 5;
+	//enemy[enemy.length-1].rotation[y] = -90;
+	
+	enemy.push(new Hero());
+	enemy[enemy.length-1].load("./assets/slasher.obj");
+	enemy[enemy.length-1].name = "Wat iz dis???";
+	enemy[enemy.length-1].position[x] += 5;
+	enemy[enemy.length-1].position[z] -= 5;
+	//enemy[enemy.length-1].rotation[y] = -90;
+	
 	//HARDCODED
 	enemy[0].HP = 50;
 	enemy[0].maxHP = 100;
@@ -165,7 +180,7 @@ function start() {
 	
 	
 	ui.updateInventoryItemList();
-	
+
 	// Set up to draw the scene periodically.
 	setInterval(gameLoop, 15);
 

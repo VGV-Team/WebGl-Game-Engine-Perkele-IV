@@ -171,18 +171,19 @@ function draw(objectToDraw)
 		gl.uniform3f(
 		  shaderProgram.pointLightingLocationUniform,
 		  //hero.position[x],
-		  0.0,
-		  0.0,
-		  0.0
+		  hero.position[x]+camera.position[x] + camera.offset[x],
+		  -hero.position[z]-camera.position[z] - camera.offset[z],
+		  hero.position[y]+hero.offset[y]+camera.position[y] + camera.offset[y]
+		  
 		  //hero.position[z]
 		  
 		);
 
 		gl.uniform3f(
 		  shaderProgram.pointLightingColorUniform,
-		  0.5,
-		  0.5,
-		  0.5
+		  1.0,
+		  1.0,
+		  1.0
 		);
 		
 		
