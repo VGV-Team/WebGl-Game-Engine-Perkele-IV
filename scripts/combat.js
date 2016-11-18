@@ -13,6 +13,7 @@ function basicAttack(attackerObject, hitObject) {
 		hitObject.isActive = false;
 		hitObject.drawObject = false;
 		hitObject.calculateCollision = false;
+		currentlyPressedEntity = null;
 		console.log("dieded");
 	}
 	

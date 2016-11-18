@@ -41,6 +41,11 @@ var currentlyPressedKeys = {};
 var currentlyPressedMouseCoordinates = [null, null, null];
 var currentlyPressedEntity = null;
 
+// Is left mouse pressed? boolean for synchronized framebuffer checking
+var leftMousePressed = false;
+var leftMouseMoved = false;
+var leftMouseEvent = null;
+
 
 
 // Model-view and projection matrix and model-view matrix stack

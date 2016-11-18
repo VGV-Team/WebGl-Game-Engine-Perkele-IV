@@ -109,7 +109,7 @@ function initTextureFramebuffer() {
 }
 
 function drawObjectToFrameBuffer(objectToDraw) {
-	console.log("QWE");
+	//console.log("QWE");
 	//TEMP color
 	gl.uniform4f(
 		shaderProgram.tempColor,

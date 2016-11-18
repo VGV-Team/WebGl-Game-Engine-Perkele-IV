@@ -56,7 +56,7 @@ function drawFrameBuffer() {
 	camera.draw();
 
 	////// OBJECT DRAWING
-	hero.drawToFrameBuffer();
+	//hero.drawToFrameBuffer();
 	
 	for(var i in enemy) enemy[i].drawToFrameBuffer();
 	
@@ -75,6 +75,18 @@ function drawFrameBuffer() {
 	gl.readPixels(canvas.width/2, canvas.height/2, 50, 50, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 	//if (pixels[0] != 0) alert("ALO");
 	//console.log(pixels);
+	
+	if (leftMouseMoved || leftMousePressed) {
+		var rect = canvas.getBoundingClientRect();
+		var mouse_x = leftMousePressEvent.clientX - rect.left;
+		//console.log(rect.top);
+		var mouse_y = canvas.height - (leftMousePressEvent.clientY - rect.top);
+		var pressedID = getObjectIDFromCoordinates(mouse_x, mouse_y);
+		handleMouse(pressedID, mouse_x, mouse_y);
+		leftMousePressed = false;
+		leftMousePressEvent = null;
+		leftMouseMoved = false;
+	}
 	
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 	
@@ -139,8 +151,16 @@ function start() {
     document.onkeyup = handleKeyUp;
 	
 	// binds mouse
+	canvas.addEventListener('mousemove', function(event) {
+		//handleMouseClick(event);
+		leftMouseMoved = true;
+		leftMousePressEvent = event;
+	}, false);
+	
 	canvas.addEventListener('click', function(event) {
-		handleMouseClick(event);
+		//handleMouseClick(event);
+		leftMousePressed = true;
+		leftMousePressEvent = event;
 	}, false);
 	
 
