@@ -75,10 +75,14 @@ Entity.prototype.updateMovement = function() {
 	
 	
 	// TODO: get correct world position !!!
-	this.destination[y]=world.position[y];
+	//this.destination[y]=world.position[y];
+	var place = getTopWorldObject(this);
+	this.position[y] = place.position[y]+place.offset[y];
 	//console.log(this.destination[y]);
-	
-	
+	this.direction[y] = 0;
+	//this.destination[y] = 0;
+	//console.log(place.position[y]+" "+place.offset[y]+" "+hero.position[y]+" "+hero.offset[y]);
+	//console.log(hero.position[y]);
 	var d = Math.sqrt(this.direction[x]*this.direction[x]+this.direction[y]*this.direction[y]+this.direction[z]*this.direction[z]);
 	
 	// checks if we already reached our destination
@@ -87,8 +91,6 @@ Entity.prototype.updateMovement = function() {
 		this.waypoint.drawObject = false;
 	}
 	else {
-		
-		
 		//console.log(this.destination[y] + " " + this.position[y] + " " + d + " " + this.direction[x] + " " + this.direction[y] + " " + this.direction[z]);
 
 		
@@ -98,7 +100,8 @@ Entity.prototype.updateMovement = function() {
 	
 	
 		var updateX = this.direction[x]*this.directionVelocity[x]*timeTillLastUpdate;
-		var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
+		//var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
+		var updateY = this.direction[y]*this.directionVelocity[x]*timeTillLastUpdate;
 		var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;
 		
 		
@@ -317,7 +320,7 @@ Entity.prototype.updateMovement = function() {
 		{
 			this.position[x] += updateX;
 		}
-		
+		/*
 		if((this.direction[y]>=0 && this.position[y] + updateY > this.destination[y]) || 
 			(this.direction[y]<0 && this.position[y] + updateY < this.destination[y]))
 		{
@@ -328,7 +331,7 @@ Entity.prototype.updateMovement = function() {
 		{
 			this.position[y] += updateY;
 		}
-		
+		*/
 		if((this.direction[z]>=0 && this.position[z] + updateZ > this.destination[z]) || 
 			(this.direction[z]<0 && this.position[z] + updateZ < this.destination[z]))
 		{
@@ -347,5 +350,8 @@ Entity.prototype.updateMovement = function() {
 			//this.waypointMove=false;
 			//this.waypoint.drawObject = false;
 		}
+		
+		
 	}
 }
+

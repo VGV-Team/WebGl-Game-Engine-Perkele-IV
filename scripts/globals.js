@@ -17,7 +17,7 @@ var shaderProgram;
 var canvas;
 
 // GLOBAL ID FOR COMPARING OBJECTS
-var globalID = 0;
+var globalID = 1;
 
 var hero;
 var world;
