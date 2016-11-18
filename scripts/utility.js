@@ -82,6 +82,89 @@ function getDirectionBetweenVectors(pos1, pos2)
 }
 
 
+//// TEXTURE FRAMEBUFFER INIT
+function initTextureFramebuffer() {
+  rttFramebuffer = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, rttFramebuffer);
+  rttFramebuffer.width = canvas.width;
+  rttFramebuffer.height = canvas.height;
+
+  rttTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, rttTexture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, rttFramebuffer.width, rttFramebuffer.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+  var renderbuffer = gl.createRenderbuffer();
+  gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+  gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, rttFramebuffer.width, rttFramebuffer.height);
+
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, rttTexture, 0);
+  gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+}
+
+function drawObjectToFrameBuffer(objectToDraw) {
+	console.log("QWE");
+	//TEMP color
+	gl.uniform4f(
+		shaderProgram.tempColor,
+		objectToDraw.frameBufferColor[0],
+		objectToDraw.frameBufferColor[1],
+		objectToDraw.frameBufferColor[2],
+		objectToDraw.frameBufferColor[3]
+	);
+	
+	//console.log(objectToDraw.frameBufferColor[0]);
+	
+	//ZA IZOMETRIÈNO
+	//mat4.scale(mvMatrix, [50.0,1.0,50.0]);
+	//mat4.rotate(mvMatrix, degToRad(rotationCube), [1, 1, 1]);
+
+	///////////////////////////////////////////////--------------------------------------------------------
+	
+	
+	
+	//POSITION
+	gl.bindBuffer(gl.ARRAY_BUFFER, objectToDraw.vertexPositionBuffer);
+	gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, objectToDraw.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+	//if (objectToDraw.vertexPositionBuffer.itemSize == null) console.log("NAME: " + objectToDraw.name);
+
+	gl.uniform1i(shaderProgram.useLightingUniform, 0);
+	gl.disableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+	
+	
+	
+	gl.uniform1i(shaderProgram.useTexturesUniform, 0);
+	gl.disableVertexAttribArray(shaderProgram.textureCoordAttribute);
+	
+	mvPushMatrix();
+	mat4.translate(mvMatrix, objectToDraw.position);
+	mat4.translate(mvMatrix, objectToDraw.offset);
+
+	mat4.rotateX(mvMatrix, degToRad(objectToDraw.rotation[0]));
+	mat4.rotateY(mvMatrix, degToRad(objectToDraw.rotation[1]));
+	mat4.rotateZ(mvMatrix, degToRad(objectToDraw.rotation[2]));
+
+	mat4.scale(mvMatrix, objectToDraw.scale);
+	//---------------------------------------------------------------------------------------------------
+	
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objectToDraw.vertexIndexBuffer);
+
+	
+	setMatrixUniforms();
+	gl.drawElements(gl.TRIANGLES, objectToDraw.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+
+	// Restore the original matrix
+	mvPopMatrix();
+	
+}
+
+
 //Texture utilities
 function initTexture(textureFile) {
   textureArray[textureFile] = gl.createTexture();

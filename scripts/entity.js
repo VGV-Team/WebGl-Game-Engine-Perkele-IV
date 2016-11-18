@@ -1,4 +1,7 @@
 function Entity() {
+	
+	this.ID = -1;
+	
 	this.name = "";
 	
 	this.offset = [0.0,0.0,0.0];
@@ -17,13 +20,8 @@ function Entity() {
 	this.vertexIndexBuffer = null;
 	this.textureFile = null;
 	
-
-	
-
-	
-
-	
-
+	// Color this object is going to be drawn in the framebuffer
+	this.frameBufferColor = [];
 	
 	this.vec4Color = [0.5, 0.5, 0.5, 1.0];
 	this.collisionBox = [0.0,0.0,0.0]; // width, height, depth
@@ -35,10 +33,22 @@ function Entity() {
 }
 Entity.prototype.load = function(objectLocation) {
 	load(this, objectLocation);
+	
+	// Set a color this object is going to be recognized by in the framebuffer
+	console.log(this.name + " TAKES ID " + globalID);
+	this.ID = globalID;
+	globalID++;
+	console.log(this.name + " TAKES ID " + this.ID);
+	this.frameBufferColor = [this.ID/255.0, 0.0, 0.0, 1.0];
 };
 
 Entity.prototype.draw = function() {
 	if(this.drawObject)	draw(this);
+}
+
+Entity.prototype.drawToFrameBuffer = function() {
+	//console.log("KLICEM DRAWBUFFER");
+	if (this.drawObject) drawObjectToFrameBuffer(this);
 }
 
 Entity.prototype.update = function() {

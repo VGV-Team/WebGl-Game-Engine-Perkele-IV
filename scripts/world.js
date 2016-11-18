@@ -25,6 +25,11 @@ World.prototype.draw = function() {
 	//draw(this);
 }
 
+World.prototype.drawToFrameBuffer = function() {
+	//console.log("KLICEM PARENTA");
+	Entity.prototype.drawToFrameBuffer.call(this);
+}
+
 //
 // handleLoadedWorld
 //

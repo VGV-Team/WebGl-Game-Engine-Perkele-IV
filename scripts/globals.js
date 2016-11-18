@@ -3,12 +3,21 @@ var x = 0;
 var y = 1;
 var z = 2;
 
+
+// GLOBAL FRAMEBUFFER
+// Framebuffer for making a secondary scene
+var rttFramebuffer;
+// Var for putting that scene in a texture ?
+var rttTexture;
+
+
 // Global variable definitionvar canvas;
 var gl;
 var shaderProgram;
 var canvas;
 
-
+// GLOBAL ID FOR COMPARING OBJECTS
+var globalID = 0;
 
 var hero;
 var world;

@@ -20,7 +20,9 @@ function gameLoop()
 
 	ui.update();
 	
-	// draws camera and all objects
+	
+	drawFrameBuffer();
+	// draws camera and all objects	
     drawScene();
 	
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + getDirectionBetweenVectors(hero.position, enemy[0].position));
@@ -30,6 +32,49 @@ function gameLoop()
 	
 	//console.log(hero.position[x] + " " + hero.position[z])
 
+}
+
+function drawFrameBuffer() {
+	// NUJNO ZLO
+	gl.bindFramebuffer(gl.FRAMEBUFFER, rttFramebuffer);
+	gl.viewport(0, 0, rttFramebuffer.width, rttFramebuffer.height);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+	//PERSPEKTIVA
+	// Establish the perspective with which we want to view the
+	// scene. Our field of view is 45 degrees, with a width/height
+	// ratio and we only want to see objects between 0.1 units
+	// and 100 units away from the camera.
+	mat4.perspective(90, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+	//mat4.identity(pMatrix);
+	//mat4.ortho(0, 1280, 0, 720, 0.01, 1000.0, pMatrix);
+	
+	// CAMERA POSITION
+	camera.draw();
+
+	////// OBJECT DRAWING
+	hero.drawToFrameBuffer();
+	
+	for(var i in enemy) enemy[i].drawToFrameBuffer();
+	
+	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
+	//console.log(hero.HP);
+	
+	world.drawToFrameBuffer();
+	
+	//TOLE NVEM CE BO DELAL TO JE BLO TM NAKONC
+	gl.bindTexture(gl.TEXTURE_2D, rttTexture);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	gl.bindTexture(gl.TEXTURE_2D, null);
+	
+	//gl.viewport(0, 0, canvas.width, canvas.height);
+	var pixels = new Uint8Array(50 * 50 * 4);
+	gl.readPixels(canvas.width/2, canvas.height/2, 50, 50, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+	if (pixels[0] != 0) alert("ALO");
+	//console.log(pixels);
+	
+	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	
 }
 
 function drawScene() {
@@ -81,6 +126,9 @@ function start() {
     // Initialize the shaders; this is where all the lighting for the
     // vertices and so forth is established.
     initShaders();
+	
+	// Init framebuffer
+	initTextureFramebuffer();
     
 	
 	// binds keyboard events
@@ -177,7 +225,7 @@ function start() {
 	//enemy[1].HP = 30;
 	//enemy[1].maxHP = 100;
 
-	
+	alert(globalID);
 	
 	ui.updateInventoryItemList();
 

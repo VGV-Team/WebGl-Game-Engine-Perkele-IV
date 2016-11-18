@@ -98,6 +98,11 @@ Hero.prototype.draw = function() {
 	
 }
 
+Hero.prototype.drawToFrameBuffer = function() {
+	//console.log("KLICEM PARENTA");
+	Entity.prototype.drawToFrameBuffer.call(this);
+}
+
 
 Hero.prototype.updatePlayer = function()
 {
