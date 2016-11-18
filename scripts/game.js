@@ -73,7 +73,7 @@ function drawFrameBuffer() {
 	//gl.viewport(0, 0, canvas.width, canvas.height);
 	var pixels = new Uint8Array(50 * 50 * 4);
 	gl.readPixels(canvas.width/2, canvas.height/2, 50, 50, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-	if (pixels[0] != 0) alert("ALO");
+	//if (pixels[0] != 0) alert("ALO");
 	//console.log(pixels);
 	
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -232,7 +232,6 @@ function start() {
 	//enemy[1].HP = 30;
 	//enemy[1].maxHP = 100;
 
-	alert(globalID);
 	
 	ui.updateInventoryItemList();
 
