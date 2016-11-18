@@ -69,8 +69,9 @@ function drawScene() {
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
 	//console.log(hero.HP);
 	
-	world.draw();
-	world1.draw();
+	for (var w in world) {
+		world[w].draw();
+	}
 
 }
 
@@ -124,18 +125,20 @@ function start() {
 	
 	ui = new UI();
 	
-	world = new World();
-	world.name = "World";
-	world.load("./assets/world_plane_new.obj");
+	world = [];
+	
+	world.push(new World());
+	world[world.length - 1].name = "World";
+	world[world.length - 1].load("./assets/world_plane_new.obj");
 	// world.normalBuffer = null; - not working because load is async
 	//world.position[y]+=10;
 	
-	world1 = new World();
-	world1.name = "World1";
-	world1.load("./assets/world_plane_new.obj");
-	world1.position[x] = -10;
-	world1.position[y] = 1;
-	world1.vec4Color = [0.5,0.5,0.5,1.0];
+	world.push(new World());
+	world[world.length - 1].name = "World1";
+	world[world.length - 1].load("./assets/world_plane_new.obj");
+	world[world.length - 1].position[x] = -10;
+	world[world.length - 1].position[y] = 1;
+	world[world.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
 	
 	hero = new Hero();
 	hero.name = "Hero";

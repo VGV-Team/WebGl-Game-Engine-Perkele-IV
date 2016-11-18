@@ -77,6 +77,7 @@ Entity.prototype.updateMovement = function() {
 	// TODO: get correct world position !!!
 	//this.destination[y]=world.position[y];
 	var place = getTopWorldObject(this);
+	
 	this.position[y] = place.position[y]+place.offset[y];
 	//console.log(this.destination[y]);
 	this.direction[y] = 0;
