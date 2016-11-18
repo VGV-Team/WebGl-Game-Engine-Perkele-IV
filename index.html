@@ -68,7 +68,7 @@
 		            float directionalLightWeighting = max(dot(normalize(vTransformedNormal), lightDirection), 0.0);
 		            // calculate lighting
 		            lightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
-					lightWeighting = lightWeighting  * 5.0 * (1.0 / distance(vPosition.xyz, vec3(0.0,0.0,0.0)));
+					lightWeighting = lightWeighting  * 7.0 * (1.0 / distance(vPosition.xyz, vec3(0.0,0.0,0.0)));
 		        }
 		        vec4 fragmentColor;
 		        if (uUseTextures) {

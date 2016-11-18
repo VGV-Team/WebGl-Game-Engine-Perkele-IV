@@ -57,7 +57,7 @@ function getVectorAngle(vec1, vec2)
 	var Vn = [0,1,0];
 	
 	if((Vn[x]*cross[x] + Vn[y]*cross[y] + Vn[z]*cross[z])<0) angle -= angle;
-	console.log(cross[y]);
+	//console.log(cross[y]);
 	return angle;
 }
 
@@ -660,10 +660,10 @@ function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 {
 	
 	var yDir = false;
-	var y11 = object1.position[y]+object1.offset[y]-object1.collisionBox[y]/2;
-	var y12 = object1.position[y]+object1.offset[y]+object1.collisionBox[y]/2;
-	var y21 = object2.position[y]+object2.offset[y]-object2.collisionBox[y]/2;
-	var y22 = object2.position[y]+object2.offset[y]+object2.collisionBox[y]/2;
+	var y11 = object1.position[y]+object1.offset[y]-object1.collisionBox[y]/2; // o1 down
+	var y12 = object1.position[y]+object1.offset[y]+object1.collisionBox[y]/2; // o1 up
+	var y21 = object2.position[y]+object2.offset[y]-object2.collisionBox[y]/2; // o2 down
+	var y22 = object2.position[y]+object2.offset[y]+object2.collisionBox[y]/2; // o2 up
 	if(
 		y12>y21 && y12<y22 ||
 		y11>y21 && y11<y22 ||
@@ -673,7 +673,7 @@ function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 	{
 		//console.log(y11 + " " + y12 + " " + y21 + " " + y22);
 		//console.log(object1.position[x] + " " + object1.position[z] + " " + object2.position[x] + " " + object2.position[z]);
-		
+		//console.log("true");
 		//cnt1++;
 		yDir = true;
 	}
@@ -687,9 +687,9 @@ function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 	}	
 	*/
 	//console.log(getObjectCollisionDistance(object1, object2) +  " " + y11 + " " + y22 + " ");
-	
-	
-		
+	//console.log(hero.position[y] + " " + hero.offset[y] + " " + world.position[y] + " " + world.offset[y]);
+	//console.log(y11 + " " + y12 + " " + y21 + " " + y22);
+	//console.log(getObjectCollisionDistance(object1, object2));
 	//console.log(object1.name + " " + object2.name + " " + range + " " + dist1 + " " + dist2 + " " + coll);
 	if(getObjectCollisionDistance(object1, object2)<0 && yDir) return true;
 	else return false;
@@ -732,10 +732,18 @@ function checkCollisionBetweenAllObjects(object)
 	//////// check for player ////////
 	if(object != hero && hero.calculateCollision && checkCollisionBetweenTwoObjectsSimple(object, hero))
 	{
-		
+	//	console.log("sdfsdfwefewfwef");
 		return hero;
 	}
 	//console.log("WTF");
+	
+	//if(object == world && world.calculateCollision && checkCollisionBetweenTwoObjectsSimple(object, world))
+	//{
+	//	console.log("qwewqeqw");
+	//	return world;
+	//}
+	
+	//console.log("burek");
 	return null;
 }
 

@@ -86,6 +86,7 @@ function handleMouseClick(event) {
 	
 	currentlyPressedEntity = null;
 	while (currentPos[y] > world.position[y]) {
+	//while (currentPos[y] > world.position[y]-5) {
 		currentPos[x] += final_vector[x]*0.5;
 		currentPos[y] += final_vector[y]*0.5;
 		currentPos[z] += final_vector[z]*0.5;
@@ -99,6 +100,7 @@ function handleMouseClick(event) {
 		tempObjectMouse.position[z] = currentPos[z];
 		
 		var clickedObject = checkCollisionBetweenAllObjects(tempObjectMouse);
+		//console.log(clickedObject);
 		delete tempObjectMouse;
 		
 		//var clickedObject = checkCollisionWithObject(currentPos);
@@ -118,6 +120,13 @@ function handleMouseClick(event) {
 		count++;
 		if (count > limit) break;
 	}
+	/*
+	if(clickedObject==null) 
+	{
+		clickedObject = world;
+	}
+	*/
+	
 	if (count <= limit) console.log("Clicked position | x: " + currentPos[x] + " z: " + currentPos[z]);
 	else console.log("BAD CLICKED POSITION");
 	
@@ -182,6 +191,17 @@ function handleKeys() {
 		camera.direction[y] = 0;
 	}
   
+  
+	// N key
+	if (currentlyPressedKeys[78]) {
+		//world.offset[y]+=0.5;
+		world.position[y]+=0.5;
+	}
+	// M key
+	if (currentlyPressedKeys[77]) {
+		//world.offset[y]-=0.5;
+		world.position[y]-=0.5;
+	}
   
   
   

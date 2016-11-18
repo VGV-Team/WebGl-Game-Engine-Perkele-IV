@@ -62,6 +62,13 @@ Entity.prototype.update = function() {
 Entity.prototype.updateMovement = function() {
 	
 	//console.log("s: " + this.direction[x] + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
+	
+	
+	// TODO: get correct world position !!!
+	this.destination[y]=world.position[y];
+	//console.log(this.destination[y]);
+	
+	
 	var d = Math.sqrt(this.direction[x]*this.direction[x]+this.direction[y]*this.direction[y]+this.direction[z]*this.direction[z]);
 	
 	// checks if we already reached our destination
@@ -109,13 +116,18 @@ Entity.prototype.updateMovement = function() {
 		//// NEW COLLISION DETECTION
 		// we need to fo fake update, calculate and then revert changes
 	
+		//console.log(this.position[y] + " " + (this.position[y] + updateY))
+	
 		this.position[x] += updateX;
 		this.position[y] += updateY;
 		this.position[z] += updateZ;
+		//this.position[y]-=10;
 		var collision = checkCollisionBetweenAllObjects(this);
+		//console.log(collision);
 		this.position[x] -= updateX;
 		this.position[y] -= updateY;
 		this.position[z] -= updateZ;
+		//this.position[y]+=10;
 		//console.log("sp: " + this.direction[x] + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
 	
 		if(collision!=null) {
@@ -124,7 +136,7 @@ Entity.prototype.updateMovement = function() {
 			var dir = getDirectionBetweenVectors(this.position, collision.position);
 			
 			
-			console.log(getVectorAngle(this.direction,dir) + " " + dir[x] + " " + this.direction[x] + " | " + dir[z] + " " + this.direction[z]);
+			//console.log(getVectorAngle(this.direction,dir) + " " + dir[x] + " " + this.direction[x] + " | " + dir[z] + " " + this.direction[z]);
 			
 			
 			
