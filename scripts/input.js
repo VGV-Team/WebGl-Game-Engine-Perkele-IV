@@ -28,7 +28,7 @@ function getObjectIDFromCoordinates(xPos, yPos) {
 
 function handleMouse(pressedID, xPos, yPos) {
 	if (pressedID == -1) console.log("You didn't press any object!");
-	else if (pressedID == world.ID) {
+	else if (pressedID <= world[world.length-1].ID) {
 		currentlyPressedEntity = null;
 		if (leftMousePressed == false) return;
 		console.log("You pressed the world!");
@@ -90,7 +90,26 @@ function handleMouse(pressedID, xPos, yPos) {
 		//console.log((enemy.position[z]-enemy.collisionBox[z]/2) + " " + (enemy.position[z]+enemy.collisionBox[z]/2));
 		
 		currentlyPressedEntity = null;
-		while (currentPos[y] > world.position[y]) {
+		var clickedWorld = null;
+		var ok = false;
+		while (!ok) {
+			for (var w in world) {
+				if (currentPos[x] < world[w].position[x]-world[w].collisionBox[x]/2 ||
+					currentPos[x] > world[w].position[x]+world[w].collisionBox[x]/2 ||
+					currentPos[z] < world[w].position[z]-world[w].collisionBox[z]/2 ||
+					currentPos[z] > world[w].position[z]+world[w].collisionBox[z]/2) continue;
+				if (currentPos[y] <= world[w].position[y]) {
+					//if (getTopWorldObjectByCoordiantes(currentPos[x], currentPos[z]) != null) {
+						clickedWorld = world[w];
+						ok = true;
+						break;
+					//}
+					
+				}
+			}
+			
+			if (ok) break;
+			
 			currentPos[x] += final_vector[x]*0.5;
 			currentPos[y] += final_vector[y]*0.5;
 			currentPos[z] += final_vector[z]*0.5;
@@ -101,8 +120,9 @@ function handleMouse(pressedID, xPos, yPos) {
 		if (count <= limit) console.log("Clicked position | x: " + currentPos[x] + " z: " + currentPos[z]);
 		else console.log("BAD CLICKED POSITION");
 		//We pass the values to the mouseCorrdinate variable for further use.
+		if (clickedWorld == null) return;
 		currentlyPressedMouseCoordinates[x] = currentPos[x];
-		currentlyPressedMouseCoordinates[y] = world.position[y]+world.offset[y];
+		currentlyPressedMouseCoordinates[y] = clickedWorld.position[y]+clickedWorld.offset[y];
 		currentlyPressedMouseCoordinates[z] = currentPos[z];
 	}
 	else if (pressedID == hero.ID) console.log("You pressed the hero!");
@@ -156,8 +176,14 @@ function handleMouseViaBuffer() {
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
 	//console.log(hero.HP);
 	
-	world.drawToFrameBuffer();
+
+	//world.drawToFrameBuffer();
 	//world1.drawToFrameBuffer();
+
+	for (var w in world) {
+		world[w].drawToFrameBuffer();
+	}
+
 	
 	
 	//TOLE NVEM CE BO DELAL TO JE BLO TM NAKONC

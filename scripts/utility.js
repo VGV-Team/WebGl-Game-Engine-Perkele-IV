@@ -248,8 +248,13 @@ function getTopWorldObject(object) {
 	camera.rotation[x] = tmp6;
 	camera.offset[y] = tmp7;
 	
-	world.drawToFrameBuffer();
+	
+	//world.drawToFrameBuffer();
 	//world1.drawToFrameBuffer();
+	
+	for (var w in world) {
+		world[w].drawToFrameBuffer();
+	}
 	
 	gl.bindTexture(gl.TEXTURE_2D, rttTexture);
 	gl.generateMipmap(gl.TEXTURE_2D);
@@ -264,12 +269,70 @@ function getTopWorldObject(object) {
 	
 	//console.log(pressedID);
 	
-	if(pressedID==world.ID) return world;
-	if(pressedID==world1.ID) return world1;
+	for (var w in world) {
+		if (world[w].ID == pressedID)
+			return world[w];
+	}
 	return null;
 }
 
+function getTopWorldObjectByCoordiantes(x, z) {
+	gl.bindFramebuffer(gl.FRAMEBUFFER, rttFramebuffer);
+	gl.viewport(0, 0, rttFramebuffer.width, rttFramebuffer.height);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	mat4.perspective(90, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
+	
+	var tmp1 = camera.position[x];
+	var tmp2 = camera.position[y];
+	var tmp3 = camera.position[z];
+	var tmp4 = camera.offset[x];
+	var tmp5 = camera.offset[z];
+	var tmp6 = camera.rotation[x];
+	var tmp7 = camera.offset[y];
+	camera.position[x] = -x;
+	//camera.position[y] = -object.position[y]-object.offset[y];
+	camera.position[z] = -z;
+	camera.offset[x] = 0;
+	camera.offset[y] = -10;
+	camera.offset[z] = 0;
+	camera.rotation[x] = 90;
+	//console.log((-camera.position[y])+" "+(-camera.offset[y])+" "+object.position[y]+" "+object.offset[y])
+	// CAMERA POSITION
+	camera.draw();
+
+	camera.position[x] = tmp1;
+	camera.position[y] = tmp2;
+	camera.position[z] = tmp3;
+	camera.offset[x] = tmp4;
+	camera.offset[z] = tmp5;
+	camera.rotation[x] = tmp6;
+	camera.offset[y] = tmp7;
+	
+	
+	for (var w in world) {
+		world[w].drawToFrameBuffer();
+	}
+	
+	gl.bindTexture(gl.TEXTURE_2D, rttTexture);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	gl.bindTexture(gl.TEXTURE_2D, null);
+	
+	
+	var mouse_x = canvas.width/2;
+	var mouse_y = canvas.height/2;
+	var pressedID = getObjectIDFromCoordinates(mouse_x, mouse_y);
+
+	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	
+	//console.log(pressedID);
+	
+	for (var w in world) {
+		if (world[w].ID == pressedID)
+			return world[w];
+	}
+	return null;
+}
 
 
 //Texture utilities

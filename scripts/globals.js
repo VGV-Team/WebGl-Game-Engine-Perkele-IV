@@ -25,6 +25,8 @@ var camera;
 
 var enemy;
 
+var world = [];
+
 var ui;
 
 
