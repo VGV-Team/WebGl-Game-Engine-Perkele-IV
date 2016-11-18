@@ -32,6 +32,9 @@ function gameLoop()
 	
 	//console.log(hero.position[x] + " " + hero.position[z])
 
+	//checkCollisionBetweenTwoObjectsSimple(hero, enemy[0]);
+	//console.log(getObjectCollisionDistance(hero, enemy[0]));
+	//console.log(world.position[y] + " " + world.offset[y]);
 }
 
 function drawFrameBuffer() {
@@ -154,6 +157,11 @@ function start() {
 	world.load("./assets/world_plane_new.obj");
 	// world.normalBuffer = null; - not working because load is async
 	//world.position[y]+=10;
+	/*
+	world = new World();
+	world.name = "World";
+	world.load("./assets/world_plane_new.obj");
+	*/
 	
 	hero = new Hero();
 	hero.name = "Hero";
@@ -194,7 +202,6 @@ function start() {
 	enemy[enemy.length-1].position[z] -= 10;
 	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
 	*/
-	
 	
 	
 	enemy.push(new Hero());

@@ -153,6 +153,7 @@ Hero.prototype.updateAI = function()
 
 Hero.prototype.update = function()
 {
+	//return;
 	if(!this.isPlayer) return;
 	
 	
