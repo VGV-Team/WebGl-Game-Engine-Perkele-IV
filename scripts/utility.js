@@ -55,9 +55,53 @@ function getVectorAngle(vec1, vec2)
 	cross[z] = Va[x]*Vb[y]+Va[y]*Vb[x];
 	
 	var Vn = [0,1,0];
-	
-	if((Vn[x]*cross[x] + Vn[y]*cross[y] + Vn[z]*cross[z])<0) angle -= angle;
+	//var Vn = vec2;
+	//console.log((Vn[x]*cross[x] + Vn[y]*cross[y] + Vn[z]*cross[z]));
+	if((Vn[x]*cross[x] + Vn[y]*cross[y] + Vn[z]*cross[z])<0)
+	{
+		//console.log("qweqweqweqwe");
+		angle = -angle;
+	}		
 	//console.log(cross[y]);
+	
+	/*
+	//var def = [1,0,0]
+	var def = vec1;
+	var ang1 = vec1[x]*def[x]+vec1[z]*def[z];
+	var ang2 = vec2[x]*def[x]+vec2[z]*def[z];
+	//return (ang1-ang2);
+	console.log((radToDeg(ang1-ang2)));
+	*/
+	
+	
+	/*
+	var Va = []; 
+	Va[x] = vec1[x]/Math.sqrt(vec1[x]*vec1[x]+vec1[z]*vec1[z]);
+	Va[y] = 0;
+	Va[z] = vec1[z]/Math.sqrt(vec1[x]*vec1[x]+vec1[z]*vec1[z]);
+	
+	var Vb = [];
+	Vb[x] = vec2[x]/Math.sqrt(vec2[x]*vec2[x]+vec2[z]*vec2[z]);
+	Vb[y] = 0;
+	Vb[z] = vec2[z]/Math.sqrt(vec2[x]*vec2[x]+vec2[z]*vec2[z]);
+	
+	
+	var cross = [];
+	cross[x] = Va[y]*Vb[z]-Va[z]*Vb[y];
+	cross[y] = Va[z]*Vb[x]+Va[x]*Vb[z];
+	cross[z] = Va[x]*Vb[y]+Va[y]*Vb[x];
+	var dot = Va[x]*Vb[x]+Va[z]*Vb[z];
+	//if(cross[x]<0)cross[x] = -cross[x];
+	//if(cross[y]<0)cross[y] = -cross[y];
+	//if(cross[z]<0)cross[z] = -cross[z];
+	
+	var qwe = Math.sqrt(cross[x]*cross[x]+cross[y]*cross[y]+cross[z]*cross[z]);
+	
+	angle = Math.atan2(qwe, dot);
+	console.log("qwe " + radToDeg(angle));
+	//console.log(cross + " " + dot);
+	*/
+	
 	return angle;
 }
 
@@ -79,6 +123,12 @@ function getDirectionBetweenVectors(pos1, pos2)
 	var posX = pos2[x]-pos1[x];
 	var posZ = pos2[z]-pos1[z];
 	return [posX/Math.sqrt(posX*posX+posZ*posZ), 0, posZ/Math.sqrt(posX*posX+posZ*posZ)];
+}
+
+function normalizeVector(vec)
+{
+	var d = Math.sqrt(vec[x]*vec[x]+vec[y]*vec[y]+vec[z]*vec[z]);
+	return [vec[x]/d, vec[y]/d, vec[z]/d];
 }
 
 
@@ -199,7 +249,7 @@ function getTopWorldObject(object) {
 	camera.offset[y] = tmp7;
 	
 	world.drawToFrameBuffer();
-	world1.drawToFrameBuffer();
+	//world1.drawToFrameBuffer();
 	
 	gl.bindTexture(gl.TEXTURE_2D, rttTexture);
 	gl.generateMipmap(gl.TEXTURE_2D);
@@ -781,6 +831,15 @@ function calculateTime()
 }
 
 
+function getDistanceBetweenVectors(vec1, vec2)
+{
+	var dist = Math.sqrt(
+		(vec1[x] - vec2[x]) * (vec1[x] - vec2[x]) +
+		(vec1[y] - vec2[y]) * (vec1[y] - vec2[y]) +
+		(vec1[z] - vec2[z]) * (vec1[z] - vec2[z])
+	);
+	return dist;
+}
 
 function getRange(object1, object2)
 {

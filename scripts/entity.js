@@ -152,6 +152,51 @@ Entity.prototype.updateMovement = function() {
 			//console.log(getVectorAngle(this.direction,dir) + " " + dir[x] + " " + this.direction[x] + " | " + dir[z] + " " + this.direction[z]);
 			
 			
+			/*
+			var q = getDirectionBetweenVectors(hero.position, enemy[0].position);
+			var dest = normalizeVector(hero.destination);
+			var v1 = getVectorAngle(dest, normalizeVector(q));
+			console.log(v1);
+			*/
+			
+			var tmp1 = [];
+			tmp1[x] = -dir[z];
+			tmp1[y] = 0;
+			tmp1[z] = dir[x];
+			tmp1 = normalizeVector(tmp1);
+			var tmp2 = [];
+			tmp2[x] = dir[z];
+			tmp2[y] = 0;
+			tmp2[z] = -dir[x];
+			tmp2 = normalizeVector(tmp2);
+			
+			var newPos1 = [];
+			newPos1[x] = this.position[x] + tmp1[x];
+			newPos1[y] = 0;
+			newPos1[z] = this.position[z] + tmp1[z];
+			
+			var newPos2 = [];
+			newPos2[x] = this.position[x] + tmp2[x];
+			newPos2[y] = 0;
+			newPos2[z] = this.position[z] + tmp2[z];
+			
+			
+			
+			var d1 = getDistanceBetweenVectors(newPos1, this.destination);
+			var d2 = getDistanceBetweenVectors(newPos2, this.destination);
+			
+			if(d1<d2) 
+			{
+				this.direction[x] = tmp1[x];
+				this.direction[z] = tmp1[z];
+			}
+			else
+			{
+				this.direction[x] = tmp2[x];
+				this.direction[z] = tmp2[z];
+			}
+			
+			//// old attemnt to calc collision
 			
 			/*
 			var Qvec1 = [dir[x], 0, dir[z]];

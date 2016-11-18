@@ -157,7 +157,7 @@ function handleMouseViaBuffer() {
 	//console.log(hero.HP);
 	
 	world.drawToFrameBuffer();
-	world1.drawToFrameBuffer();
+	//world1.drawToFrameBuffer();
 	
 	
 	//TOLE NVEM CE BO DELAL TO JE BLO TM NAKONC

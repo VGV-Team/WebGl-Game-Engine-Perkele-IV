@@ -37,6 +37,18 @@ function gameLoop()
 	//console.log(world.position[y] + " " + world.offset[y]);
 	
 	//drawFrameBufferWorld()
+	
+	/*
+	var q = getDirectionBetweenVectors(hero.position, enemy[0].position);
+	var dest = normalizeVector(hero.destination);
+	var v1 = getVectorAngle(dest, normalizeVector(q));
+	console.log(v1);
+	*/
+	
+	//var v2 = getVectorAngle(normalizeVector(q), dest);
+	//console.log(q[x] + " " + q[z]);
+	//console.log(v[x] + " " + v[z]);
+	//console.log(v1 + " || " + dest[x] + " " + dest[z] +" || "+q[x] + " "+q[z]);
 }
 
 
@@ -70,7 +82,7 @@ function drawScene() {
 	//console.log(hero.HP);
 	
 	world.draw();
-	world1.draw();
+	//world1.draw();
 
 }
 
@@ -129,14 +141,14 @@ function start() {
 	world.load("./assets/world_plane_new.obj");
 	// world.normalBuffer = null; - not working because load is async
 	//world.position[y]+=10;
-	
+	/*
 	world1 = new World();
 	world1.name = "World1";
 	world1.load("./assets/world_plane_new.obj");
 	world1.position[x] = -10;
 	world1.position[y] = 1;
 	world1.vec4Color = [0.5,0.5,0.5,1.0];
-	
+	*/
 	hero = new Hero();
 	hero.name = "Hero";
 	hero.isPlayer = true;
@@ -201,7 +213,7 @@ function start() {
 	//enemy[enemy.length-1].rotation[y] = -90;
 	
 	//HARDCODED
-	enemy[0].HP = 50;
+	enemy[0].HP = 90;
 	enemy[0].maxHP = 100;
 	//enemy[1].HP = 30;
 	//enemy[1].maxHP = 100;
