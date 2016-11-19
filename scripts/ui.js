@@ -47,10 +47,35 @@ UI.prototype.update = function() {
 	// Update enemy health bar
 	if (currentlyPressedEntity == null) this.hideEnemyHealthBar();
 	else {
-		var percentage = Math.floor((currentlyPressedEntity.HP / currentlyPressedEntity.maxHP) * 100);
-		this.enemyHealthBarPercentage.style.width = "" + percentage + "%";
-		this.enemyHealthBarName.innerHTML = currentlyPressedEntity.name;
-		this.showEnemyHealthBar();
+		// Check if we hovered an item
+		var itemHover = false;
+		for (var i in item) {
+			if (item[i] == currentlyPressedEntity) {
+				itemHover = true;
+				break;
+			}
+		}
+		
+		if (itemHover) {
+			// Item
+			var i = currentlyPressedEntity;
+			this.enemyHealthBarPercentage.style.width = "100%";
+			this.enemyHealthBarPercentage.style.background = getStyleColorBasedOnRarity(i.stats.rarity);
+			this.enemyHealthBarName.innerHTML = "Item: " + i.stats.itemName;
+			this.showEnemyHealthBar();
+			
+			
+		} else {
+			// Enemy
+			var percentage = Math.floor((currentlyPressedEntity.HP / currentlyPressedEntity.maxHP) * 100);
+			this.enemyHealthBarPercentage.style.width = "" + percentage + "%";
+			this.enemyHealthBarPercentage.style.background = "red";
+			this.enemyHealthBarName.innerHTML = currentlyPressedEntity.name;
+			this.showEnemyHealthBar();
+		}
+		
+		
+		
 	}
 	
 	// Update abilities bar
