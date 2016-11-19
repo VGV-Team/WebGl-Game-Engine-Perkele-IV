@@ -28,11 +28,13 @@ Ability.prototype.update = function() {
 //Set ready time and ready to false
 Ability.prototype.use = function(casterObject) {
 	
+	if (this.ready == false) return false;
 	if (casterObject.fury < this.furyRequired) return false;
 	
 	this.ready = false;
 	this.timeReady = lastUpdateTime + this.cooldown;
 	casterObject.fury -= this.furyRequired;
+	if (casterObject.fury > casterObject.maxFury) casterObject.fury = casterObject.maxFury;
 	
 	casterObject.waypointMove = false;
 	casterObject.waypoint.drawObject = false;

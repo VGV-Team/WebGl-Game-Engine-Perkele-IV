@@ -177,10 +177,10 @@ function start() {
 	
 	// Fury decay
 	// TODO: better location
-	setInterval(function() {
+	/*setInterval(function() {
 		hero.fury -= hero.furyDecay;
 		if (hero.fury < 0) hero.fury = 0;
-	}, 1000);
+	}, 1000);*/
 	
 
 	

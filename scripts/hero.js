@@ -50,32 +50,39 @@ Hero.prototype.load = function(objectLocation) {
 	this.waypoint.vec4Color = [1.0,0.25,0.25,1.0];
 	this.waypoint.drawObject = false;
 
-	this.inventory.push({
-		itemName: "SHOVEL",
-		attack: 1,
-		criticalChance: 0,
-		rarity: "COMMON"
-	});
-	this.inventory.push({
-		itemName: "GUARD SWORD",
-		attack: 5,
-		criticalChance: 2,
-		rarity: "RARE"
-	});
-	this.inventory.push({
-		itemName: "SWORD OF PALADINS",
-		attack: 15,
-		criticalChance: 5,
-		rarity: "LEGENDARY"
-	});
-	this.inventory.push({
-		itemName: "BANISHER OF DEMONS",
-		attack: 25,
-		criticalChance: 10,
-		rarity: "EPIC"
-	});
+	if (this == hero) {
+		this.inventory.push({
+			itemName: "SHOVEL",
+			attack: 1,
+			criticalChance: 0,
+			rarity: "COMMON"
+		});
+		this.inventory.push({
+			itemName: "GUARD SWORD",
+			attack: 5,
+			criticalChance: 2,
+			rarity: "RARE"
+		});
+		this.inventory.push({
+			itemName: "SWORD OF PALADINS",
+			attack: 15,
+			criticalChance: 5,
+			rarity: "LEGENDARY"
+		});
+		this.inventory.push({
+			itemName: "BANISHER OF DEMONS",
+			attack: 25,
+			criticalChance: 10,
+			rarity: "EPIC"
+		});
 
-	this.changeEquippedWeapon(0);
+		this.changeEquippedWeapon(0);
+		
+		this.abilities["360Slash"] = new Ability("360Slash", 10000, 50, 1.2);
+		this.abilities["Heal"] = new Ability("Heal", 20000, 25, 0);
+	}
+	
+	
 
 	
 };
@@ -129,7 +136,15 @@ Hero.prototype.updatePlayer = function()
 		this.waypoint.position = this.destination;
 	}
 	
+	// Fury decay
+	this.fury -= (this.furyDecay * (timeTillLastUpdate));
+	if (this.fury < 0) this.fury = 0;
+	//this.fury = Math.round(this.fury*100)/100;
 	
+	//HP regen
+	this.HP += (this.HPRegen * (timeTillLastUpdate));
+	if (this.HP > this.maxHP) this.HP = this.maxHP;
+	//this.HP = Math.round(this.HP*100)/100;
 }
 
 Hero.prototype.updateAI = function()
@@ -213,3 +228,36 @@ Hero.prototype.update = function()
 	Entity.prototype.update.call(this);
 }
 
+Hero.prototype.useAbility = function(abilityName) {
+	
+	console.log("Hero is using ability " + abilityName);
+	
+	if (abilityName == "360Slash") {
+		if (this.abilities["360Slash"].use(this)) {
+			
+			// Check all enemies
+			for (var e in enemy) {
+				// If current enemy in range, damage it!
+				if (getObjectCollisionDistance(this, enemy[e]) - this.abilities["360Slash"].range <= 0) {
+					basicAttack(this, enemy[e]);
+				}
+			}
+			
+		} else {
+			//"Not enough fury" audio? TODO
+		}
+	}
+	
+	if (abilityName == "Heal") {
+		if (this.abilities["Heal"].use(this)) {
+			
+			//Heal
+			this.HP += this.maxHP/2;
+			if (this.HP > this.maxHP) this.HP = this.maxHP;
+			
+		} else {
+			//"Not enough fury" audio? TODO
+		}
+	}
+	
+}

@@ -405,7 +405,18 @@ function handleKeys() {
 	}
   
   
-  
+	
+	//Hero abilities
+	if (currentlyPressedKeys[49]) {
+		// Use ability on key "1"
+		hero.useAbility("360Slash");
+	}
+	// M key
+	if (currentlyPressedKeys[50]) {
+		// Use ability on key "2"
+		hero.useAbility("Heal");
+	}
+	
   ///////////////////////// debug only ////////////////////////////////
   /*
 	if(currentlyPressedKeys[102]) {

@@ -12,6 +12,8 @@ function UI() {
 	}
 	this.abilityBoxes = */
 	this.abilityBasicAttackCooldownBar = document.getElementById("abilityBasicAttackCooldownBar");
+	this.ability360SlashCooldownBar = document.getElementById("ability360SlashCooldownBar");
+	this.abilityHealCooldownBar = document.getElementById("abilityHealCooldownBar");
 	
 	// INVENTORY INIT
 	this.inventoryOpen = false;
@@ -33,6 +35,9 @@ function UI() {
 	this.heroHealthPercentage = document.getElementById("healthPercentage");
 	this.heroFuryPercentage = document.getElementById("furyPercentage");
 	
+	this.currentHP = document.getElementById("currentHP");
+	this.currentFury = document.getElementById("currentFury");
+	
 }
 
 
@@ -50,22 +55,39 @@ UI.prototype.update = function() {
 	
 	// Update abilities bar
 	var abilities = hero.abilities;
+	
 	var cd = Math.floor(((abilities["BasicAttack"].timeReady - lastUpdateTime) / abilities["BasicAttack"].cooldown) * 100);
 	if (cd < 0) cd = 0;
 	this.abilityBasicAttackCooldownBar.style.width = cd + "%";
 	
+	cd = Math.floor(((abilities["360Slash"].timeReady - lastUpdateTime) / abilities["360Slash"].cooldown) * 100);
+	if (cd < 0) cd = 0;
+	this.ability360SlashCooldownBar.style.width = cd + "%";
+	
+	cd = Math.floor(((abilities["Heal"].timeReady - lastUpdateTime) / abilities["Heal"].cooldown) * 100);
+	if (cd < 0) cd = 0;
+	this.abilityHealCooldownBar.style.width = cd + "%";
+	
 	// Update Inventory Stats
-	statsHP.innerHTML = "HP: " + hero.HP + " / " + hero.maxHP;
+	statsHP.innerHTML = "HP: " + Math.round(hero.HP) + " / " + Math.round(hero.maxHP);
 	statsHPRegen.innerHTML = "HP regeneration: " + hero.HPRegen + " / sec";
 	statsAttack.innerHTML = "Attack: " + hero.strength;
 	statsCriticalChance.innerHTML = "Critical Chance: " + hero.criticalChance + " %"; //FIXME
-	statsFury.innerHTML = "Fury: " + hero.fury + " / " + hero.maxFury;
+	statsFury.innerHTML = "Fury: " + Math.round(hero.fury) + " / " + Math.round(hero.maxFury);
 	
 	// Update frontend HP and fury UI
 	var hp = (hero.HP / hero.maxHP) * 100;
 	var fury = (hero.fury / hero.maxFury) * 100;
 	this.heroHealthPercentage.style.height = "" + hp + "%";
 	this.heroFuryPercentage.style.height = "" + fury + "%";
+	
+	// Update HP and Fury numeric values/text
+	hp = Math.round(hero.HP);
+	fury = Math.round(hero.fury);
+	var maxHP = Math.round(hero.maxHP);
+	var maxFury = Math.round(hero.maxFury);
+	this.currentHP.innerHTML = "HP<br/>" + hp + " / " + maxHP;
+	this.currentFury.innerHTML = "Fury<br/>" + fury + " / " + maxFury;
 	
 	if (hero.HP <= 0) {
 		// Show GAME OVER

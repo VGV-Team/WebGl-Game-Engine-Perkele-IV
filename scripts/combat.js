@@ -5,11 +5,13 @@ function basicAttack(attackerObject, hitObject) {
 	hitObject.HP -= attackerObject.strength;
 	if(hitObject.HP <= 0 && hitObject==hero)
 	{
+		hitObject.HP = 0;
 		console.log("PLAYER DIEDED");
 		
 		// TODO: death message
 	}
 	else if (hitObject.HP <= 0) {
+		hitObject.HP = 0;
 		hitObject.isActive = false;
 		hitObject.drawObject = false;
 		hitObject.calculateCollision = false;
