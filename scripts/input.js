@@ -37,10 +37,12 @@ function handleMouse(pressedID, xPos, yPos) {
 		var my = 1.0 - (2.0 * (canvas.height-yPos)) / canvas.height;
 		var mz = 1.0;
 		
+		
 		var ray = vec3.create();
 		ray[x] = mx;
 		ray[y] = my;
 		ray[z] = mz;
+		
 		
 		var ray_clip = []
 		ray_clip[x] = ray[0];
@@ -72,6 +74,9 @@ function handleMouse(pressedID, xPos, yPos) {
 		final_vector[z] = ray_wor[z];
 
 		vec3.normalize(final_vector,final_vector);
+		
+		final_vector = [final_vector[x], final_vector[y], final_vector[z], 1.0];
+		
 		
 		//final_vector represents direction where the camera is looking
 		
@@ -376,6 +381,16 @@ function handleKeys() {
 	else {
 		camera.direction[y] = 0;
 	}
+	
+	// R key
+	if (currentlyPressedKeys[82]) {
+		camera.rotation[y] -= 1;
+	} 
+	// T key
+	else if (currentlyPressedKeys[84]) {
+		camera.rotation[y] += 1;
+	} 
+
   
   
 	// N key

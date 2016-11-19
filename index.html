@@ -53,6 +53,9 @@
 		    uniform vec3 uAmbientColor;	// ambient color uniform
 		    uniform vec3 uPointLightingLocation;	// light direction uniform
 		    uniform vec3 uPointLightingColor;		// light color
+			
+			uniform vec3 uDirectionalLightingLocation;
+			uniform vec3 uDirectionalLightingColor;
 			// uniform attribute for setting 2D sampler
 		    uniform sampler2D uSampler;
 			
@@ -66,10 +69,19 @@
 		            vec3 lightDirection = normalize(uPointLightingLocation - vPosition.xyz);
 		            // calculate weight for directional light
 		            float directionalLightWeighting = max(dot(normalize(vTransformedNormal), lightDirection), 0.0);
-		            // calculate lighting
+		            
+					// calculate point lighting
 		            lightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
-					lightWeighting = lightWeighting  * 7.0 * (1.0 / distance(vPosition.xyz, vec3(0.0,0.0,0.0)));
-		        }
+					
+					
+					// calculate directional lighting
+
+					directionalLightWeighting = max(dot(normalize(vTransformedNormal), uDirectionalLightingLocation), 0.0);
+					lightWeighting = lightWeighting + uDirectionalLightingColor * directionalLightWeighting;
+					
+					//lightWeighting = lightWeighting  * 1.0 * (1.0 / distance(vPosition.xyz, vec3(0.0,0.0,0.0)));
+					
+				}
 		        vec4 fragmentColor;
 		        if (uUseTextures) {
 		            fragmentColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));

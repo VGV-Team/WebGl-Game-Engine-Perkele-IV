@@ -420,7 +420,13 @@ function draw(objectToDraw)
 		//LIGHT ON HERO
 		//console.log( hero.position[x] + " " + hero.position[y] + " " + hero.position[z]);
 
-		
+		/*var newPos = [hero.position[x]+hero.offset[x], -1.0, hero.position[z]+hero.offset[z]];
+		mvPushMatrix();
+		mat4.identity(mvMatrix);
+		mat4.translate(mvMatrix, newPos);
+		newPos[3] = 1.0;
+		newPos = matrixVectorMultiply4(mvMatrix, newPos);
+		console.log(newPos[z] + " - " + hero.position[z]);*/
 		gl.uniform3f(
 		  shaderProgram.pointLightingLocationUniform,
 		  //hero.position[x],
@@ -431,6 +437,7 @@ function draw(objectToDraw)
 		  //hero.position[z]
 		  
 		);
+		//mvPopMatrix();
 
 		gl.uniform3f(
 		  shaderProgram.pointLightingColorUniform,
@@ -439,6 +446,31 @@ function draw(objectToDraw)
 		  1.0
 		);
 		
+		
+		
+		
+		//DIRECTIONAL LIGHT (on hero)
+		gl.uniform3f(
+		  shaderProgram.directionalLightColorUniform,
+		  0.0,
+		  0.0,
+		  0.0
+		);
+		//console.log(mvMatrix);
+		/*var newPos = [hero.position[x], 5.0, 0.0];
+		mvPushMatrix();
+		mat4.identity(mvMatrix);
+		mat4.translate(mvMatrix, newPos);
+		newPos[3] = 1.0;
+		newPos = matrixVectorMultiply4(mvMatrix, newPos);
+		//console.log(lightPos + " " + newPos);*/
+		gl.uniform3f(
+		  shaderProgram.directionalLightLocationUniform,
+		  0.0,
+		  -1.0,
+		  0.0
+		);
+		//mvPopMatrix();
 		
 		// Set the normals attribute for the vertices.
 		gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);

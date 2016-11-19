@@ -138,6 +138,10 @@ function initShaders() {
   // BARVA POINT LIGHTA
   shaderProgram.pointLightingColorUniform = gl.getUniformLocation(shaderProgram, "uPointLightingColor");
   
+  //DIRECTIONAL LIGHT NAD HEROTOM
+  shaderProgram.directionalLightLocationUniform = gl.getUniformLocation(shaderProgram, "uDirectionalLightingLocation")
+   shaderProgram.directionalLightColorUniform = gl.getUniformLocation(shaderProgram, "uDirectionalLightingColor")
+
     // TEXTURE KOORDINATE
   shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
   gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
