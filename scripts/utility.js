@@ -201,6 +201,7 @@ function drawObjectToFrameBuffer(objectToDraw) {
 	mat4.rotateZ(mvMatrix, degToRad(objectToDraw.rotation[2]));
 
 	mat4.scale(mvMatrix, objectToDraw.scale);
+	//mat4.scale(mvMatrix, [2.0, 1.0, 2.0]);
 	//---------------------------------------------------------------------------------------------------
 	
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objectToDraw.vertexIndexBuffer);
@@ -992,6 +993,7 @@ function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 // circle distance based on x and z transformed to radius
 function getObjectCollisionDistance(object1, object2)
 {
+	if(!object1.calculateCollision || !object2.calculateCollision) return 9999; // do not calc collision so collision never happens
 	var range = getRange(object1, object2);
 	//var dist1 = Math.max(object1.collisionBox[x], object1.collisionBox[z])/2;
 	//var dist2 = Math.max(object2.collisionBox[x], object2.collisionBox[z])/2;

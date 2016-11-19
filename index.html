@@ -16,7 +16,7 @@
 		<script src="./scripts/ui.js" type="text/javascript"></script>
 		<script src="./scripts/combat.js" type="text/javascript"></script>
 		<script src="./scripts/ability.js" type="text/javascript"></script>
-		
+		<script src="./scripts/item.js" type="text/javascript"></script>
 		
 		<!-- 
 		
@@ -140,9 +140,6 @@
 		<h1>Perkele IV</h1>
 		<div>
 		<h4>FIX ASAP:</h4>
-		fix movement on y axis - also the reason for rotation to 0,0,0 angle at first move <br />
-		implement collision bypassing - we should move towards our destination at other angles <br />
-		fix ray tracing starting too high <br />
 		fix that lightning <br />
 		</div>
 		<div id="content">
@@ -220,11 +217,10 @@
 		
 		<div>
 		<h4>TODO:</h4>
+		if objects comes under mouse the hud should update <br />
 		HP regen <br />
-		enemy health bar hide on death <br />
 		implement items <br/>
 		implement area abilities <br />
-		implement enemy attacking via range <br/>
 		implement meta data for classes <br/>
 		
 		add animations<br />
@@ -233,9 +229,14 @@
 		<div>
 		<h4>Postponed:</h4>
 		collision box for terrain - no need<br />
+		fix ray tracing starting too high - no need<br />
 		</div>
 		<div>
 		<h4>Finished:</h4>
+		enemy health bar hide on death <br />
+		implement enemy attacking via range <br/>
+		fix movement on y axis - also the reason for rotation to 0,0,0 angle at first move <br />
+		implement collision bypassing - we should move towards our destination at other angles <br />
 		implement dead enemy deliting/collision ignoring <br/>
 		implement enemy attack <br />
 		enemy evil pumpkin <br />

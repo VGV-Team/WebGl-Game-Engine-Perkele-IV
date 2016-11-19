@@ -13,14 +13,14 @@ function gameLoop()
 	
 	hero.update();
 	for(var i in enemy) enemy[i].update();
-	
+	for(var i in item) item[i].update();
 	
 	camera.update();
 	//console.log(getVectorAngle(hero.position, enemy[0].position));
 
 	ui.update();
-	checkMouse();
-	
+	//checkMouse();
+	handleMouseViaBuffer()
 	
 	// draws camera and all objects	
     drawScene();
@@ -77,7 +77,7 @@ function drawScene() {
 	hero.draw();
 	
 	for(var i in enemy) enemy[i].draw();
-	
+	for(var i in item) item[i].draw();
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
 	//console.log(hero.HP);
 	
@@ -141,6 +141,10 @@ function start() {
 	ui = new UI();
 	
 	world = [];
+	item = [];
+	
+	
+	//////////////// WORLD MUST LOAD FIRST !!!! ////////////////
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
@@ -163,6 +167,16 @@ function start() {
 	world[world.length - 1].position[y] = 1;
 	world[world.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
 	
+	//////////////// WORLD MUST LOAD FIRST !!!! ////////////////
+
+	
+	item.push(new Item());
+	item[item.length-1].name = "item";
+	item[item.length-1].load("./assets/sword.obj");
+	item[item.length-1].position[x] += 7;
+	item[item.length-1].position[z] += 2;
+	
+	
 	hero = new Hero();
 	hero.name = "Hero";
 	hero.isPlayer = true;
@@ -174,6 +188,7 @@ function start() {
 	//hero.position[x] -= 10;
 	hero.load("./assets/ironman.obj");
 
+	
 	
 	// Fury decay
 	// TODO: better location

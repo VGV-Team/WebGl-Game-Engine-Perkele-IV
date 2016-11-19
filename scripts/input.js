@@ -145,15 +145,31 @@ function handleMouse(pressedID, xPos, yPos) {
 				break;
 			}
 		}
+		
+		for(var i in item) {
+			if (item[i].ID == pressedID) {
+				var temp = item[i];
+				console.log("You pressed " + temp.name);
+				currentlyPressedEntity = item[i];
+				if (leftMousePressed) {
+					currentlyPressedMouseCoordinates[x] = temp.position[x];
+					currentlyPressedMouseCoordinates[y] = temp.position[y];//+world.offset[y];
+					currentlyPressedMouseCoordinates[z] = temp.position[z];
+				}
+				break;
+			}
+		}
+		
 	}
 }
-
+/*
 function checkMouse()
 {
 	if (!leftMouseMoved && !leftMousePressed) return;
 	
 	handleMouseViaBuffer();
 }
+*/
 
 function handleMouseViaBuffer() {
 	// NUJNO ZLO
@@ -177,7 +193,7 @@ function handleMouseViaBuffer() {
 	//hero.drawToFrameBuffer();
 	
 	for(var i in enemy) enemy[i].drawToFrameBuffer();
-	
+	for(var i in item) item[i].drawToFrameBuffer();
 	//console.log(getObjectCollisionDistance(hero, enemy[0]) + " " + hero.calculateCollision + " " + enemy[0].calculateCollision);
 	//console.log(hero.HP);
 	
@@ -202,7 +218,7 @@ function handleMouseViaBuffer() {
 	//if (pixels[0] != 0) alert("ALO");
 	//console.log(pixels);
 	
-	//if (leftMouseMoved || leftMousePressed) {
+	if (leftMouseMoved || leftMousePressed) {
 		var rect = canvas.getBoundingClientRect();
 		var mouse_x = leftMousePressEvent.clientX - rect.left;
 		//console.log(rect.top);
@@ -212,7 +228,7 @@ function handleMouseViaBuffer() {
 		leftMousePressed = false;
 		leftMousePressEvent = null;
 		leftMouseMoved = false;
-	//}
+	}
 	
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 }

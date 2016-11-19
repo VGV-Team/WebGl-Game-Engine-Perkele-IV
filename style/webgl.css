@@ -146,7 +146,7 @@ td {
 	z-index:1;
 	position:absolute;
 	height:500px;
-	width:500px;
+	width:550px;
 	margin-left: auto;
 	margin-right: auto;
 	left: 0;
@@ -175,6 +175,8 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 	width:50%;
 	height:100%;
 	background-color:transparent;
+	overflow-y: scroll;
+	
 }
 
 .inventoryItem:hover {

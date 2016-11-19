@@ -10,7 +10,7 @@ function Hero() {
 	this.maxFury = 100;
 	this.furyDecay = 3; //1 per sec
 	this.criticalChance = 5; //0-100%
-	this.discovery = 5; //% chance of epic drop
+	this.discovery = 10; //% chance of epic drop
 	
 	//abilities
 	this.abilities = [];
@@ -127,6 +127,9 @@ Hero.prototype.updatePlayer = function()
 		this.waypoint.drawObject = true;
 		this.waypoint.offset = [0.0,0.0,0.0]; // to make sure it is half clipping through terrain
 		this.waypoint.position = this.destination;
+		
+		
+		
 	}
 	
 	
@@ -160,9 +163,9 @@ Hero.prototype.update = function()
 {
 	//return;
 	//if(!this.isPlayer) return;
-	
-	
 	if(!this.isActive) return;
+	
+	
 	
 	
 	
@@ -182,6 +185,8 @@ Hero.prototype.update = function()
 	}
 	
 	
+	
+	
 	for (var i in this.abilities) {
 		this.abilities[i].update();
 	}
@@ -196,7 +201,7 @@ Hero.prototype.update = function()
 		//if (this.waypointMove == false && this.abilities["BasicAttack"].ready == true && currentlyPressedEntity != null) {
 		if (//this.waypointMove == false && 
 			this.abilities["BasicAttack"].ready == true && 
-			this.target != null &&
+			this.target != null && this.target.name != "item" && 
 			//getRange(hero, this.target) - this.abilities["BasicAttack"].range <= 0
 			getObjectCollisionDistance(this, this.target) - this.abilities["BasicAttack"].range <= 0
 		) 
@@ -209,6 +214,48 @@ Hero.prototype.update = function()
 				basicAttack(this, this.target);
 		}
 	}
+	
+	if(this.target!=null && this.target.name == "item" && getObjectCollisionDistance(this, this.target)<0)
+	{
+		/*
+		var ok=true;
+		for(var i in item)
+		{
+			if(getObjectCollisionDistance(this, item[i])<0)
+			{
+				item[i].isActive = false;
+				item[i].drawObject = false;
+				item[i].calculateCollision = false;
+
+				this.inventory.push(item[i].stats);
+				ok=false;
+				break;
+			}
+		}
+		if(ok!=true)
+		{
+			this.waypointMove = false;
+			this.target = null;
+			this.waypoint.drawObject = false;
+		}
+		*/
+		
+		this.target.isActive = false;
+		this.target.drawObject = false;
+		this.target.calculateCollision = false;
+		//console.log(this.target);
+		this.inventory.push(this.target.stats);
+		ui.updateInventoryItemList();
+		
+		this.waypointMove = false;
+		this.target = null;
+		this.waypoint.drawObject = false;
+		
+		console.log("You collected item!");
+	}
+	
+	
+	
 	
 	Entity.prototype.update.call(this);
 }

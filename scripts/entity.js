@@ -200,7 +200,11 @@ Entity.prototype.updateMovement = function() {
 				this.direction[z] = tmp2[z];
 			}
 			
-			//// old attemnt to calc collision
+			
+			
+			
+			
+			//// old attempt to calc collision
 			
 			/*
 			var Qvec1 = [dir[x], 0, dir[z]];
@@ -211,11 +215,11 @@ Entity.prototype.updateMovement = function() {
 			var Qvec2dis = Qvec2[x]*Qvec2[x]+Qvec2[z]*Qvec2[z];
 			Qvec2[x] = Qvec2[x] / Qvec2dis;
 			Qvec2[z] = Qvec2[z] / Qvec2dis;
-			*/
+			
 			
 			//console.log(getVectorAngle(hero.position, enemy[0].position));
 			
-			/*
+			
 			if(this.direction[x]<=0 &&
 				this.direction[z]<=0 &&
 				
@@ -260,11 +264,10 @@ Entity.prototype.updateMovement = function() {
 				this.direction[x] = dir[z];
 				this.direction[z] = -dir[x];
 			}
-			*/
 			
 			
 			
-			/*
+			
 			if(this.direction[x]>=0 &&
 				this.direction[z]>=0 &&
 				

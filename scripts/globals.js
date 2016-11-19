@@ -25,6 +25,7 @@ var camera;
 
 var enemy;
 
+var item = [];
 var world = [];
 
 var ui;
@@ -63,3 +64,14 @@ var normalBuffer = [];
 var vertexIndexBuffer = [];
 var textureFile = [];
 */
+
+
+var itemNames = [
+"The Ciril's destiny",
+"The Ciril's fate",
+"The Ciril's will",
+"The Ciril's power",
+"The Ciril's soul",
+"The Ciril's rage"
+];
+
