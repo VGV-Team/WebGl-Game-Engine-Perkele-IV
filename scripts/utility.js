@@ -199,9 +199,11 @@ function drawObjectToFrameBuffer(objectToDraw) {
 	mat4.rotateX(mvMatrix, degToRad(objectToDraw.rotation[0]));
 	mat4.rotateY(mvMatrix, degToRad(objectToDraw.rotation[1]));
 	mat4.rotateZ(mvMatrix, degToRad(objectToDraw.rotation[2]));
-
+	
 	mat4.scale(mvMatrix, objectToDraw.scale);
-	//mat4.scale(mvMatrix, [2.0, 1.0, 2.0]);
+	
+	// Scaling for easier clicking
+	//if (objectToDraw.ID > world[world.length - 1].ID) mat4.scale(mvMatrix, [1.5, 1.0, 1.5]);
 	//---------------------------------------------------------------------------------------------------
 	
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objectToDraw.vertexIndexBuffer);

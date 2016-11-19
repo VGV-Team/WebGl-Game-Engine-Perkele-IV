@@ -98,16 +98,18 @@ td {
 	width:100%;
 	bottom:0px;
 	left: 0px;
-	background-color:transparent;
+	
 }
 #abilityBar {
 	
 	/*display:none;*/
-	
-
-	background-color:blue;
-	width:620px;
+	display:inline-block;
+	/*background-image:url('assets/ui/abilityBarBackground.jpg');*/
+	width:959px;
+	height:100%;
 	margin:0px auto;
+	background-image:url("../assets/ui/abilityBarBackground.jpg");
+	z-index:1;
 
 }
 
@@ -143,7 +145,7 @@ td {
 /* CENTER BAR - INVENTORY */
 #inventoryBar {
 	display:none;
-	z-index:1;
+	z-index:10;
 	position:absolute;
 	height:500px;
 	width:550px;
@@ -238,7 +240,7 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 #healthBox, #furyBox{
 	width:150px;
 	height:150px;
-	border:5px solid black;
+	border:5px solid silver;
 	background-color:transaprent;
 }
 #healthBox {
@@ -251,7 +253,7 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 #furyPercentage, #healthPercentage {
 	position:absolute;
 	width:150px;
-	bottom:6px;
+	bottom:5px;
 	max-height:150px;
 }
 
@@ -265,4 +267,27 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 	background-color:red;
 	height:100%;
 	
+}
+
+#abilityWrapper {
+	height:100%;
+	width:700px;
+	margin: 0px auto;
+}
+.boxText {
+	font-weight:bold;
+	font-size:18;
+	position:absolute;
+	z-index:10;
+	text-align:center;
+	width:155px;
+	color:white;
+	margin-top:45px;
+}
+
+#currentHP {
+	left:0;
+}
+#currentFury {
+	right:0;
 }

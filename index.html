@@ -138,10 +138,7 @@
 	</head>
 	<body onload="start()">
 		<h1>Perkele IV</h1>
-		<div>
-		<h4>FIX ASAP:</h4>
-		fix that lightning <br />
-		</div>
+		
 		<div id="content">
 			
 			<canvas id="glcanvas" width="1280px" height="720px">
@@ -190,49 +187,57 @@
 			
 			<div id="bottomBar">
 				<div id="healthBox">
+					<span id="currentHP" class="boxText">HP<br/>0/0</span>
 					<div id="healthPercentage"></div>
 				</div>
 				<div id="abilityBar">
-					<div class="abilityBox">
-						<span class="abilityName">Basic Attack</span>
-						<div id="abilityBasicAttackCooldownBar" class="abilityCooldown">
+					<div id="abilityWrapper">
+						<div class="abilityBox">
+							<span class="abilityName">LMOUSE<br/>Basic Attack<br/>+10 Fury</span>
+							<div id="abilityBasicAttackCooldownBar" class="abilityCooldown">
+							</div>
 						</div>
-					</div>
-					<div class="abilityBox">
-						<span class="abilityName">Ability 1</span>
-						<div id="ability1CooldownBar" class="abilityCooldown">
+						<div class="abilityBox">
+							<span class="abilityName">1<br/>360 Slash<br/>-50 Fury</span>
+							<div id="ability360SlashCooldownBar" class="abilityCooldown">
+							</div>
 						</div>
-					</div>
-					<div class="abilityBox">
-						<span class="abilityName">Ability 2</span>
-						<div id="ability2CooldownBar" class="abilityCooldown">
+						<div class="abilityBox">
+							<span class="abilityName">2<br/>Heal<br/>-25 Fury</span>
+							<div id="abilityHealCooldownBar" class="abilityCooldown">
+							</div>
 						</div>
 					</div>
 				</div>
 				<div id="furyBox">
+					<span id="currentFury" class="boxText">Fury<br/>0/0</span>
 					<div id="furyPercentage"></div>
 				</div>
 			</div>
 		</div>
 		
 		<div>
-		<h4>TODO:</h4>
-		if objects comes under mouse the hud should update <br />
-		HP regen <br />
-		implement items <br/>
-		implement area abilities <br />
-		implement meta data for classes <br/>
-		
-		add animations<br />
-		add effects<br />
+		<h4>FIX ASAP:</h4>
+		fix that lightning <br />
 		</div>
 		<div>
+		<h4>TODO:</h4>
+		if objects comes under mouse the hud should update <br />
+		implement meta data for classes <br/>
+		</div>
+		
+		<div>
 		<h4>Postponed:</h4>
+		add animations<br />
+		add effects<br />
 		collision box for terrain - no need<br />
 		fix ray tracing starting too high - no need<br />
 		</div>
 		<div>
 		<h4>Finished:</h4>
+		HP regen <br />
+		implement items <br/>
+		implement area abilities <br />
 		enemy health bar hide on death <br />
 		implement enemy attacking via range <br/>
 		fix movement on y axis - also the reason for rotation to 0,0,0 angle at first move <br />
