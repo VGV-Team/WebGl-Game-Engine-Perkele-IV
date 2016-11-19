@@ -138,10 +138,15 @@ Hero.prototype.updateAI = function()
 	if(getRange(this, hero) < this.viewRange)
 	{
 		//console.log("I see you and I dont like you.");
+		//if(this.target == hero) return;
 		this.target = hero;
 		this.waypointMove = true;
 		if (this.abilities["BasicAttack"].ready)
+		{
 			this.alreadyAttacked = false;
+			//this.waypointMove = false;
+		}	
+		
 	}
 	else
 	{

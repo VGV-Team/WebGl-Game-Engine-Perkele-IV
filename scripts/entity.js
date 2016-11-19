@@ -148,7 +148,7 @@ Entity.prototype.updateMovement = function() {
 		//console.log("sp: " + this.direction[x] + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
 	
 		if(collision!=null) {
-			
+			if(collision == this.target) return;
 			// try 90% in way of collision
 			var dir = getDirectionBetweenVectors(this.position, collision.position);
 			
