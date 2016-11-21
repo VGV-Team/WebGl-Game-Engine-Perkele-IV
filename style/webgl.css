@@ -1,5 +1,16 @@
+body {
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+	cursor:default;
+}
+
 #content {
-	width: 1280px;
+	height:900px;
+	width:1850px;
 	text-align: center;
 	position: relative;
 	margin:0px auto;
@@ -37,6 +48,11 @@ td {
 }
 
 /* UI ELEMENTS */
+
+#UIWrapper {
+	height:100%;
+	width:1000px;
+}
 
 #topBar {
 	display:none;
@@ -96,7 +112,7 @@ td {
 	position:absolute;
 	height:160px;
 	width:100%;
-	bottom:0px;
+	bottom:-1px;
 	left: 0px;
 	
 }
@@ -105,7 +121,7 @@ td {
 	/*display:none;*/
 	display:inline-block;
 	/*background-image:url('assets/ui/abilityBarBackground.jpg');*/
-	width:959px;
+	width:1530px;
 	height:100%;
 	margin:0px auto;
 	background-image:url("../assets/ui/abilityBarBackground.jpg");
@@ -117,7 +133,7 @@ td {
 	float:left;
 	display:inline;
 	width:180px;
-	margin-left:20px;
+	margin-left:35px;
 	height:50%;
 	background-color:white;
 	border:1px solid black;
@@ -147,7 +163,7 @@ td {
 	display:none;
 	z-index:10;
 	position:absolute;
-	height:500px;
+	height:550px;
 	width:550px;
 	margin-left: auto;
 	margin-right: auto;
@@ -158,7 +174,7 @@ td {
 	border:4px solid gold;
 	border-radius:10px;
 }
-#inventory {
+.popupBox {
 	
 	/*display:none;*/
 	
@@ -290,4 +306,98 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 }
 #currentFury {
 	right:0;
+}
+
+#characterButtons {
+	width:120px;
+	height:100%;
+	position:absolute;
+	margin-left:60px;
+}
+
+#systemButtons {
+	width:120px;
+	height:100%;
+	position:absolute;
+	top:0;
+	right:300px;
+}
+
+.uiButton:hover {
+	color:gold;
+}
+.uiButton {
+	margin-top:8px;
+	background-image:url("../assets/ui/buttonBackground.png");
+	height:70px;
+	width:200px;
+	background-size: 200px 70px;
+	padding-top:20px;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+	font-weight:bold;
+	color:white;
+	text-align:center;
+}
+
+/* CHARACTER STATS BOX */
+#characterBar {
+	display:none;
+	z-index:10;
+	position:absolute;
+	height:550px;
+	width:550px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top:80px;
+	background-color:transparent;
+	border:4px solid gold;
+	border-radius:10px;
+}
+
+.popupBoxWrapper {
+	float:left;
+	width:100%;
+	text-align:center;
+}
+
+/* MENU BAR */
+#menuBar {
+	display:none;
+	z-index:15;
+	position:absolute;
+	height:300px;
+	width:400px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top:200px;
+	background-color:transparent;
+	border:4px solid gold;
+	border-radius:10px;
+}
+
+/* HELP BAR */
+#helpBar {
+	display:none;
+	z-index:15;
+	position:absolute;
+	height:650px;
+	width:700px;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top:80px;
+	background-color:transparent;
+	border:4px solid gold;
+	border-radius:10px;
+}
+
+#helpBar .popupBox {
+	width:700px;
 }
