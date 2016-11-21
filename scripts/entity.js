@@ -148,8 +148,10 @@ Entity.prototype.updateMovement = function() {
 		//console.log("sp: " + this.direction[x] + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
 	
 		if(collision!=null) {
+			console.log(this.name + " " + collision.name);
 			if(collision == this.target) return;
 			// try 90% in way of collision
+			
 			
 			
 			
@@ -207,6 +209,17 @@ Entity.prototype.updateMovement = function() {
 						break;
 					}
 				}
+				
+				/*
+				this.position[x] += tmp1[x];
+				this.position[y] = 0
+				this.position[z] += tmp1[z];
+				if(!checkCollisionBetweenAllObjects(this)) ok1=false;
+				this.position[x] -= tmp1[x];
+				this.position[y] = 0
+				this.position[z] -= tmp1[z];
+				*/
+				
 				var ok2=true;
 				for(var i in obstacle)
 				{
@@ -216,6 +229,16 @@ Entity.prototype.updateMovement = function() {
 						break;
 					}
 				}
+				
+				/*
+				this.position[x] += tmp2[x];
+				this.position[y] = 0
+				this.position[z] += tmp2[z];
+				if(!checkCollisionBetweenAllObjects(this)) ok2=false;
+				this.position[x] -= tmp2[x];
+				this.position[y] = 0
+				this.position[z] -= tmp2[z];
+				*/
 				
 				if(d1<d2 && ok1) 
 				{
@@ -227,16 +250,12 @@ Entity.prototype.updateMovement = function() {
 					this.direction[x] = tmp2[x];
 					this.direction[z] = tmp2[z];
 				}
+				else return;
 				
 				
 			}
 			
-			
-			
-			
-			
-			
-			
+
 			
 			//// old attempt to calc collision
 			
@@ -349,10 +368,6 @@ Entity.prototype.updateMovement = function() {
 			*/
 			
 			
-			
-			
-			
-			
 			/*
 			console.log(
 				this.direction[x] + " " + 
@@ -404,7 +419,19 @@ Entity.prototype.updateMovement = function() {
 			(this.direction[x]<0 && this.position[x] + updateX < this.destination[x]))
 		{
 			reached[x] = 1;
+			var tmp = this.position[x];
 			this.position[x]=this.destination[x];
+			for(var i in obstacle)
+			{
+				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
+				if(checkCollisionWithObject(this.position, obstacle[i]))
+				{
+					ok = false;
+					//this.position[z] = obstacle[i].position[z]+obstacle[i].offset[z]+obstacle[i].collisionBox[x];
+					break;
+				}
+			}
+			if(!ok) this.position[x] = tmp;
 		}
 		else 
 		{
@@ -440,7 +467,19 @@ Entity.prototype.updateMovement = function() {
 			(this.direction[z]<0 && this.position[z] + updateZ < this.destination[z]))
 		{
 			reached[z] = 1;
+			var tmp = this.position[z];
 			this.position[z]=this.destination[z];
+			for(var i in obstacle)
+			{
+				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
+				if(checkCollisionWithObject(this.position, obstacle[i]))
+				{
+					ok = false;
+					//this.position[z] = obstacle[i].position[z]+obstacle[i].offset[z]+obstacle[i].collisionBox[x];
+					break;
+				}
+			}
+			if(!ok) this.position[z] = tmp;
 		}
 		else 
 		{

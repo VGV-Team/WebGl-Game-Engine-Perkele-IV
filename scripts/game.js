@@ -49,6 +49,8 @@ function gameLoop()
 	//console.log(q[x] + " " + q[z]);
 	//console.log(v[x] + " " + v[z]);
 	//console.log(v1 + " || " + dest[x] + " " + dest[z] +" || "+q[x] + " "+q[z]);
+	
+	//console.log(timeTillLastUpdate);
 }
 
 
@@ -85,7 +87,11 @@ function drawScene() {
 	//world.draw();
 	//world1.draw();
 	for (var w in world) world[w].draw();
-	for (var o in obstacle) obstacle[o].draw();
+	for (var o in obstacle) 
+	{
+		obstacle[o].draw();
+		//console.log(o);
+	}
 }
 
 //
@@ -156,7 +162,6 @@ function start() {
 	world[world.length - 1].position[x]-=50;
 	world[world.length - 1].position[y]+=5;
 	
-	
 	/*
 	world1 = new World();
 	world1.name = "World1";
@@ -178,9 +183,49 @@ function start() {
 	obstacle[obstacle.length - 1].name = "Obstacle";
 	obstacle[obstacle.length - 1].load("./assets/wall_z.obj");
 	obstacle[obstacle.length - 1].position[x] = -10;
-	obstacle[obstacle.length - 1].position[y] = 1;
+	obstacle[obstacle.length - 1].position[y] = 0;
+	obstacle[obstacle.length - 1].position[z] = 5;
 	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
-
+	/*
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/wall_z.obj");
+	obstacle[obstacle.length - 1].position[x] = -10;
+	//obstacle[obstacle.length - 1].position[y] = -0.4;
+	obstacle[obstacle.length - 1].position[z] = -5;
+	obstacle[obstacle.length - 1].vec4Color = [0.9,0.5,0.5,1.0];
+	
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/wall_z.obj");
+	obstacle[obstacle.length - 1].position[x] = -11;
+	//obstacle[obstacle.length - 1].position[y] = -0.4;
+	obstacle[obstacle.length - 1].position[z] = -5;
+	obstacle[obstacle.length - 1].vec4Color = [0.2,0.2,0.2,1.0];
+	
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/wall_z.obj");
+	obstacle[obstacle.length - 1].position[x] = -10;
+	//obstacle[obstacle.length - 1].position[y] = 0.4;
+	obstacle[obstacle.length - 1].position[z] = 15;
+	obstacle[obstacle.length - 1].vec4Color = [0.9,0.5,0.5,1.0];
+	*/
+	/*
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/box.obj");
+	obstacle[obstacle.length - 1].position[x] += 0;
+	obstacle[obstacle.length - 1].position[z] += 0;
+	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	*/
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/qweqwe.obj");
+	obstacle[obstacle.length - 1].position[x] += 0;
+	obstacle[obstacle.length - 1].position[z] += 0;
+	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	
 	//////////////// WORLD MUST LOAD FIRST !!!! ////////////////
 
 	
@@ -194,9 +239,9 @@ function start() {
 	hero = new Hero();
 	hero.name = "Hero";
 	hero.isPlayer = true;
-	hero.directionVelocity[x] = hero.directionVelocity[x]*1.2;
-	hero.directionVelocity[y] = hero.directionVelocity[y]*1.2;
-	hero.directionVelocity[z] = hero.directionVelocity[z]*1.2;
+	hero.directionVelocity[x] = hero.directionVelocity[x]*1.5;
+	hero.directionVelocity[y] = hero.directionVelocity[y]*1.5;
+	hero.directionVelocity[z] = hero.directionVelocity[z]*1.5;
 	hero.position[x] -= 5;
 	hero.position[z] -= 5;
 	//hero.position[x] -= 10;
@@ -235,12 +280,28 @@ function start() {
 	
 	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/bucaNew.obj");
-	enemy[enemy.length-1].name = "Evil Pumpkin Slave";
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave1";
 	enemy[enemy.length-1].position[x] += 5;
 	enemy[enemy.length-1].position[z] += 5;
 	//enemy[enemy.length-1].rotation[y] = -90;
 	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
-	
+	enemy.push(new Hero());
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave2";
+	enemy[enemy.length-1].position[x] += 7;
+	enemy[enemy.length-1].position[z] += 7;
+	//enemy[enemy.length-1].rotation[y] = -90;
+	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+	/*
+	enemy.push(new Hero());
+	enemy[enemy.length-1].load("./assets/slasher.obj");
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave3";
+	enemy[enemy.length-1].position[x] += 2;
+	enemy[enemy.length-1].position[z] += 2;
+	//enemy[enemy.length-1].rotation[y] = -90;
+	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+	*/
+	/*
 	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/feralGhoul.obj");
 	enemy[enemy.length-1].name = "Feral Ghoul";
@@ -254,6 +315,7 @@ function start() {
 	enemy[enemy.length-1].position[x] += 5;
 	enemy[enemy.length-1].position[z] -= 5;
 	//enemy[enemy.length-1].rotation[y] = -90;
+	*/
 	
 	//HARDCODED
 	enemy[0].HP = 90;

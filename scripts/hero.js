@@ -10,7 +10,7 @@ function Hero() {
 	this.maxFury = 100;
 	this.furyDecay = 3; //1 per sec
 	this.criticalChance = 5; //0-100%
-	this.discovery = 10; //% chance of epic drop
+	this.discovery = 50; //% chance of epic drop
 	
 	//abilities
 	this.abilities = [];

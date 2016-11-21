@@ -789,8 +789,10 @@ function load(objectToLoad, objectURL)
 		
 		var vertexF = [];
 		var indexCount = 0;
-				
 		
+		var qweqwe = 0;
+		var qqqqqq = [];
+		//var lenValsF = 0;
 		for (var i in lines) {
 			var vals = lines[i].split(" ");
 			if (vals.length == 4 && vals[0] == "v") {
@@ -803,32 +805,42 @@ function load(objectToLoad, objectURL)
 				vertexPositions[vertexPositions.length] = parseFloat(vals[3]);				
 				vertexCount += 1;
 
-				if(parseFloat(vals[1])<minX)
+				if(parseFloat(vals[1])<=minX)
 				{
 					minX = parseFloat(vals[1]);
 				}
-				else if(parseFloat(vals[1])>maxX)
+				else if(parseFloat(vals[1])>=maxX)
 				{
 					maxX = parseFloat(vals[1]);
 				}
-				if(parseFloat(vals[2])<minY)
+				if(parseFloat(vals[2])<=minY)
 				{
 					minY = parseFloat(vals[2]);
 				}
-				else if(parseFloat(vals[2])>maxY)
+				else if(parseFloat(vals[2])>=maxY)
 				{
 					maxY = parseFloat(vals[2]);
 					
 					
 				}
-				if(parseFloat(vals[3])<minZ)
+				if(parseFloat(vals[3])<=minZ)
 				{
 					minZ = parseFloat(vals[3]);
 				}
-				else if(parseFloat(vals[3])>maxZ)
+				else if(parseFloat(vals[3])>=maxZ)
 				{
 					maxZ = parseFloat(vals[3]);
 				}
+				
+				//qweqwe++;
+				//qqqqqq[qqqqqq.length] = parseFloat(vals[1]);
+				/*
+				if(objectURL=="./assets/floor.obj") 
+				{
+					console.log("qwe");
+				}
+				*/
+				
 			} else if (vals.length == 2 && vals[0] == "usemtl") {
 				objectToLoad.textureFile = vals[1];
 				initTexture(vals[1]);
@@ -842,6 +854,7 @@ function load(objectToLoad, objectURL)
 				vertexNormalCoords.push(parseFloat(vals[3]));		
 				vertexNormalCount += 1;
 			} else if (vals.length == 4 && vals[0] == "f") {
+				//lenValsF = vals.length;
 				var faces;
 				for (var i = 1; i <= 3; i++) {
 					if(vals[i] in unpacked.cache){
@@ -852,6 +865,14 @@ function load(objectToLoad, objectURL)
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 0]);
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 1]);
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 2]);
+					
+					console.log(faces[0])
+					/*
+					for(var qq in faces)
+					{
+						unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + qq]);
+					}
+					*/
 					
 					if (vertexTextureCoords.length != 0) {
 						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 0]);
@@ -874,7 +895,14 @@ function load(objectToLoad, objectURL)
 				//indexCount += 3;
 			}
 		}
-
+		
+		if(objectURL=="./assets/floor.obj") 
+		{
+			//console.log("!!! " + qweqwe + " " + qqqqqq.length + " " + qqqqqq[qqqqqq.length-1]);
+			console.log("qweqwe " + vertexPositions.length)
+			//console.log("!!!!!! " + unpacked.vertexPositions.length);
+		}
+		
 		// align object to world
 		//objectToLoad.offset[x] = -minY;
 		objectToLoad.offset[y] = -minY;
@@ -962,10 +990,10 @@ function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 	var y21 = object2.position[y]+object2.offset[y]-object2.collisionBox[y]/2; // o2 down
 	var y22 = object2.position[y]+object2.offset[y]+object2.collisionBox[y]/2; // o2 up
 	if(
-		y12>y21 && y12<y22 ||
-		y11>y21 && y11<y22 ||
-		y11<y21 && y12>y21 ||
-		y11<y22 && y12>y22
+		y12>=y21 && y12<=y22 ||
+		y11>=y21 && y11<=y22 ||
+		y11<=y21 && y12>=y21 ||
+		y11<=y22 && y12>=y22
 	)
 	{
 		//console.log(y11 + " " + y12 + " " + y21 + " " + y22);
@@ -973,6 +1001,7 @@ function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 		//console.log("true");
 		//cnt1++;
 		yDir = true;
+		
 	}
 	/*
 	cnt2++;
@@ -988,6 +1017,7 @@ function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 	//console.log(y11 + " " + y12 + " " + y21 + " " + y22);
 	//console.log(getObjectCollisionDistance(object1, object2));
 	//console.log(object1.name + " " + object2.name + " " + range + " " + dist1 + " " + dist2 + " " + coll);
+	//console.log(yDir);
 	if(getObjectCollisionDistance(object1, object2)<0 && yDir) return true;
 	else return false;
 }
@@ -1016,10 +1046,18 @@ function checkCollisionBetweenAllObjects(object)
 	//////// check for enemy ////////
 	for(var i in enemy)
 	{
+		//if(object != enemy[i]) console.log("QWQWEQWEQWEQWEEWQWEQ");
+		//else console.log("yxcssc");
+		//console.log(object.name + " " + object.calculateCollision + " || " + enemy[i].name + " " + enemy[i].calculateCollision);
 		//if(checkCollisionBetweenTwoObjects(object, enemy[i]))
-		if(object != enemy[i] && enemy[i].calculateCollision && checkCollisionBetweenTwoObjectsSimple(object, enemy[i]))
+		if(object != enemy[i] && enemy[i].calculateCollision)
 		{
-			return enemy[i];
+			//if(checkCollisionBetweenTwoObjectsSimple(object, enemy[i]))
+			//{
+			//	console.log(checkCollisionBetweenTwoObjectsSimple(object, enemy[i]) + " " + getObjectCollisionDistance(object, enemy[i]) + " " + object.name + " " + enemy[i].name);
+			//}
+			if(checkCollisionBetweenTwoObjectsSimple(object, enemy[i]))
+				return enemy[i];
 		}
 	}
 	/*
