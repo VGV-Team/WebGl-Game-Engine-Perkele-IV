@@ -84,10 +84,8 @@ function drawScene() {
 	
 	//world.draw();
 	//world1.draw();
-	for (var w in world) {
-		world[w].draw();
-	}
-
+	for (var w in world) world[w].draw();
+	for (var o in obstacle) obstacle[o].draw();
 }
 
 //
@@ -148,9 +146,17 @@ function start() {
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
-	world[world.length - 1].load("./assets/world_plane_new.obj");
-	// world.normalBuffer = null; - not working because load is async
-	//world.position[y]+=10;
+	world[world.length - 1].load("./assets/world_plane.obj");
+	// world[world.length - 1].normalBuffer = null; - not working because load is async
+	//world[world.length - 1].position[y]+=10;
+	
+	world.push(new World());
+	world[world.length - 1].name = "World";
+	world[world.length - 1].load("./assets/world_plane.obj");
+	world[world.length - 1].position[x]-=50;
+	world[world.length - 1].position[y]+=5;
+	
+	
 	/*
 	world1 = new World();
 	world1.name = "World1";
@@ -159,14 +165,22 @@ function start() {
 	world1.position[y] = 1;
 	world1.vec4Color = [0.5,0.5,0.5,1.0];
 	*/
-	
+	/*
 	world.push(new World());
 	world[world.length - 1].name = "World1";
-	world[world.length - 1].load("./assets/world_plane_new.obj");
+	world[world.length - 1].load("./assets/wall_z.obj");
 	world[world.length - 1].position[x] = -10;
 	world[world.length - 1].position[y] = 1;
 	world[world.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	*/
 	
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/wall_z.obj");
+	obstacle[obstacle.length - 1].position[x] = -10;
+	obstacle[obstacle.length - 1].position[y] = 1;
+	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+
 	//////////////// WORLD MUST LOAD FIRST !!!! ////////////////
 
 	

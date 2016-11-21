@@ -1,6 +1,7 @@
 function World() {
 	Entity.call(this);
 	
+	//this.passable = true;
 	
 	//this.vertexPositionBuffer = null;
 	//this.vertexIndexBuffer = null;

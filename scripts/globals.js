@@ -27,6 +27,7 @@ var enemy;
 
 var item = [];
 var world = [];
+var obstacle = [];
 
 var ui;
 

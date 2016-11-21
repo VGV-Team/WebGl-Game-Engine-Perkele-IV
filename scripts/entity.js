@@ -150,55 +150,69 @@ Entity.prototype.updateMovement = function() {
 		if(collision!=null) {
 			if(collision == this.target) return;
 			// try 90% in way of collision
-			var dir = getDirectionBetweenVectors(this.position, collision.position);
-			
-			
-			//console.log(getVectorAngle(this.direction,dir) + " " + dir[x] + " " + this.direction[x] + " | " + dir[z] + " " + this.direction[z]);
-			
-			
-			/*
-			var q = getDirectionBetweenVectors(hero.position, enemy[0].position);
-			var dest = normalizeVector(hero.destination);
-			var v1 = getVectorAngle(dest, normalizeVector(q));
-			console.log(v1);
-			*/
-			
-			var tmp1 = [];
-			tmp1[x] = -dir[z];
-			tmp1[y] = 0;
-			tmp1[z] = dir[x];
-			tmp1 = normalizeVector(tmp1);
-			var tmp2 = [];
-			tmp2[x] = dir[z];
-			tmp2[y] = 0;
-			tmp2[z] = -dir[x];
-			tmp2 = normalizeVector(tmp2);
-			
-			var newPos1 = [];
-			newPos1[x] = this.position[x] + tmp1[x];
-			newPos1[y] = 0;
-			newPos1[z] = this.position[z] + tmp1[z];
-			
-			var newPos2 = [];
-			newPos2[x] = this.position[x] + tmp2[x];
-			newPos2[y] = 0;
-			newPos2[z] = this.position[z] + tmp2[z];
 			
 			
 			
-			var d1 = getDistanceBetweenVectors(newPos1, this.destination);
-			var d2 = getDistanceBetweenVectors(newPos2, this.destination);
-			
-			if(d1<d2) 
+			if(collision.name == "Obstacle")
 			{
-				this.direction[x] = tmp1[x];
-				this.direction[z] = tmp1[z];
+				
 			}
 			else
 			{
-				this.direction[x] = tmp2[x];
-				this.direction[z] = tmp2[z];
+				var dir = getDirectionBetweenVectors(this.position, collision.position);
+				
+				//console.log(getVectorAngle(this.direction,dir) + " " + dir[x] + " " + this.direction[x] + " | " + dir[z] + " " + this.direction[z]);
+				
+				
+				/*
+				var q = getDirectionBetweenVectors(hero.position, enemy[0].position);
+				var dest = normalizeVector(hero.destination);
+				var v1 = getVectorAngle(dest, normalizeVector(q));
+				console.log(v1);
+				*/
+				
+				var tmp1 = [];
+				tmp1[x] = -dir[z];
+				tmp1[y] = 0;
+				tmp1[z] = dir[x];
+				tmp1 = normalizeVector(tmp1);
+				var tmp2 = [];
+				tmp2[x] = dir[z];
+				tmp2[y] = 0;
+				tmp2[z] = -dir[x];
+				tmp2 = normalizeVector(tmp2);
+				
+				var newPos1 = [];
+				newPos1[x] = this.position[x] + tmp1[x];
+				newPos1[y] = 0;
+				newPos1[z] = this.position[z] + tmp1[z];
+				
+				var newPos2 = [];
+				newPos2[x] = this.position[x] + tmp2[x];
+				newPos2[y] = 0;
+				newPos2[z] = this.position[z] + tmp2[z];
+				
+				
+				
+				var d1 = getDistanceBetweenVectors(newPos1, this.destination);
+				var d2 = getDistanceBetweenVectors(newPos2, this.destination);
+				
+				if(d1<d2) 
+				{
+					this.direction[x] = tmp1[x];
+					this.direction[z] = tmp1[z];
+				}
+				else
+				{
+					this.direction[x] = tmp2[x];
+					this.direction[z] = tmp2[z];
+				}
+				
+				
 			}
+			
+			
+			
 			
 			
 			
@@ -360,6 +374,10 @@ Entity.prototype.updateMovement = function() {
 		//console.log(this.direction[x] + " " + this.direction[y] + " " + this.direction[z] + " " + this.destination[y] + " " + this.position[y]);
 		//console.log(this.destination[y]);
 		
+		
+		
+		
+		
 		var reached = [0,0,0];
 		// checks if we already passed our destination
 		if((this.direction[x]>=0 && this.position[x] + updateX > this.destination[x]) || 
@@ -370,7 +388,21 @@ Entity.prototype.updateMovement = function() {
 		}
 		else 
 		{
+			
 			this.position[x] += updateX;
+			var ok=true;
+			for(var i in obstacle)
+			{
+				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
+				if(checkCollisionWithObject(this.position, obstacle[i]))
+				{
+					ok = false;
+					//this.position[x] = obstacle[i].position[x]+obstacle[i].offset[x]+obstacle[i].collisionBox[x];
+					break;
+				}
+			}
+			if(!ok) this.position[x] -= updateX;
+
 		}
 		/*
 		if((this.direction[y]>=0 && this.position[y] + updateY > this.destination[y]) || 
@@ -392,7 +424,22 @@ Entity.prototype.updateMovement = function() {
 		}
 		else 
 		{
+			
 			this.position[z] += updateZ;
+			var ok=true;
+			for(var i in obstacle)
+			{
+				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
+				if(checkCollisionWithObject(this.position, obstacle[i]))
+				{
+					ok = false;
+					//this.position[z] = obstacle[i].position[z]+obstacle[i].offset[z]+obstacle[i].collisionBox[x];
+					break;
+				}
+			}
+			if(!ok) this.position[z] -= updateZ;
+			
+
 		}
 		//console.log("qq: " + reached + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
 	

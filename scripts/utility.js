@@ -1022,6 +1022,17 @@ function checkCollisionBetweenAllObjects(object)
 			return enemy[i];
 		}
 	}
+	/*
+	for(var i in obstacle)
+	{
+		
+		if(checkCollisionBetweenTwoObjects(object, obstacle[i]))
+		{
+			return obstacle[i];
+		}
+		
+	}
+	*/
 	
 	//////// check for pickable items ////////
 	
