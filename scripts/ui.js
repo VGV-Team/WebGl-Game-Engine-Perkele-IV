@@ -38,6 +38,30 @@ function UI() {
 	this.currentHP = document.getElementById("currentHP");
 	this.currentFury = document.getElementById("currentFury");
 	
+	
+	// CHARACTER STATS
+	this.characterStatsOpen = false;
+	this.characterBar = document.getElementById("characterBar");
+	this.characterStatsHP = document.getElementById("characterStatsHP");
+	this.characterStatsHPRegen = document.getElementById("characterStatsHPRegen");
+	this.characterStatsFury = document.getElementById("characterStatsFury");
+	this.characterStatsFuryDecay = document.getElementById("characterStatsFuryDecay");
+	this.characterStatsBaseAttack = document.getElementById("characterStatsBaseAttack");
+	this.characterStatsBaseCritical = document.getElementById("characterStatsBaseCritical");
+	this.characterStatsWeaponAttack = document.getElementById("characterStatsWeaponAttack");
+	this.characterStatsWeaponCritical = document.getElementById("characterStatsWeaponCritical");
+	this.characterStatsTotalAttack = document.getElementById("characterStatsTotalAttack");
+	this.characterStatsTotalCritical = document.getElementById("characterStatsTotalCritical");
+	this.characterStatsDiscovery = document.getElementById("characterStatsDiscovery");
+	
+	// MENU PANEL
+	this.menuPanelOpen = false;
+	this.menuBar = document.getElementById("menuBar");
+	
+	// HELP PANEL
+	this.helpPanelOpen = false;
+	this.helpBar = document.getElementById("helpBar");
+	
 }
 
 
@@ -117,6 +141,25 @@ UI.prototype.update = function() {
 	if (hero.HP <= 0) {
 		// Show GAME OVER
 	}
+	
+	
+	var baseAttack = hero.strength - hero.equippedWeapon.attack;
+	var baseCritical = hero.criticalChance - hero.equippedWeapon.criticalChance;
+	
+	// Update Character Stats panel
+	this.characterStatsHP.innerHTML = Math.round(hero.HP) + " / " + Math.round(hero.maxHP);
+	this.characterStatsHPRegen.innerHTML = Math.round(hero.HPRegen) + " / sec";
+	this.characterStatsFury.innerHTML = Math.round(hero.fury) + " / " + Math.round(hero.maxFury);
+	this.characterStatsFuryDecay.innerHTML = Math.floor(hero.furyDecay) + " / sec";
+	this.characterStatsBaseAttack.innerHTML = baseAttack;
+	this.characterStatsBaseCritical.innerHTML = baseCritical + " %";
+	this.characterStatsWeaponAttack.innerHTML = hero.equippedWeapon.attack;
+	this.characterStatsWeaponCritical.innerHTML = hero.equippedWeapon.criticalChance + " %";
+	this.characterStatsTotalAttack.innerHTML = hero.strength;
+	this.characterStatsTotalCritical.innerHTML = hero.criticalChance + " %";
+	this.characterStatsDiscovery.innerHTML = hero.discovery + " %";
+
+
 }
 
 // Separated because you can't click on HTML element if constantly innerHTMLing
@@ -195,5 +238,35 @@ UI.prototype.toggleInventory = function() {
 	} else {
 		this.inventoryBar.style.display = 'block';
 		this.inventoryOpen = true;
+	}
+}
+
+UI.prototype.toggleCharacterStats = function() {
+	if (this.characterStatsOpen == true) {
+		this.characterBar.style.display = 'none';
+		this.characterStatsOpen = false;
+	} else {
+		this.characterBar.style.display = 'block';
+		this.characterStatsOpen = true;
+	}
+}
+
+UI.prototype.toggleMenu = function() {
+	if (this.menuPanelOpen == true) {
+		this.menuBar.style.display = 'none';
+		this.menuPanelOpen = false;
+	} else {
+		this.menuBar.style.display = 'block';
+		this.menuPanelOpen = true;
+	}
+}
+
+UI.prototype.toggleHelp = function() {
+	if (this.helpBarOpen == true) {
+		this.helpBar.style.display = 'none';
+		this.helpBarOpen = false;
+	} else {
+		this.helpBar.style.display = 'block';
+		this.helpBarOpen = true;
 	}
 }

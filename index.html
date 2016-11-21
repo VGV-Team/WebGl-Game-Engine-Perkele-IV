@@ -17,6 +17,7 @@
 		<script src="./scripts/combat.js" type="text/javascript"></script>
 		<script src="./scripts/ability.js" type="text/javascript"></script>
 		<script src="./scripts/item.js" type="text/javascript"></script>
+		<script src="./scripts/parse_objects.js" type="text/javascript"></script>
 		
 		<!-- 
 		
@@ -137,16 +138,15 @@
 	    </script>
 	</head>
 	<body onload="start()">
-		<h1>Perkele IV</h1>
-		
 		<div id="content">
 			
-			<canvas id="glcanvas" width="1280px" height="720px">
+			<canvas id="glcanvas" width="1850px" height="900px">
 				No <code>&lt;canvas&gt;</code> suppport in your browser.
 				
 			</canvas>
 			<!-- UI ELEMENTS -->
 			<!-- Top of game screen; used for showing selected enemy health -->
+			<div id="UIWrapper">
 			<div id="topBar">
 				<div id="enemyHealthBar">
 					<span id="enemyHealthBarName">EVIL PUMPKIN</span>
@@ -156,7 +156,7 @@
 			</div>
 			
 			<div id="inventoryBar">
-				<div id="inventory">
+				<div class="popupBox">
 					<div id="itemList">
 						<h3>INVENTORY</h3>
 						Choose a weapon to equip
@@ -185,12 +185,80 @@
 				</div>
 			</div>
 			
+			<div id="characterBar">
+				<div class="popupBox">
+					<div class="popupBoxWrapper">
+						<h3>CHARACTER STATS</h3>
+						<hr/>
+						<p>HP: <span id="characterStatsHP">0 / 0</span></p>
+						<p>HP regen: <span id="characterStatsHPRegen">0 / sec</span></p>
+						<p>Fury: <span id="characterStatsFury">0 / 0</span></p>
+						<p>Fury decay: <span id="characterStatsFuryDecay">0 / sec</span></p>
+						<hr/>
+						<p>Base attack: <span id="characterStatsBaseAttack">0</span></p>
+						<p>Base critical chance: <span id="characterStatsBaseCritical">0 %</span></p>
+						<p>Weapon attack: <span id="characterStatsWeaponAttack">0</span></p>
+						<p>Weapon critical chance: <span id="characterStatsWeaponCritical">0 %</span></p>
+						<p>Total attack: <span id="characterStatsTotalAttack">0</span></p>
+						<p>Total critical chance: <span id="characterStatsTotalCritical">0 %</span></p>
+						<hr/>
+						<p>Discovery: <span id="characterStatsDiscovery">0 %</span></p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="menuBar">
+				<div class="popupBox">
+					<div class="popupBoxWrapper">
+						<h3>MENU</h3>
+						<hr/>
+						<div class="uiButton" style="margin:0px auto;">RESTART</div>
+						<div class="uiButton" style="margin:0px auto;">EXIT</div>
+						<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><div class="uiButton" style="margin:0px auto;">BUY VALOR POINTS</div></a>
+					</div>
+				</div>
+			</div>
+			
+			<div id="helpBar">
+				<div class="popupBox">
+					<div class="popupBoxWrapper">
+						<h3>HELP</h3>
+						<hr/>
+						
+						<h4>Fury</h4>
+						<p>Fury is used to activate your various abilities. You gain Fury by attacking enemies, but it slowly diminishes/decays, so use those abilities before you run out!</p>
+						<hr/>
+						
+						<h4>Abilities</h4>
+						<p>In addition to basic attack, which generates Fury, your Hero has 2 abilites:<br/>
+						<ul>
+							<li>360 slash (use '1' to activate) damages all enemies around you</li>
+							<li>Heal (use '2' to activate) heals your Hero for 50% of maximum HP</li>
+						</ul>
+						<hr/>
+						
+						<h4>Critical chance</h4>
+						<p>Each basic attack has a chance do deal 'critical damage', which is double your basic damage.</p>
+						<hr/>
+						
+						<h4>Discovery and loot</h4>
+						<p>Your 'Discovery' stat determines the chance of monsters dropping weapons upon death.</p>
+						<p>Weapons drop in different rarities (by order of rarity): COMMON, RARE, LEGENDARY, EPIC</p>
+						<p>Rarer weapons drop less often, but usually have much better stats! Use your inventory to switch between collected weapons.</p>
+					</div>
+				</div>
+			</div>
+			
 			<div id="bottomBar">
 				<div id="healthBox">
 					<span id="currentHP" class="boxText">HP<br/>0/0</span>
 					<div id="healthPercentage"></div>
 				</div>
 				<div id="abilityBar">
+					<div id="characterButtons">
+						<div onclick="ui.toggleCharacterStats()" class="uiButton">CHARACTER</div>
+						<div onclick="ui.toggleInventory()" class="uiButton">INVENTORY</div>
+					</div>
 					<div id="abilityWrapper">
 						<div class="abilityBox">
 							<span class="abilityName">LMOUSE<br/>Basic Attack<br/>+10 Fury</span>
@@ -208,12 +276,18 @@
 							</div>
 						</div>
 					</div>
+					<div id="systemButtons">
+						<div onclick="ui.toggleHelp()" class="uiButton">HELP</div>
+						<div onclick="ui.toggleMenu()" class="uiButton">MENU</div>
+					</div>
 				</div>
 				<div id="furyBox">
 					<span id="currentFury" class="boxText">Fury<br/>0/0</span>
 					<div id="furyPercentage"></div>
 				</div>
 			</div>
+			</div>
+			
 		</div>
 		
 		<div>

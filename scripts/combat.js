@@ -2,7 +2,22 @@ function basicAttack(attackerObject, hitObject) {
 	
 	console.log(attackerObject.name + " is attacking " + hitObject.name);
 	
-	hitObject.HP -= attackerObject.strength;
+	
+	var criticalRand = Math.floor((Math.random() * 100));
+	if (criticalRand <= attackerObject.criticalChance) {
+		// Critical hit!
+		console.log(attackerObject.name + " does a CRITICAL HIT!");
+		hitObject.HP -= attackerObject.strength * 2;
+		
+	} else {
+		// Normal attack
+		hitObject.HP -= attackerObject.strength;
+	}
+	
+	
+	
+	
+	
 	if(hitObject.HP <= 0 && hitObject==hero)
 	{
 		hitObject.HP = 0;

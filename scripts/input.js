@@ -11,6 +11,10 @@ function handleKeyDown(event) {
   if (event.keyCode == 73) {
 	  ui.toggleInventory();
   }
+  
+  if (event.keyCode == 67) {
+	  ui.toggleCharacterStats();
+  }
 }
 
 function handleKeyUp(event) {

@@ -790,8 +790,8 @@ function load(objectToLoad, objectURL)
 		var vertexF = [];
 		var indexCount = 0;
 		
-		var qweqwe = 0;
-		var qqqqqq = [];
+		//var qweqwe = 0;
+		//var qqqqqq = [];
 		//var lenValsF = 0;
 		for (var i in lines) {
 			var vals = lines[i].split(" ");
@@ -866,7 +866,7 @@ function load(objectToLoad, objectURL)
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 1]);
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 2]);
 					
-					console.log(faces[0])
+					//console.log(faces[0])
 					/*
 					for(var qq in faces)
 					{
@@ -896,12 +896,12 @@ function load(objectToLoad, objectURL)
 			}
 		}
 		
-		if(objectURL=="./assets/floor.obj") 
-		{
+		//if(objectURL=="./assets/floor.obj") 
+		//{
 			//console.log("!!! " + qweqwe + " " + qqqqqq.length + " " + qqqqqq[qqqqqq.length-1]);
-			console.log("qweqwe " + vertexPositions.length)
+		//	console.log("qweqwe " + vertexPositions.length)
 			//console.log("!!!!!! " + unpacked.vertexPositions.length);
-		}
+		//}
 		
 		// align object to world
 		//objectToLoad.offset[x] = -minY;

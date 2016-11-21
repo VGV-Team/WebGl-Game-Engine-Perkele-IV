@@ -87,11 +87,9 @@ function drawScene() {
 	//world.draw();
 	//world1.draw();
 	for (var w in world) world[w].draw();
-	for (var o in obstacle) 
-	{
-		obstacle[o].draw();
-		//console.log(o);
-	}
+	for (var o in obstacle) obstacle[o].draw();
+	
+	
 }
 
 //
@@ -146,7 +144,7 @@ function start() {
 	
 	world = [];
 	item = [];
-	
+	enemy = [];
 	
 	//////////////// WORLD MUST LOAD FIRST !!!! ////////////////
 	
@@ -179,7 +177,7 @@ function start() {
 	world[world.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
 	*/
 	
-	obstacle.push(new World());
+	/*obstacle.push(new World());
 	obstacle[obstacle.length - 1].name = "Obstacle";
 	obstacle[obstacle.length - 1].load("./assets/wall_z.obj");
 	obstacle[obstacle.length - 1].position[x] = -10;
@@ -219,33 +217,34 @@ function start() {
 	obstacle[obstacle.length - 1].position[z] += 0;
 	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
 	*/
+	/*
 	obstacle.push(new World());
 	obstacle[obstacle.length - 1].name = "Obstacle";
 	obstacle[obstacle.length - 1].load("./assets/qweqwe.obj");
 	obstacle[obstacle.length - 1].position[x] += 0;
 	obstacle[obstacle.length - 1].position[z] += 0;
 	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
-	
-	//////////////// WORLD MUST LOAD FIRST !!!! ////////////////
-
-	
+	obstacle[obstacle.length - 1].position[y] = 1;
+	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	*/
+	/*
 	item.push(new Item());
 	item[item.length-1].name = "item";
 	item[item.length-1].load("./assets/sword.obj");
 	item[item.length-1].position[x] += 7;
 	item[item.length-1].position[z] += 2;
-	
+	*/
 	
 	hero = new Hero();
 	hero.name = "Hero";
 	hero.isPlayer = true;
-	hero.directionVelocity[x] = hero.directionVelocity[x]*1.5;
-	hero.directionVelocity[y] = hero.directionVelocity[y]*1.5;
-	hero.directionVelocity[z] = hero.directionVelocity[z]*1.5;
-	hero.position[x] -= 5;
-	hero.position[z] -= 5;
+	//hero.position[x] -= 5;
+	hero.directionVelocity[x] = hero.directionVelocity[x]*1.2;
+	hero.directionVelocity[y] = hero.directionVelocity[y]*1.2;
+	hero.directionVelocity[z] = hero.directionVelocity[z]*1.2;
+	//hero.position[z] -= 5;
 	//hero.position[x] -= 10;
-	hero.load("./assets/ironman.obj");
+	//hero.load("./assets/ironman.obj");
 
 	
 	
@@ -258,8 +257,10 @@ function start() {
 	
 
 	
-	enemy = [];
-
+	
+	parseObjects();
+	
+	//for (var o in obstacle) {console.log(obstacle[o].position[x]+" "+obstacle[o].position[z]);}
 	/*
 	enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/slasher.obj");
@@ -278,7 +279,7 @@ function start() {
 	*/
 	
 	
-	enemy.push(new Hero());
+	/*enemy.push(new Hero());
 	enemy[enemy.length-1].load("./assets/bucaNew.obj");
 	enemy[enemy.length-1].name = "Evil Pumpkin Slave1";
 	enemy[enemy.length-1].position[x] += 5;
@@ -314,15 +315,13 @@ function start() {
 	enemy[enemy.length-1].name = "Wat iz dis???";
 	enemy[enemy.length-1].position[x] += 5;
 	enemy[enemy.length-1].position[z] -= 5;
-	//enemy[enemy.length-1].rotation[y] = -90;
-	*/
 	
 	//HARDCODED
 	enemy[0].HP = 90;
 	enemy[0].maxHP = 100;
 	//enemy[1].HP = 30;
 	//enemy[1].maxHP = 100;
-
+	*/
 	
 	ui.updateInventoryItemList();
 
