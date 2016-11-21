@@ -197,12 +197,32 @@ Entity.prototype.updateMovement = function() {
 				var d1 = getDistanceBetweenVectors(newPos1, this.destination);
 				var d2 = getDistanceBetweenVectors(newPos2, this.destination);
 				
-				if(d1<d2) 
+				
+				var ok1=true;
+				for(var i in obstacle)
+				{
+					if(checkCollisionWithObject(newPos1, obstacle[i]))
+					{
+						ok1 = false;
+						break;
+					}
+				}
+				var ok2=true;
+				for(var i in obstacle)
+				{
+					if(checkCollisionWithObject(newPos2, obstacle[i]))
+					{
+						ok2 = false;
+						break;
+					}
+				}
+				
+				if(d1<d2 && ok1) 
 				{
 					this.direction[x] = tmp1[x];
 					this.direction[z] = tmp1[z];
 				}
-				else
+				else if(ok2)
 				{
 					this.direction[x] = tmp2[x];
 					this.direction[z] = tmp2[z];
