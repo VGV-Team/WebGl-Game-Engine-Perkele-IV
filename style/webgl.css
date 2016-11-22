@@ -325,6 +325,7 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 
 .uiButton:hover {
 	color:gold;
+	cursor:pointer;
 }
 .uiButton {
 	margin-top:8px;
