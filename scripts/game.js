@@ -150,15 +150,26 @@ function start() {
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
-	world[world.length - 1].load("./assets/world_plane.obj");
+	world[world.length - 1].load("./assets/world_grass.obj");
 	// world[world.length - 1].normalBuffer = null; - not working because load is async
 	//world[world.length - 1].position[y]+=10;
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
-	world[world.length - 1].load("./assets/world_plane.obj");
+	world[world.length - 1].load("./assets/world_grass.obj");
 	world[world.length - 1].position[x]-=50;
 	world[world.length - 1].position[y]+=5;
+	
+	/*
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/wall_x.obj");
+	obstacle[obstacle.length - 1].position[x] += 0;
+	obstacle[obstacle.length - 1].position[z] += 4;
+	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	//obstacle[obstacle.length - 1].position[y] = 1;
+	//obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	*/
 	
 	/*
 	world1 = new World();
