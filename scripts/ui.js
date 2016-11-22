@@ -62,6 +62,18 @@ function UI() {
 	this.helpPanelOpen = false;
 	this.helpBar = document.getElementById("helpBar");
 	
+	/* 
+	--------------
+	MENU RELATED STUFF
+	--------------
+	*/
+	//GAME OVER
+	this.gameOverScreen = document.getElementById("gameOverScreen");
+	this.isGameOver = false;
+	this.gameOverToMainMenuBtn = document.getElementById("gameOverToMainMenuBtn");
+	
+	//MAIN MENU
+	this.mainMenuScreen = document.getElementById("mainMenuScreen");
 }
 
 
@@ -138,8 +150,13 @@ UI.prototype.update = function() {
 	this.currentHP.innerHTML = "HP<br/>" + hp + " / " + maxHP;
 	this.currentFury.innerHTML = "Fury<br/>" + fury + " / " + maxFury;
 	
-	if (hero.HP <= 0) {
+	if (hero.HP <= 0 && !this.isGameOver) {
 		// Show GAME OVER
+		this.showGameOver();
+		this.isGameOver = true;
+		setTimeout(function(){
+			gameOverToMainMenuBtn.style.display = "block";
+		}, 3000);
 	}
 	
 	
@@ -269,4 +286,16 @@ UI.prototype.toggleHelp = function() {
 		this.helpBar.style.display = 'block';
 		this.helpBarOpen = true;
 	}
+}
+
+UI.prototype.showGameOver = function() {
+	this.gameOverScreen.style.display = "block";
+}
+UI.prototype.gameOverToMainMenu = function() {
+	this.gameOverScreen.style.display = "none";
+	this.mainMenuScreen.style.display = "block";
+}
+
+UI.prototype.closeMainMenu = function() {
+	this.mainMenuScreen.style.display = "none";
 }

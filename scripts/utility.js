@@ -938,7 +938,7 @@ function load(objectToLoad, objectURL)
 			// Pass the texture coordinates into WebGL
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexTextureCoords), gl.STATIC_DRAW);
 			objectToLoad.textureBuffer.itemSize = 2;
-			objectToLoad.textureBuffer.numItems = unpacked.vertexTextureCoords;
+			objectToLoad.textureBuffer.numItems = unpacked.vertexTextureCoords.length;
 		}
 
 		// Now send the element array to GL

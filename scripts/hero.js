@@ -2,8 +2,8 @@ function Hero() {
 	
 	Entity.call(this);
 	
-	this.HP = 100;
-	this.maxHP = 100;
+	this.HP = 250;
+	this.maxHP = 250;
 	this.HPRegen = 1;
 	this.strength = 10;
 	this.fury = 0;
@@ -37,6 +37,11 @@ function Hero() {
 	// Temporarily filled with items
 	this.inventory = [];
 	this.equippedWeapon = null;
+	
+	// 360 SLASH ANIMATION
+	this.slashAnim = false;
+	this.slashRotation = 20;
+	this.slashRotationCount = 0;
 	
 }
 Hero.prototype = Object.create(Entity.prototype);
@@ -78,8 +83,8 @@ Hero.prototype.load = function(objectLocation) {
 
 		this.changeEquippedWeapon(0);
 		
-		this.abilities["360Slash"] = new Ability("360Slash", 10000, 50, 1.2);
-		this.abilities["Heal"] = new Ability("Heal", 20000, 25, 0);
+		this.abilities["360Slash"] = new Ability("360Slash", 7000, 50, 1.2);
+		this.abilities["Heal"] = new Ability("Heal", 10000, 25, 0);
 	}
 	
 	
@@ -113,6 +118,16 @@ Hero.prototype.drawToFrameBuffer = function() {
 
 Hero.prototype.updatePlayer = function()
 {
+	if (this.slashAnim) {
+		this.rotation[y] -= this.slashRotation;
+		this.slashRotationCount++;
+		if (this.slashRotationCount >= 360/this.slashRotation) {
+			this.slashRotationCount = 0;
+			this.slashAnim = false;
+			rotation[y] += 360;
+		}
+	}
+	
 	// checks for mouse input
 	if(currentlyPressedMouseCoordinates[x]!=null)
 	{
@@ -282,11 +297,19 @@ Hero.prototype.useAbility = function(abilityName) {
 	if (abilityName == "360Slash") {
 		if (this.abilities["360Slash"].use(this)) {
 			
+			this.slashAnim = true;
+			
 			// Check all enemies
 			for (var e in enemy) {
 				// If current enemy in range, damage it!
 				if (getObjectCollisionDistance(this, enemy[e]) - this.abilities["360Slash"].range <= 0) {
+					// DIRTY FIX
+					this.strength *= 2;
+					
 					basicAttack(this, enemy[e]);
+					
+					// DIRTY FIX
+					this.strength /= 2;
 				}
 			}
 			

@@ -147,6 +147,34 @@
 			<!-- UI ELEMENTS -->
 			<!-- Top of game screen; used for showing selected enemy health -->
 			<div id="UIWrapper">
+			
+			<div id="mainMenuScreen">
+				<div class="popupBox">
+					<div class="popupBoxWrapper">
+						<h1 style="font-size:100px;text-align:center; margin-top:100px;">PERKELE<br/>IV</h1>
+						<h3 style="color:white">Diablo has returned yet again! Join the fight against him and his countless hordes of demon monsters!<br/>But beware, none have returned from their journey.</h3>
+						<div onClick="ui.closeMainMenu()" class="uiButton" style="margin:0px auto;">START GAME</div>
+						<div id="howToPlayBtn" class="uiButton" style="margin:0px auto;">HOW TO PLAY</div>
+						<div id="howToPlayDiv">
+							<p>You control one character. The camera always follows him (no free camera).</p>
+							<p>Click with your mouse to move your character.<br/>If you click on a pickup-able item, your character will move to it and pick it up.<br/>If you click on a monster, your character will move to it and start attacking.<br/>Keep clicking to keep attacking!</p>
+							<p>With each hit, you gain Fury, which can be used to trigger your abilities. You can read more about it in-game (HELP menu option).
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="gameOverScreen">
+				<div class="popupBox">
+					<div class="popupBoxWrapper">
+						<h1 style="font-size:100px;color:red;text-align:center; margin-top:200px;">GAME OVER</h1>
+						<h3 style="color:white">"Stay a while and listen."<br/>- Deckard Cain</h3>
+						<div onClick="ui.gameOverToMainMenu()" id="gameOverToMainMenuBtn" class="uiButton" style="display:none;margin:0px auto;">TO MAIN MENU</div>
+					</div>
+				</div>
+			</div>
+			
+			
 			<div id="topBar">
 				<div id="enemyHealthBar">
 					<span id="enemyHealthBarName">EVIL PUMPKIN</span>

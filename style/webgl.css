@@ -401,3 +401,67 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 #helpBar .popupBox {
 	width:700px;
 }
+
+/*
+**************MENU STUFF*******************
+*/
+
+/*GAME OVER*/
+#gameOverScreen {
+	display:none;
+	z-index:50;
+	position:absolute;
+	height:100%;
+	width:100%;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top:0;
+	background-color:transparent;
+	border:4px solid gold;
+	border-radius:10px;
+}
+#gameOverScreen .popupBox {
+	background-image:url('../assets/ui/gameOver.jpg');
+	background-size:100% 100%;
+}
+
+#gameOverScreen .popupBox .popupBoxWrapper .uiButton {
+	width:400px;
+	height:150px;
+	background-size: 400px 150px;
+	padding-top:40px;
+	font-size:42px;
+}
+
+/*MAIN MENU*/
+#mainMenuScreen {
+	display:block;
+	z-index:50;
+	position:absolute;
+	height:100%;
+	width:100%;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	top:0;
+	background-color:transparent;
+	border:4px solid gold;
+	border-radius:10px;
+}
+#mainMenuScreen .popupBox {
+	background-image:url('../assets/ui/mainMenu.jpg');
+	background-size: 100% 100%;
+}
+
+#howToPlayBtn:hover + #howToPlayDiv {
+	display:block;
+}
+
+#howToPlayDiv {
+	display:none;
+	color:gold;
+	font-weight:bold;
+}

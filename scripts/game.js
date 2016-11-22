@@ -160,6 +160,17 @@ function start() {
 	world[world.length - 1].position[x]-=50;
 	world[world.length - 1].position[y]+=5;
 	
+	/*obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Skatla";
+	obstacle[obstacle.length - 1].load("./assets/grass.obj");
+	obstacle[obstacle.length - 1].position[x] += 0;
+	obstacle[obstacle.length - 1].position[z] += 5;
+	//obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	obstacle[obstacle.length - 1].position[y] = 2;
+	obstacle[obstacle.length - 1].rotation[x] = 90;
+	obstacle[obstacle.length - 1].vec4Color = [1.0,1.0,1.0,0.0];*/
+	//obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	
 	/*
 	world1 = new World();
 	world1.name = "World1";
