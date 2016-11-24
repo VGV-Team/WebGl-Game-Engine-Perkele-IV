@@ -160,6 +160,15 @@ function start() {
 	world[world.length - 1].position[x]-=50;
 	world[world.length - 1].position[y]+=5;
 	
+	/*world.push(new World());
+	world[world.length - 1].name = "World";
+	world[world.length - 1].load("./assets/stair_x.obj");
+	world[world.length - 1].position[x]=-26.5;
+	world[world.length - 1].position[y]=5;
+	world[world.length - 1].position[z]=10;*/
+	
+	loadTerrain();
+	
 	/*obstacle.push(new World());
 	obstacle[obstacle.length - 1].name = "Skatla";
 	obstacle[obstacle.length - 1].load("./assets/grass.obj");
