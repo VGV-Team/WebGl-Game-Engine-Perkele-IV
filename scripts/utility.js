@@ -26,6 +26,32 @@ function radToDeg(radians) {
   return radians * 180 / Math.PI;
 }
 
+function unpackMat4(mat4Matrix) {
+	var newM = new Array(16);
+	newM[0] = mat4Matrix[0];
+	newM[1] = mat4Matrix[4];
+	newM[2] = mat4Matrix[8];
+	newM[3] = mat4Matrix[12];
+	
+	newM[4] = mat4Matrix[1];
+	newM[5] = mat4Matrix[5];
+	newM[6] = mat4Matrix[9];
+	newM[7] = mat4Matrix[13];
+	
+	newM[8] = mat4Matrix[2];
+	newM[9] = mat4Matrix[6];
+	newM[10] = mat4Matrix[10];
+	newM[11] = mat4Matrix[14];
+	
+	newM[12] = mat4Matrix[3];
+	newM[13] = mat4Matrix[7];
+	newM[14] = mat4Matrix[11];
+	newM[15] = mat4Matrix[15];
+	
+	return newM;
+
+}
+
 function getVectorAngle(vec1, vec2)
 {
 	/*
@@ -433,9 +459,9 @@ function draw(objectToDraw)
 		gl.uniform3f(
 		  shaderProgram.pointLightingLocationUniform,
 		  //hero.position[x],
-		  hero.position[x]+camera.position[x] + camera.offset[x],
-		  -hero.position[z]-camera.position[z] - camera.offset[z],
-		  hero.position[y]+hero.offset[y]+camera.position[y] + camera.offset[y]
+		  pointLightPosition[x],
+		  pointLightPosition[y],
+		  pointLightPosition[z]
 		  
 		  //hero.position[z]
 		  
@@ -453,12 +479,6 @@ function draw(objectToDraw)
 		
 		
 		//DIRECTIONAL LIGHT (on hero)
-		gl.uniform3f(
-		  shaderProgram.directionalLightColorUniform,
-		  0.0,
-		  0.0,
-		  0.0
-		);
 		//console.log(mvMatrix);
 		/*var newPos = [hero.position[x], 5.0, 0.0];
 		mvPushMatrix();

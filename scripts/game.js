@@ -55,7 +55,25 @@ function gameLoop()
 
 
 
+function drawLights() {
+	
+	mvPushMatrix();
 
+	mat4.translate(mvMatrix, hero.position);
+	mat4.translate(mvMatrix, hero.offset);
+
+	var newMatrix = unpackMat4(mvMatrix);
+	
+	pointLightPosition = [0.0, 5.0, 0.0, 1.0];
+	
+	pointLightPosition = matrixVectorMultiply4(newMatrix, pointLightPosition);
+	pointLightPosition[x] /= pointLightPosition[3];
+	pointLightPosition[y] /= pointLightPosition[3];
+	pointLightPosition[z] /= pointLightPosition[3];
+	pointLightPosition[3] = 1;
+	
+	mvPopMatrix();
+}
 
 
 function drawScene() {
@@ -75,6 +93,8 @@ function drawScene() {
 	// CAMERA POSITION
 	camera.draw();
 
+	drawLights();
+	
 	////// OBJECT DRAWING
 	hero.draw();
 	

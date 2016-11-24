@@ -55,7 +55,8 @@ function handleMouse(pressedID, xPos, yPos) {
 		ray_clip[3] = 1.0;
 		
 		//console.log(ray_clip);
-		var ray_eye = matrixVectorMultiply4(mat4.inverse(pMatrix),ray_clip);	
+		var tmpMatrix = mat4.inverse(pMatrix);
+		var ray_eye = matrixVectorMultiply4(unpackMat4(tmpMatrix),ray_clip);	
 		//console.log(ray_eye);
 		ray_eye[z] = -1.0;
 		ray_eye[3] = 0.0;
@@ -63,13 +64,14 @@ function handleMouse(pressedID, xPos, yPos) {
 		var viewMatrix = mat4.create();
 		mat4.identity(viewMatrix);
 		
-		mat4.rotateX(viewMatrix, degToRad(-camera.rotation[x]));
-		mat4.rotateY(viewMatrix, degToRad(-camera.rotation[y]));
-		mat4.rotateZ(viewMatrix, degToRad(-camera.rotation[z]));
+		mat4.rotateX(viewMatrix, degToRad(camera.rotation[x]));
+		mat4.rotateY(viewMatrix, degToRad(camera.rotation[y]));
+		mat4.rotateZ(viewMatrix, degToRad(camera.rotation[z]));
 		mat4.translate(viewMatrix, camera.position);
 		mat4.translate(viewMatrix, camera.offset);
 		
-		var ray_wor = matrixVectorMultiply4(mat4.inverse(viewMatrix), ray_eye);
+		tmpMatrix = mat4.inverse(viewMatrix);
+		var ray_wor = matrixVectorMultiply4(unpackMat4(tmpMatrix), ray_eye);
 		//console.log(ray_wor);
 		
 		var final_vector = vec3.create();

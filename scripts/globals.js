@@ -31,6 +31,10 @@ var obstacle = [];
 
 var ui;
 
+// Light pos
+var pointLightPosition = [0.0, 0.0, 0.0, 1.0];
+var directionalLightPos = [0.0, 0.0, 0.0, 1.0];
+
 
 var textureArray = {};
 

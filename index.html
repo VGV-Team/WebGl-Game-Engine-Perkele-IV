@@ -81,7 +81,9 @@
 					directionalLightWeighting = max(dot(normalize(vTransformedNormal), uDirectionalLightingLocation), 0.0);
 					lightWeighting = lightWeighting + uDirectionalLightingColor * directionalLightWeighting;
 					
-					//lightWeighting = lightWeighting  * 1.0 * (1.0 / distance(vPosition.xyz, vec3(0.0,0.0,0.0)));
+					float attenuationFactor = 0.01; // manjsi k je, bol bo svetil okol playerja FYI
+					
+					lightWeighting = lightWeighting * (1.0 / (1.0+attenuationFactor*pow(distance(vPosition.xyz, uPointLightingLocation), 2.0)));
 					
 				}
 		        vec4 fragmentColor;

@@ -502,11 +502,11 @@ Entity.prototype.updateMovement = function() {
 		}
 		//console.log("qq: " + reached + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
 	
-		if(reached[x]==1 && reached[y]==1 && reached[z]==1)
+		if(reached[x]==1 && reached[z]==1)
 		{
 			//console.log("qwe");
-			//this.waypointMove=false;
-			//this.waypoint.drawObject = false;
+			this.waypointMove=false;
+			this.waypoint.drawObject = false;
 		}
 		
 		
