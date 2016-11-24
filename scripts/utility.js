@@ -262,7 +262,7 @@ function getTopWorldObject(object) {
 	camera.position[y] = -object.position[y]-object.offset[y];
 	camera.position[z] = -object.position[z]-object.offset[z];
 	camera.offset[x] = 0;
-	camera.offset[y] = -10;
+	camera.offset[y] = -10 + hero.offset[y];
 	camera.offset[z] = 0;
 	camera.rotation[x] = 90;
 	//console.log((-camera.position[y])+" "+(-camera.offset[y])+" "+object.position[y]+" "+object.offset[y])

@@ -79,7 +79,7 @@ Entity.prototype.updateMovement = function() {
 	var place = getTopWorldObject(this);
 	if(place!=null)
 	{
-		this.position[y] = place.position[y]+place.offset[y];
+		this.position[y] = place.position[y]; // FIXIT: stopala so notr v stengah
 		//console.log(this.destination[y]);
 		this.direction[y] = 0;
 	}
