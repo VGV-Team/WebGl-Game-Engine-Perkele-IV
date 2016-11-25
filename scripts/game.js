@@ -11,9 +11,16 @@ function gameLoop()
 	
 	// updates all objects
 	
-	hero.update();
-	for(var i in enemy) enemy[i].update();
-	for(var i in item) item[i].update();
+	if (globalGameOver == false) {
+		hero.update();
+		for(var i in enemy) enemy[i].update();
+		for(var i in item) item[i].update();
+	} else {
+		//FADE PLAYER LIGHT
+		hero.waypoint.drawObject = false;
+		globalAttenuationFactor *= 1.02;
+	}
+	
 	
 	camera.update();
 	//console.log(getVectorAngle(hero.position, enemy[0].position));
@@ -112,12 +119,63 @@ function drawScene() {
 	
 }
 
+
+function clearGlobals() {
+	rttFramebuffer = null;
+	rttTexture = null;
+	gl = null;
+	shaderProgram = null;
+	canvas = null;
+	globalID = 1;
+	hero = null;
+	world = null;
+	camera = null;
+	enemy = null;
+	item = [];
+	world = [];
+	obstacle = [];
+	ui = null;
+	pointLightPosition = [0.0, 0.0, 0.0, 1.0];
+	directionalLightPos = [0.0, 0.0, 0.0, 1.0];
+	textureArray = {};
+
+
+	lastUpdateTime = 0;
+	timeTillLastUpdate = 0;
+
+
+	currentlyPressedKeys = {};
+	currentlyPressedMouseCoordinates = [null, null, null];
+	currentlyPressedEntity = null;
+
+	// Is left mouse pressed? boolean for synchronized framebuffer checking
+	leftMousePressed = false;
+	leftMouseMoved = false;
+	leftMouseEvent = null;
+
+
+	mvMatrixStack = [];
+	mvMatrix = mat4.create();
+	pMatrix = mat4.create();
+	globalGameOver = false;
+	globalAttenuationFactor = 0.01;
+}
 //
 // start
 //
 // Called when the canvas is created to get the ball rolling.
 //
 function start() {
+  
+  
+  
+  if (firstLoad == false) {
+	  ui.showLoadingScreen();
+	  clearInterval(gameLoopInterval);
+  }
+  
+  clearGlobals();
+  
   canvas = document.getElementById("glcanvas");
   gl = initGL(canvas);      // Initialize the GL context
 
@@ -140,18 +198,22 @@ function start() {
 	document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
 	
-	// binds mouse
-	canvas.addEventListener('mousemove', function(event) {
-		//handleMouseClick(event);
-		leftMouseMoved = true;
-		leftMousePressEvent = event;
-	}, false);
-	
-	canvas.addEventListener('click', function(event) {
-		//handleMouseClick(event);
-		leftMousePressed = true;
-		leftMousePressEvent = event;
-	}, false);
+	if (firstLoad) {
+				
+		// binds mouse
+		canvas.addEventListener('mousemove', function(event) {
+			//handleMouseClick(event);
+			leftMouseMoved = true;
+			leftMousePressEvent = event;
+		}, false);
+		
+		canvas.addEventListener('click', function(event) {
+			//handleMouseClick(event);
+			leftMousePressed = true;
+			leftMousePressEvent = event;
+		}, false);
+		firstLoad = false;
+	}
 	
 
 	
@@ -377,9 +439,11 @@ function start() {
 	ui.updateInventoryItemList();
 
 	// Set up to draw the scene periodically.
-	setInterval(gameLoop, 15);
+	gameLoopInterval = setInterval(gameLoop, 15);
 
-	
+	setTimeout(function() {
+		ui.hideLoadingScreen();
+	}, 4000);
 	
   }
 }

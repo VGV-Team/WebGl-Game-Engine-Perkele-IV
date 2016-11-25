@@ -62,6 +62,8 @@
 		    uniform sampler2D uSampler;
 			
 			uniform vec4 tempColor;
+			uniform float attenuationFactor;
+			
 		    void main(void) {
 		        vec3 lightWeighting;
 		        if (!uUseLighting) {
@@ -81,7 +83,7 @@
 					directionalLightWeighting = max(dot(normalize(vTransformedNormal), uDirectionalLightingLocation), 0.0);
 					lightWeighting = lightWeighting + uDirectionalLightingColor * directionalLightWeighting;
 					
-					float attenuationFactor = 0.01; // manjsi k je, bol bo svetil okol playerja FYI
+					//float attenuationFactor = 0.01; // manjsi k je, bol bo svetil okol playerja FYI
 					
 					lightWeighting = lightWeighting * (1.0 / (1.0+attenuationFactor*pow(distance(vPosition.xyz, uPointLightingLocation), 2.0)));
 					
@@ -243,8 +245,7 @@
 					<div class="popupBoxWrapper">
 						<h3>MENU</h3>
 						<hr/>
-						<div class="uiButton" style="margin:0px auto;">RESTART</div>
-						<div class="uiButton" style="margin:0px auto;">EXIT</div>
+						<div onclick="ui.gameOverToMainMenu()" class="uiButton" style="margin:0px auto;">EXIT</div>
 						<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><div class="uiButton" style="margin:0px auto;">BUY VALOR POINTS</div></a>
 					</div>
 				</div>
@@ -276,6 +277,15 @@
 						<p>Your 'Discovery' stat determines the chance of monsters dropping weapons upon death.</p>
 						<p>Weapons drop in different rarities (by order of rarity): COMMON, RARE, LEGENDARY, EPIC</p>
 						<p>Rarer weapons drop less often, but usually have much better stats! Use your inventory to switch between collected weapons.</p>
+					</div>
+				</div>
+			</div>
+			
+			<div id="loadingBar">
+				<div class="popupBox">
+					<div class="popupBoxWrapper">
+						<h1>LOADING</h1>
+						<h3>The game is never late, <br/>it arrives precisely when it's meant to!<br/>---Long gone wizard</h3>
 					</div>
 				</div>
 			</div>
@@ -322,6 +332,102 @@
 		</div>
 		
 		<div>
+		
+		
+		<audio id="audioAmbient" style="display:none;" controls>
+			<source src="assets/audio/ambient.mp3" type="audio/mpeg">
+		</audio>
+		
+		
+		<audio class="audioBasicAttack">
+			<source src="assets/audio/basicattack1.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioBasicAttack">
+			<source src="assets/audio/basicattack2.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioBasicAttack">
+			<source src="assets/audio/basicattack3.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioBasicAttack">
+			<source src="assets/audio/basicattack4.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioBasicAttack">
+			<source src="assets/audio/basicattack5.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioBasicAttack">
+			<source src="assets/audio/basicattack6.mp3" type="audio/mpeg">
+		</audio>
+		
+		<audio id="audioWhirlwind">
+			<source src="assets/audio/whirlwind.mp3" type="audio/mpeg">
+		</audio>
+		<audio id="audioHeal">
+			<source src="assets/audio/heal.mp3" type="audio/mpeg">
+		</audio>
+		
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit1.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit2.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit3.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit4.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit5.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit6.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit7.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit8.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit9.mp3" type="audio/mpeg">
+		</audio>
+		<audio class="audioGetHit">
+			<source src="assets/audio/gethit10.mp3" type="audio/mpeg">
+		</audio>
+		
+		<audio id="audioDeath1">
+			<source src="assets/audio/death1.mp3" type="audio/mpeg">
+		</audio>
+		<audio id="audioDeath2">
+			<source src="assets/audio/death2.mp3" type="audio/mpeg">
+		</audio>
+		<audio id="audioYouDied">
+			<source src="assets/audio/youdied.mp3" type="audio/mpeg">
+		</audio>
+		
+		<audio id="audioDropNormal">
+			<source src="assets/audio/drop.mp3" type="audio/mpeg">
+		</audio>
+		<audio id="audioDropLegendary">
+			<source src="assets/audio/legendaryDrop.mp3" type="audio/mpeg">
+		</audio>
+		
+		<audio id="audioButton">
+			<source src="assets/audio/button.wav" type="audio/wav">
+		</audio>
+		
+		<audio id="audioPickup">
+			<source src="assets/audio/pickup.wav" type="audio/wav">
+		</audio>
+		
+		<audio id="audioSelectWeapon">
+			<source src="assets/audio/selectWeapon.wav" type="audio/wav">
+		</audio>
+		
+		
+		
+		<!--
 		<h4>FIX ASAP:</h4>
 		fix that lightning <br />
 		</div>
@@ -357,6 +463,6 @@
 		add entity type <br />
 		implement entity class for all <br/>
 		implement inheritance <br/>
-		</div>
+		</div>-->
 	</body>
 </html>

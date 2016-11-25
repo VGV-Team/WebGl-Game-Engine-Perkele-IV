@@ -70,6 +70,11 @@ var vertexIndexBuffer = [];
 var textureFile = [];
 */
 
+var firstLoad = true;
+var globalGameOver = false;
+var gameLoopInterval;
+var globalAttenuationFactor = 0.01;
+
 
 var itemNames = [
 "The Ciril's destiny",

@@ -1,6 +1,6 @@
 function basicAttack(attackerObject, hitObject) {
 	
-	console.log(attackerObject.name + " is attacking " + hitObject.name);
+	//console.log(attackerObject.name + " is attacking " + hitObject.name);
 	
 	
 	var criticalRand = Math.floor((Math.random() * 100));
@@ -15,7 +15,9 @@ function basicAttack(attackerObject, hitObject) {
 	}
 	
 	
-	
+	if (hitObject == hero) {
+		ui.playGetHitAudio();
+	}
 	
 	
 	if(hitObject.HP <= 0 && hitObject==hero)
@@ -23,7 +25,7 @@ function basicAttack(attackerObject, hitObject) {
 		hitObject.HP = 0;
 		console.log("PLAYER DIEDED");
 		
-		// TODO: death message
+		globalGameOver = true;
 	}
 	else if (hitObject.HP <= 0) {
 		hitObject.HP = 0;
@@ -36,7 +38,7 @@ function basicAttack(attackerObject, hitObject) {
 		var chance = Math.floor((Math.random() * 100));
 		if(chance<attackerObject.discovery)
 		{
-			
+			console.log("GENERATING ITEMS");
 			// generate item
 			item.push(new Item());
 			item[item.length-1].name = "item";
@@ -50,27 +52,31 @@ function basicAttack(attackerObject, hitObject) {
 			item[item.length-1].stats.itemName = itemNames[Math.floor((Math.random() * itemNames.length))];
 			
 			var type = Math.floor((Math.random() * 100))
-			if(type>95) 
+			if(type>9.5) 
 			{
+				ui.playLegendaryDropAudio();
 				item[item.length-1].stats.rarity = "EPIC"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 20)+20);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 10)+10);
 			
 			}
-			else if(type>85) 
+			else if(type>8.5) 
 			{
+				ui.playLegendaryDropAudio();
 				item[item.length-1].stats.rarity = "LEGENDARY"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 10)+15);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 5)+5);
 			}
-			else if(type>70) 
+			else if(type>7.0) 
 			{
+				ui.playNormalDropAudio();
 				item[item.length-1].stats.rarity = "RARE"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 10)+5);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 10)+0);
 			}
 			else 
 			{
+				ui.playNormalDropAudio();
 				item[item.length-1].stats.rarity = "COMMON"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 5)+1);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 5)+0);
