@@ -2,8 +2,7 @@ function Camera()
 {
 	Entity.call(this);
 	
-	this.offset = [0.0, -10.0, -10.0];
-	this.rotation = [50.0, 0.0, 0.0];
+	
 	
 	//this.position = [0.0, -5.0, -10.0];
 	//this.scale = [1.0, 1.0, 1.0];
@@ -11,6 +10,14 @@ function Camera()
 	//this.direction = [0, 0, 0];
 	this.directionVelocity = [0.25, 0.25, 0.25];
 	// multiplier of camera speed
+	
+	// for top down camera
+	this.offset = [0.0, -10.0, -10.0];
+	this.rotation = [50.0, 0.0, 0.0];
+	
+	// for free camera
+	//this.offset = [-6.5, -12, -6.5]
+	//this.rotation = [60.0, -45.0, 0.0];
 	
 	this.freeCamera = true;
 }

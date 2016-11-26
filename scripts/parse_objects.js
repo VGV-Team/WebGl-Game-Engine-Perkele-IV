@@ -19,7 +19,7 @@ function parseObjects(){
 					hero.position[x] = 5*(j-zamik);
 					hero.position[z] = 5*(i-zamik);
 					//hero.position[x] -= 10;
-					hero.load("./assets/ironman.obj"); 
+					hero.load("./assets/Ironman.obj"); 
 				};
 				
 	for(var i=0; i<lines.length; i++)

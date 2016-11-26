@@ -157,7 +157,30 @@ function start() {
 	
 	//////////////// OBJECT LOADING AND INITIALIZING ////////////////
 	
+	loadModels("./assets/bucaNew.obj");
+	loadModels("./assets/crate.obj");
+	loadModels("./assets/feralGhoul.obj");
+	loadModels("./assets/grass.obj");
+	loadModels("./assets/Ironman.obj");
+	loadModels("./assets/mouse_click_waypoint.obj");
+	loadModels("./assets/slasher.obj");
+	loadModels("./assets/stair_x.obj");
+	loadModels("./assets/stair_z.obj");
+	loadModels("./assets/sword.obj");
+	loadModels("./assets/Trunk.obj");
+	loadModels("./assets/wall.obj");
+	loadModels("./assets/wall_x.obj");
+	loadModels("./assets/wall_z.obj");
+	loadModels("./assets/world_grass.obj");
+	loadModels("./assets/world_plane.obj");
 	
+	// wait some time for models to load
+	setTimeout(loadGame,5000);
+  }
+}
+
+function loadGame()
+{
 	camera = new Camera();
 	
 	ui = new UI();
@@ -180,6 +203,56 @@ function start() {
 	world[world.length - 1].position[x]-=50;
 	world[world.length - 1].position[y]+=5;
 	
+	/*
+	enemy.push(new Hero());
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave1";
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
+	enemy[enemy.length-1].position[x] += 5;
+	enemy[enemy.length-1].position[z] += 5;
+	*/
+	
+	
+	/*
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/wall_z.obj");
+	obstacle[obstacle.length - 1].position[x] = -10;
+	obstacle[obstacle.length - 1].position[y] = 0;
+	obstacle[obstacle.length - 1].position[z] = 5;
+	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/wall.obj");
+	obstacle[obstacle.length - 1].position[x] += 0;
+	obstacle[obstacle.length - 1].position[z] += 5;
+	//obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	obstacle[obstacle.length - 1].position[y] = -3;
+	//obstacle[obstacle.length - 1].rotation[x] = 90;
+	obstacle[obstacle.length - 1].vec4Color = [1.0,1.0,1.0,0.0];
+	//obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	*/
+	/*
+	enemy.push(new Hero);
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave1";
+	enemy[enemy.length-1].position[x] += 5;
+	enemy[enemy.length-1].position[z] += 5;
+	//enemy[enemy.length-1].rotation[y] = -90;
+	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+	enemy.push(new Hero);
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave1";
+	enemy[enemy.length-1].position[x] += 7;
+	enemy[enemy.length-1].position[z] += 7;
+	//enemy[enemy.length-1].rotation[y] = -90;
+	enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+	*/
+	
+	
+	
+	
+	
 	/*world.push(new World());
 	world[world.length - 1].name = "World";
 	world[world.length - 1].load("./assets/stair_x.obj");
@@ -197,7 +270,7 @@ function start() {
 	//obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
 	obstacle[obstacle.length - 1].position[y] = 2;
 	obstacle[obstacle.length - 1].rotation[x] = 90;
-	obstacle[obstacle.length - 1].vec4Color = [1.0,1.0,1.0,0.0];*/
+	obstacle[obstacle.length - 1].vec4Color = [1.0,1.0,1.0,0.0];
 	//obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
 	
 	/*
@@ -288,6 +361,7 @@ function start() {
 	
 	hero = new Hero();
 	hero.name = "Hero";
+	//hero.load("./assets/Ironman.obj");
 	hero.isPlayer = true;
 	//hero.position[x] -= 5;
 	hero.directionVelocity[x] = hero.directionVelocity[x]*1.2;
@@ -295,9 +369,16 @@ function start() {
 	hero.directionVelocity[z] = hero.directionVelocity[z]*1.2;
 	//hero.position[z] -= 5;
 	//hero.position[x] -= 10;
-	//hero.load("./assets/ironman.obj");
-
 	
+	/*
+	enemy.push(new Hero());
+	enemy[enemy.length-1].name = "Evil Pumpkin Slave1";
+	enemy[enemy.length-1].load("./assets/bucaNew.obj");
+	enemy[enemy.length-1].position[x] += 5;
+	enemy[enemy.length-1].position[z] += 5;
+	*/
+
+	parseObjects();
 	
 	// Fury decay
 	// TODO: better location
@@ -306,10 +387,16 @@ function start() {
 		if (hero.fury < 0) hero.fury = 0;
 	}, 1000);*/
 	
+	/*
+	obstacle.push(new World());
+	obstacle[obstacle.length - 1].name = "Obstacle";
+	obstacle[obstacle.length - 1].load("./assets/Trunk.obj");
+	obstacle[obstacle.length - 1].position[x] = 3;
+	obstacle[obstacle.length - 1].position[y] = 0;
+	obstacle[obstacle.length - 1].position[z] = 3;
+	obstacle[obstacle.length - 1].vec4Color = [0.5,0.5,0.5,1.0];
+	*/
 
-	
-	
-	parseObjects();
 	
 	//for (var o in obstacle) {console.log(obstacle[o].position[x]+" "+obstacle[o].position[z]);}
 	/*
@@ -375,11 +462,13 @@ function start() {
 	*/
 	
 	ui.updateInventoryItemList();
-
+	
+	
+	
+	
+	
+	
+	
 	// Set up to draw the scene periodically.
 	setInterval(gameLoop, 15);
-
-	
-	
-  }
 }

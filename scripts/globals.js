@@ -60,15 +60,15 @@ var leftMouseEvent = null;
 var mvMatrixStack = [];
 var mvMatrix = mat4.create();
 var pMatrix = mat4.create();
-/*
-var objectOffset = [];
-var objectCollisionBox = [];
-var vertexPositionBuffer = [];
-var textureBufer = [];
-var normalBuffer = [];
-var vertexIndexBuffer = [];
-var textureFile = [];
-*/
+
+var PRELOADobjectOffset = [];
+var PRELOADobjectCollisionBox = [];
+var PRELOADvertexPositionBuffer = [];
+var PRELOADtextureBuffer = [];
+var PRELOADnormalBuffer = [];
+var PRELOADvertexIndexBuffer = [];
+var PRELOADtextureFile = [];
+
 
 
 var itemNames = [

@@ -54,7 +54,6 @@ Hero.prototype.load = function(objectLocation) {
 	Entity.prototype.load.call(this.waypoint, "./assets/mouse_click_waypoint.obj");
 	this.waypoint.vec4Color = [1.0,0.25,0.25,1.0];
 	this.waypoint.drawObject = false;
-
 	if (this == hero) {
 		this.inventory.push({
 			itemName: "SHOVEL",

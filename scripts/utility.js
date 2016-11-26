@@ -556,19 +556,35 @@ function draw(objectToDraw)
 
 
 //// TEST LOAD TO LOAD TEXTURES ONLY ONCE ////
-/*
+
 function load(objectToLoad, objectURL)
 {
-	objectToLoad.vertexPositionBuffer = vertexPositionBuffer[objectURL];
-	objectToLoad.textureBufer = textureBufer[objectURL];
-	objectToLoad.normalBuffer = normalBuffer[objectURL];
-	objectToLoad.vertexIndexBuffer = vertexIndexBuffer[objectURL];
-	objectToLoad.textureFile = textureFile[objectURL];
-	objectToLoad.collisionBox = objectCollisionBox[objectURL];
-	objectToLoad.offset = objectOffset[objectURL];
+	//console.log(PRELOADvertexPositionBuffer[objectURL])
+	//console.log("qweqwe1 " + vertexPositionBuffer[objectURL].numItems)
+	objectToLoad.vertexPositionBuffer = PRELOADvertexPositionBuffer[objectURL];
+	objectToLoad.textureBuffer = PRELOADtextureBuffer[objectURL];
+	objectToLoad.normalBuffer = PRELOADnormalBuffer[objectURL];
+	objectToLoad.vertexIndexBuffer = PRELOADvertexIndexBuffer[objectURL];
+	objectToLoad.textureFile = PRELOADtextureFile[objectURL];
+	
+	//console.log(objectToLoad.name + " || " + PRELOADobjectCollisionBox[objectURL]),
+	//console.log(objectToLoad.name + " " + objectURL)
+	//console.log(PRELOADnormalBuffer[objectURL])
+	//if(objectToLoad.name == "Hero" ) 
+	//{
+		
+		//console.log(hero);
+	//}
+	objectToLoad.collisionBox[x] = PRELOADobjectCollisionBox[objectURL][x];
+	objectToLoad.collisionBox[y] = PRELOADobjectCollisionBox[objectURL][y];
+	objectToLoad.collisionBox[z] = PRELOADobjectCollisionBox[objectURL][z];
+	//objectToLoad.offset[x] = PRELOADobjectOffset[objectURL][x]
+	objectToLoad.offset[y] = PRELOADobjectOffset[objectURL][y];
+	//objectToLoad.offset[z] = PRELOADobjectOffset[objectURL][z]
+	//objectToLoad.collisionBox = PRELOADobjectCollisionBox[objectURL];
+	//objectToLoad.offset = PRELOADobjectOffset[objectURL];
 }
-*/
-/*
+
 function loadModels(objectURL)
 {
 	var request = new XMLHttpRequest();
@@ -582,7 +598,7 @@ function loadModels(objectURL)
 
 	var handleLoad = function(data) {
 		
-		
+		console.log("LOADING " + objectURL);
 		// to calculate collision box
 		var minX = 9999;
 		var maxX = -9999;
@@ -616,14 +632,17 @@ function loadModels(objectURL)
 		unpacked.index = 0;
 		unpacked.cache = {};
 		
-		console.log("LOADING " + objectURL);
+		
 		
 		var vertexF = [];
 		var indexCount = 0;
 				
+
+		
 		
 		for (var i in lines) {
 			var vals = lines[i].split(" ");
+			
 			if (vals.length == 4 && vals[0] == "v") {
 				// It is a line describing a vertex; get X, Y and Z first
 				//vertexPositions.push(parseFloat(vals[1]));
@@ -634,34 +653,33 @@ function loadModels(objectURL)
 				vertexPositions[vertexPositions.length] = parseFloat(vals[3]);				
 				vertexCount += 1;
 
-				if(parseFloat(vals[1])<minX)
+				if(parseFloat(vals[1])<=minX)
 				{
 					minX = parseFloat(vals[1]);
 				}
-				else if(parseFloat(vals[1])>maxX)
+				if(parseFloat(vals[1])>=maxX)
 				{
 					maxX = parseFloat(vals[1]);
 				}
-				if(parseFloat(vals[2])<minY)
+				if(parseFloat(vals[2])<=minY)
 				{
 					minY = parseFloat(vals[2]);
 				}
-				else if(parseFloat(vals[2])>maxY)
+				if(parseFloat(vals[2])>=maxY)
 				{
 					maxY = parseFloat(vals[2]);
-					
-					
 				}
-				if(parseFloat(vals[3])<minZ)
+				if(parseFloat(vals[3])<=minZ)
 				{
 					minZ = parseFloat(vals[3]);
 				}
-				else if(parseFloat(vals[3])>maxZ)
+				if(parseFloat(vals[3])>=maxZ)
 				{
 					maxZ = parseFloat(vals[3]);
 				}
+				
 			} else if (vals.length == 2 && vals[0] == "usemtl") {
-				textureFile[objectURL] = vals[1];
+				PRELOADtextureFile[objectURL] = vals[1];
 				initTexture(vals[1]);
 			} else if (vals.length == 3 && vals[0] == "vt") {
 				vertexTextureCoords.push(parseFloat(vals[1]));
@@ -707,57 +725,77 @@ function loadModels(objectURL)
 		}
 
 		// align object to world
-		objectOffset[objectURL] = [];
-		objectOffset[objectURL][x] = 0;
-		objectOffset[objectURL][y] = -minY;
-		objectOffset[objectURL][z] = 0;
+		PRELOADobjectOffset[objectURL] = [];
+		PRELOADobjectOffset[objectURL][x] = 0;
+		PRELOADobjectOffset[objectURL][y] = -minY;
+		PRELOADobjectOffset[objectURL][z] = 0;
 		
 
 		// calculate collision
-		objectCollisionBox[objectURL] = [maxX-minX, maxY-minY, maxZ-minZ];
-		
+		PRELOADobjectCollisionBox[objectURL] = [maxX-minX, maxY-minY, maxZ-minZ];
+		//console.log(PRELOADobjectCollisionBox[objectURL])
 		//console.log(textureIndex.length + " " + normalIndex.length);
+		
+		
+		
+/*
+var objectOffset = [];
+var objectCollisionBox = [];
+var vertexPositionBuffer = [];
+var textureBuffer = [];
+var normalBuffer = [];
+var vertexIndexBuffer = [];
+var textureFile = [];
+		*/
+		
+		
 
+		
+		
+		
 		//console.log(unpacked.vertexPositions);
 		
-		vertexPositionBuffer[objectURL] = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer[objectURL]);
+		PRELOADvertexPositionBuffer[objectURL] = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, PRELOADvertexPositionBuffer[objectURL]);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexPositions), gl.STATIC_DRAW);
-		vertexPositionBuffer[objectURL].itemSize = 3;
-		vertexPositionBuffer[objectURL].numItems = unpacked.vertexPositions.length;
+		PRELOADvertexPositionBuffer[objectURL].itemSize = 3;
+		PRELOADvertexPositionBuffer[objectURL].numItems = unpacked.vertexPositions.length;
 		
 		//Load normals
 		if (vertexNormalCoords.length != 0) {
-			normalBuffer[objectURL] = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer[objectURL]);
+			PRELOADnormalBuffer[objectURL] = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, PRELOADnormalBuffer[objectURL]);
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexNormalCoords), gl.STATIC_DRAW);
-			normalBuffer[objectURL].itemSize = 3;
-			normalBuffer[objectURL].numItems = unpacked.vertexNormalCoords.length;
+			PRELOADnormalBuffer[objectURL].itemSize = 3;
+			PRELOADnormalBuffer[objectURL].numItems = unpacked.vertexNormalCoords.length;
 		}
 		
 		//Load textures
-		if (vertexTextureCoords.length != 0 && textureFile[objectURL] != null) {
-			textureBuffer[objectURL] = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer[objectURL]);
+		if (vertexTextureCoords.length != 0 && PRELOADtextureFile[objectURL] != null) {
+			PRELOADtextureBuffer[objectURL] = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, PRELOADtextureBuffer[objectURL]);
 			// Pass the texture coordinates into WebGL
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(unpacked.vertexTextureCoords), gl.STATIC_DRAW);
-			textureBuffer[objectURL].itemSize = 2;
-			textureBuffer[objectURL].numItems = unpacked.vertexTextureCoords;
+			PRELOADtextureBuffer[objectURL].itemSize = 2;
+			PRELOADtextureBuffer[objectURL].numItems = unpacked.vertexTextureCoords;
 		}
 		
-console.log(textureBuffer[objectURL]);
+//console.log(textureBuffer[objectURL]);
 
 		// Now send the element array to GL
-		vertexIndexBuffer[objectURL] = gl.createBuffer();
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer[objectURL]);
+		PRELOADvertexIndexBuffer[objectURL] = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, PRELOADvertexIndexBuffer[objectURL]);
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(unpacked.indexMatrix), gl.STATIC_DRAW);
-		vertexIndexBuffer[objectURL].itemSize = 1;
-		vertexIndexBuffer[objectURL].numItems = unpacked.indexMatrix.length;
+		PRELOADvertexIndexBuffer[objectURL].itemSize = 1;
+		PRELOADvertexIndexBuffer[objectURL].numItems = unpacked.indexMatrix.length;
+		
+		
+		//console.log("qweqwe1 " + vertexPositionBuffer[objectURL].numItems)
 	}
 }
-*/
 
 
+/*
 function load(objectToLoad, objectURL)
 {
 	var request = new XMLHttpRequest();
@@ -829,7 +867,7 @@ function load(objectToLoad, objectURL)
 				{
 					minX = parseFloat(vals[1]);
 				}
-				else if(parseFloat(vals[1])>=maxX)
+				if(parseFloat(vals[1])>=maxX)
 				{
 					maxX = parseFloat(vals[1]);
 				}
@@ -837,7 +875,7 @@ function load(objectToLoad, objectURL)
 				{
 					minY = parseFloat(vals[2]);
 				}
-				else if(parseFloat(vals[2])>=maxY)
+				if(parseFloat(vals[2])>=maxY)
 				{
 					maxY = parseFloat(vals[2]);
 					
@@ -847,19 +885,17 @@ function load(objectToLoad, objectURL)
 				{
 					minZ = parseFloat(vals[3]);
 				}
-				else if(parseFloat(vals[3])>=maxZ)
+				if(parseFloat(vals[3])>=maxZ)
 				{
 					maxZ = parseFloat(vals[3]);
 				}
 				
 				//qweqwe++;
 				//qqqqqq[qqqqqq.length] = parseFloat(vals[1]);
-				/*
-				if(objectURL=="./assets/floor.obj") 
-				{
-					console.log("qwe");
-				}
-				*/
+				//if(objectURL=="./assets/floor.obj") 
+				//{
+				//	console.log("qwe");
+				//}
 				
 			} else if (vals.length == 2 && vals[0] == "usemtl") {
 				objectToLoad.textureFile = vals[1];
@@ -887,12 +923,12 @@ function load(objectToLoad, objectURL)
 					unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + 2]);
 					
 					//console.log(faces[0])
-					/*
-					for(var qq in faces)
-					{
-						unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + qq]);
-					}
-					*/
+					
+					//for(var qq in faces)
+					//{
+					//	unpacked.vertexPositions.push(vertexPositions[(faces[0] - 1) * 3 + qq]);
+					//}
+					
 					
 					if (vertexTextureCoords.length != 0) {
 						unpacked.vertexTextureCoords.push(vertexTextureCoords[(faces[1] - 1) * 2 + 0]);
@@ -931,6 +967,8 @@ function load(objectToLoad, objectURL)
 
 		// calculate collision
 		objectToLoad.collisionBox = [maxX-minX, maxY-minY, maxZ-minZ];
+		//if(objectToLoad.name == "World") console.log(objectToLoad.collisionBox[y]+" "+maxY+" "+minY)
+		//if(objectToLoad.name == "Obstacle") objectToLoad.collisionBox[y] *= 4;
 		
 		//console.log(textureIndex.length + " " + normalIndex.length);
 
@@ -969,6 +1007,7 @@ function load(objectToLoad, objectURL)
 		objectToLoad.vertexIndexBuffer.numItems = unpacked.indexMatrix.length;
 	}
 }
+*/
 
 function calculateTime()
 {
@@ -1225,6 +1264,31 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 	return false;
 }
 
+
+
+
+
+//// Collision with Obstacles
+// For object1 is used rircle and for object2 is used box
+function checkCollisionWithObjectRound(object1, object2)
+{
+	if(object1.collisionBox == null) console.log(object1.name)
+	var radius = (object1.collisionBox[x]+object1.collisionBox[z])/2/2;
+	//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
+	if(
+		(object2.position[x]+object2.offset[x]-object2.collisionBox[x]/2) <= object1.position[x]+radius &&
+		(object2.position[x]+object2.offset[x]+object2.collisionBox[x]/2) > object1.position[x]-radius &&
+		(object2.position[y]+object2.offset[y]-object2.collisionBox[y]/2) <= object1.position[y]+object1.collisionBox[y] &&
+		(object2.position[y]+object2.offset[y]+object2.collisionBox[y]/2) > object1.position[y]-object1.collisionBox[y] &&
+		(object2.position[z]+object2.offset[z]-object2.collisionBox[z]/2) <= object1.position[z]+radius &&
+		(object2.position[z]+object2.offset[z]+object2.collisionBox[z]/2) > object1.position[z]-radius
+	)
+	{
+		return true;
+	}
+	return false;
+}
+
 //////////////////////////////// OLD COLLISION DETECTION ////////////////////////////////
 // used only for vector collision - should NOT be used anymore
 // coordinates - x,y,z coordinates to check, object - object to check with
@@ -1233,12 +1297,12 @@ function checkCollisionWithObject(coordinates, object)
 {
 	//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
 	if(
-		(object.position[x]-object.collisionBox[x]/2) <= coordinates[x] &&
-		(object.position[x]+object.collisionBox[x]/2) > coordinates[x] &&
-		(object.position[y]-object.collisionBox[y]/2) <= coordinates[y] &&
-		(object.position[y]+object.collisionBox[y]/2) > coordinates[y] &&
-		(object.position[z]-object.collisionBox[z]/2) <= coordinates[z] &&
-		(object.position[z]+object.collisionBox[z]/2) > coordinates[z]
+		(object.position[x]+object.offset[x]-object.collisionBox[x]/2) <= coordinates[x] &&
+		(object.position[x]+object.offset[x]+object.collisionBox[x]/2) > coordinates[x] &&
+		(object.position[y]+object.offset[y]-object.collisionBox[y]/2) <= coordinates[y] &&
+		(object.position[y]+object.offset[y]+object.collisionBox[y]/2) > coordinates[y] &&
+		(object.position[z]+object.offset[z]-object.collisionBox[z]/2) <= coordinates[z] &&
+		(object.position[z]+object.offset[z]+object.collisionBox[z]/2) > coordinates[z]
 	)
 	{
 		return true;

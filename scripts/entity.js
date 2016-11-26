@@ -35,10 +35,10 @@ Entity.prototype.load = function(objectLocation) {
 	load(this, objectLocation);
 	
 	// Set a color this object is going to be recognized by in the framebuffer
-	console.log(this.name + " TAKES ID " + globalID);
+	//console.log(this.name + " TAKES ID " + globalID);
 	this.ID = globalID;
 	globalID++;
-	console.log(this.name + " TAKES ID " + this.ID);
+	//console.log(this.name + " TAKES ID " + this.ID);
 	this.frameBufferColor = [this.ID/255.0, 0.0, 0.0, 1.0];
 };
 
@@ -79,7 +79,7 @@ Entity.prototype.updateMovement = function() {
 	var place = getTopWorldObject(this);
 	if(place!=null)
 	{
-		this.position[y] = place.position[y]; // FIXIT: stopala so notr v stengah
+		this.position[y] = place.position[y]+place.offset[y]+place.collisionBox[y]; // FIXIT: stopala so notr v stengah
 		//console.log(this.destination[y]);
 		this.direction[y] = 0;
 	}
@@ -149,17 +149,15 @@ Entity.prototype.updateMovement = function() {
 	
 		if(collision!=null) {
 			console.log(this.name + " " + collision.name);
-			if(collision == this.target) return;
-			// try 90% in way of collision
+			if(collision == this.target) return; // if we hit our target then no need to move further
 			
 			
 			
-			
-			if(collision.name == "Obstacle")
+			if(collision.name == "Obstacle") // if we hit obstacle then calculate collision differently
 			{
 				
 			}
-			else
+			else // Moves player to left or right and rechecks collision with objects
 			{
 				var dir = getDirectionBetweenVectors(this.position, collision.position);
 				
@@ -185,14 +183,14 @@ Entity.prototype.updateMovement = function() {
 				tmp2 = normalizeVector(tmp2);
 				
 				var newPos1 = [];
-				newPos1[x] = this.position[x] + tmp1[x];
+				newPos1[x] = this.position[x] + tmp1[x]*this.directionVelocity[x]*timeTillLastUpdate;
 				newPos1[y] = 0;
-				newPos1[z] = this.position[z] + tmp1[z];
+				newPos1[z] = this.position[z] + tmp1[z]*this.directionVelocity[z]*timeTillLastUpdate;
 				
 				var newPos2 = [];
-				newPos2[x] = this.position[x] + tmp2[x];
+				newPos2[x] = this.position[x] + tmp2[x]*this.directionVelocity[x]*timeTillLastUpdate;
 				newPos2[y] = 0;
-				newPos2[z] = this.position[z] + tmp2[z];
+				newPos2[z] = this.position[z] + tmp2[z]*this.directionVelocity[z]*timeTillLastUpdate;
 				
 				
 				
@@ -200,10 +198,20 @@ Entity.prototype.updateMovement = function() {
 				var d2 = getDistanceBetweenVectors(newPos2, this.destination);
 				
 				
+				var tmpX=this.position[x];
+				var tmpY=this.position[y];
+				var tmpZ=this.position[z];
+				
+				// move to one side and check for collision
+				
+				this.position[x]=newPos1[x];
+				this.position[y]=newPos1[y];
+				this.position[z]=newPos1[z];
 				var ok1=true;
 				for(var i in obstacle)
 				{
-					if(checkCollisionWithObject(newPos1, obstacle[i]))
+					if(checkCollisionWithObjectRound(this, obstacle[i]))
+					//if(checkCollisionWithObject(newPos1, obstacle[i]))
 					{
 						ok1 = false;
 						break;
@@ -220,15 +228,27 @@ Entity.prototype.updateMovement = function() {
 				this.position[z] -= tmp1[z];
 				*/
 				
+				
+				// move to the other side and check for collision
+
+				this.position[x]=newPos2[x];
+				this.position[y]=newPos2[y];
+				this.position[z]=newPos2[z];
 				var ok2=true;
 				for(var i in obstacle)
 				{
-					if(checkCollisionWithObject(newPos2, obstacle[i]))
+					if(checkCollisionWithObjectRound(this, obstacle[i]))
+					//if(checkCollisionWithObject(newPos2, obstacle[i]))
 					{
 						ok2 = false;
 						break;
 					}
 				}
+				
+				// restore values
+				this.position[x]=tmpX;
+				this.position[y]=tmpY;
+				this.position[z]=tmpZ;
 				
 				/*
 				this.position[x] += tmp2[x];
@@ -240,6 +260,8 @@ Entity.prototype.updateMovement = function() {
 				this.position[z] -= tmp2[z];
 				*/
 				
+				
+				// decide if left or right is better
 				if(d1<d2 && ok1) 
 				{
 					this.direction[x] = tmp1[x];
@@ -377,9 +399,10 @@ Entity.prototype.updateMovement = function() {
 			);
 			*/
 			
-			var updateX = this.direction[x]*this.directionVelocity[x]*timeTillLastUpdate;
-			var updateY = this.direction[y]*this.directionVelocity[y]*timeTillLastUpdate;
-			var updateZ = this.direction[z]*this.directionVelocity[z]*timeTillLastUpdate;	
+			var dirVecNormalized = normalizeVector(this.direction);
+			var updateX = dirVecNormalized[x]*this.directionVelocity[x]*timeTillLastUpdate;
+			var updateY = dirVecNormalized[y]*this.directionVelocity[y]*timeTillLastUpdate;
+			var updateZ = dirVecNormalized[z]*this.directionVelocity[z]*timeTillLastUpdate;	
 			this.position[x] += updateX;
 			this.position[y] += updateY;
 			this.position[z] += updateZ;
@@ -397,10 +420,12 @@ Entity.prototype.updateMovement = function() {
 			
 			
 			//this.updateMovement();
-			
+			/*
+			// no move if we collide - this was old system
 			this.waypoint.drawObject = false;
 			this.waypointMove = false;
-			return; // no move if we collide
+			return; 
+			*/
 		}
 		
 		
@@ -424,7 +449,7 @@ Entity.prototype.updateMovement = function() {
 			for(var i in obstacle)
 			{
 				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
-				if(checkCollisionWithObject(this.position, obstacle[i]))
+				if(checkCollisionWithObjectRound(this, obstacle[i]))
 				{
 					ok = false;
 					//this.position[z] = obstacle[i].position[z]+obstacle[i].offset[z]+obstacle[i].collisionBox[x];
@@ -441,7 +466,7 @@ Entity.prototype.updateMovement = function() {
 			for(var i in obstacle)
 			{
 				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
-				if(checkCollisionWithObject(this.position, obstacle[i]))
+				if(checkCollisionWithObjectRound(this, obstacle[i]))
 				{
 					ok = false;
 					//this.position[x] = obstacle[i].position[x]+obstacle[i].offset[x]+obstacle[i].collisionBox[x];
@@ -472,7 +497,7 @@ Entity.prototype.updateMovement = function() {
 			for(var i in obstacle)
 			{
 				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
-				if(checkCollisionWithObject(this.position, obstacle[i]))
+				if(checkCollisionWithObjectRound(this, obstacle[i]))
 				{
 					ok = false;
 					//this.position[z] = obstacle[i].position[z]+obstacle[i].offset[z]+obstacle[i].collisionBox[x];
@@ -489,7 +514,7 @@ Entity.prototype.updateMovement = function() {
 			for(var i in obstacle)
 			{
 				//if(checkCollisionBetweenTwoObjects(this, obstacle[i]))
-				if(checkCollisionWithObject(this.position, obstacle[i]))
+				if(checkCollisionWithObjectRound(this, obstacle[i]))
 				{
 					ok = false;
 					//this.position[z] = obstacle[i].position[z]+obstacle[i].offset[z]+obstacle[i].collisionBox[x];
