@@ -19,6 +19,31 @@ function basicAttack(attackerObject, hitObject) {
 		ui.playGetHitAudio();
 	}
 	
+	if (hitObject == hero && attackerObject.name == "DIABLO") {
+		if (globalDiabloHalfHealth == true) {
+			globalAttenuationFactor *= 1.15;
+		} 
+		if (globalDiabloQuarterHealth == true) {
+			globalAttenuationFactor *= 1.15;
+		} 
+		if (globalAttenuationFactor > 0.08) globalAttenuationFactor = 0.08;
+	}
+	
+	if (hitObject.name == "DIABLO") {
+		if (globalDiabloHalfHealth == false && hitObject.HP <= hitObject.maxHP/2) {
+			globalDiabloHalfHealth = true;
+			ui.playDiabloHalfHealthAudio();
+		} else if (globalDiabloQuarterHealth == false && hitObject.HP <= hitObject.maxHP/4) {
+			globalDiabloQuarterHealth = true;
+			ui.playDiabloQuarterHealthAudio();
+		} else if (hitObject.HP <= 0){
+			// YOU WON
+			globalDiabloDead = true;
+			ui.diabloDiesEndGame();
+			//TODO: call ui.vicotry() or sth
+		}
+	}
+	
 	
 	if(hitObject.HP <= 0 && hitObject==hero)
 	{

@@ -462,8 +462,6 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 	right: 0;
 	top:0;
 	background-color:transparent;
-	border:4px solid gold;
-	border-radius:10px;
 }
 #mainMenuScreen .popupBox {
 	background-image:url('../assets/ui/mainMenu.jpg');
@@ -485,6 +483,14 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 
 #loadingBar {
 	display:block;
+	border:4px solid gold;
+	border-radius:10px;
+}
+#victoryBar {
+	display:none;
+}
+
+#loadingBar, #victoryBar, #victoryText {
 	z-index:100;
 	position:absolute;
 	height:100%;
@@ -495,18 +501,20 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 	right: 0;
 	top:0px;
 	background-color:transparent;
-	border:4px solid gold;
-	border-radius:10px;
 }
 
-#loadingBar .popupBox {
+#loadingBar .popupBox, #victoryBar .popupBox {
 	width:100%;
 	height:100%;
 	background:black;
 	color:white;
 	font-size:64;
 }
-#loadingBar .popupBox *{
+
+#victoryBar .popupBox {
+	border-style:none;
+}
+#loadingBar .popupBox *, #victoryBar .popupBox *{
 	text-align:center;
 	width:100%;
 	
@@ -516,3 +524,33 @@ background: -ms-linear-gradient(left, rgba(243,226,199,1) 0%, rgba(193,158,103,1
 	font-family:lotrFont;
 }
 
+#victoryBar .popupBox h3 {
+	font-size:58;
+}
+
+#victoryBar .popupBox h4 {
+	font-size:38;
+	font-family:lotrFont;
+}
+
+#victoryBar .popupBox .popupBoxWrapper .uiButton {
+	width:400px;
+	height:150px;
+	background-size: 400px 150px;
+	padding-top:40px;
+	font-size:36px;
+}
+
+#victoryText .popupBox h3 {
+	color:gold;
+	font-size:58;
+}
+
+#victoryText {
+	display:none;
+}
+
+#victoryText .popupBox {
+	background:transparent;
+	border-style:none;
+}

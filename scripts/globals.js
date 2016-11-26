@@ -75,6 +75,14 @@ var globalGameOver = false;
 var gameLoopInterval;
 var globalAttenuationFactor = 0.01;
 
+//ENDGAME VARS
+var globalDiabloMet = false;
+var globalDiabloHalfHealth = false;
+var globalDiabloQuarterHealth = false;
+var globalDiabloDead = false;
+
+var globalDiabloDeathTime;
+
 
 var itemNames = [
 "The Ciril's destiny",

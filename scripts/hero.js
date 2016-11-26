@@ -184,6 +184,13 @@ Hero.prototype.updateAI = function()
 			//this.waypointMove = false;
 		}	
 		
+		//DIABLO
+		if (globalDiabloMet == false && this.name == "DIABLO") {
+			globalDiabloMet = true;
+			ui.playDiabloBoastAudio();
+		}
+		
+		
 	}
 	else
 	{

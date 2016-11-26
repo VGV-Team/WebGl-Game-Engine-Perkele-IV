@@ -11,6 +11,8 @@ function UI() {
 		this.abilityBar.innerHTML += '<div class="abilityBox"><span class="abilityName">BasicAttack</span><div id="ability' + hero.abilites[i].name + '" class="abilityCooldown"></div></div>';
 	}
 	this.abilityBoxes = */
+	this.bottomBar = document.getElementById("bottomBar");
+	
 	this.abilityBasicAttackCooldownBar = document.getElementById("abilityBasicAttackCooldownBar");
 	this.ability360SlashCooldownBar = document.getElementById("ability360SlashCooldownBar");
 	this.abilityHealCooldownBar = document.getElementById("abilityHealCooldownBar");
@@ -129,7 +131,60 @@ function UI() {
 	//Change weapon in inventory
 	this.audioSelectWeapon = document.getElementById("audioSelectWeapon");
 			
+	//DIABLO
+	this.audioDiabloBoast = [];
+	tmp = document.getElementsByClassName("audioDiabloBoast");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioDiabloBoast.push(tmp.item(i));
+	}
 	
+	this.audioDiabloHalfHealth = [];
+	tmp = document.getElementsByClassName("audioDiabloHalfHealth");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioDiabloHalfHealth.push(tmp.item(i));
+	}
+	
+	this.audioDiabloQuarterHealth = [];
+	tmp = document.getElementsByClassName("audioDiabloQuarterHealth");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioDiabloQuarterHealth.push(tmp.item(i));
+	}
+	
+	this.audioDiabloKillsHero = [];
+	tmp = document.getElementsByClassName("audioDiabloKillsHero");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioDiabloKillsHero.push(tmp.item(i));
+	}
+	
+	this.audioDiabloDies = [];
+	tmp = document.getElementsByClassName("audioDiabloDies");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioDiabloDies.push(tmp.item(i));
+	}
+	
+	this.audioPlayerKillsDiablo = [];
+	tmp = document.getElementsByClassName("audioPlayerKillsDiablo");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioPlayerKillsDiablo.push(tmp.item(i));
+	}
+	
+	//AMBIENT DIABLO FIGHT
+	this.audioDiabloFightAmbient = document.getElementById("audioDiabloFightAmbient");
+	this.audioDiabloFightStarted = false;
+	this.audioPlayerWonAmbient = document.getElementById("audioPlayerWonAmbient");
+	
+	this.audioPlayerDiabloTaunt = document.getElementById("audioPlayerDiabloTaunt");
+	
+	//VICTORY SCREEN
+	this.victoryBar = document.getElementById("victoryBar");
+	this.victoryToMainMenuBtn = document.getElementById("victoryToMainMenuBtn");
+	this.victoryText = document.getElementById("victoryText");
 }
 
 
@@ -206,6 +261,17 @@ UI.prototype.update = function() {
 	this.currentHP.innerHTML = "HP<br/>" + hp + " / " + maxHP;
 	this.currentFury.innerHTML = "Fury<br/>" + fury + " / " + maxFury;
 	
+	
+	//console.log(this.audioDiabloFightAmbient);
+	//DIABLO BASED
+	if (globalDiabloMet == true && this.audioDiabloFightStarted == false) {
+		this.audioDiabloFightAmbient.play();
+		this.audioDiabloFightAmbient.loop = true;
+		this.audioAmbient.pause();
+		this.audioDiabloFightStarted = true;
+	}
+	
+	
 	if (hero.HP <= 0 && !this.isGameOver) {
 		// Show GAME OVER
 		//this.showGameOver();
@@ -215,7 +281,12 @@ UI.prototype.update = function() {
 		
 		this.audioAmbient.pause();
 		this.audioAmbient.load();
+		this.audioDiabloFightAmbient.pause();
+		this.audioDiabloFightAmbient.load();
 		this.audioDeath1.play();
+		if (globalDiabloMet == true) {
+			this.playDiabloKillsHeroAudio();
+		}
 		setTimeout(function() {
 			ui.audioDeath2.play()
 		}, 1500);
@@ -384,6 +455,15 @@ UI.prototype.gameOverToMainMenu = function() {
 	this.audioAmbient.pause();
 	this.audioAmbient.load();
 	
+	this.audioDiabloFightAmbient.pause();
+	this.audioDiabloFightAmbient.load();
+	
+	this.audioPlayerWonAmbient.pause();
+	this.audioPlayerWonAmbient.load();
+	
+	this.bottomBar.style.display = "block";
+	this.hideVictoryScreen();
+	
 	start();
 }
 
@@ -434,4 +514,61 @@ UI.prototype.playPickupAudio = function() {
 
 UI.prototype.playSelectWeaponAudio = function() {
 	this.audioSelectWeapon.play();
+}
+
+UI.prototype.playDiabloBoastAudio = function() {
+	var r = Math.floor(Math.random()*this.audioDiabloBoast.length);
+	this.audioDiabloBoast[r].play();
+	
+	setTimeout(function() {
+		ui.audioPlayerDiabloTaunt.play();
+	}, 6000);
+}
+UI.prototype.playDiabloHalfHealthAudio= function() {
+	var r = Math.floor(Math.random()*this.audioDiabloHalfHealth.length);
+	this.audioDiabloHalfHealth[r].play();
+}
+UI.prototype.playDiabloQuarterHealthAudio = function() {
+	var r = Math.floor(Math.random()*this.audioDiabloQuarterHealth.length);
+	this.audioDiabloQuarterHealth[r].play();
+}
+UI.prototype.playDiabloKillsHeroAudio = function() {
+	var r = Math.floor(Math.random()*this.audioDiabloKillsHero.length);
+	this.audioDiabloKillsHero[r].play();
+}
+UI.prototype.playDiabloDiesAudio = function() {
+	var r = Math.floor(Math.random()*this.audioDiabloDies.length);
+	this.audioDiabloDies[r].play();
+}
+UI.prototype.playPlayerKillsDiabloAudio = function() {
+	var r = Math.floor(Math.random()*this.audioPlayerKillsDiablo.length);
+	this.audioPlayerKillsDiablo[r].play();
+}
+
+UI.prototype.playPlayerWonAmbientAudio = function() {
+	this.audioPlayerWonAmbient.play();
+}
+
+UI.prototype.diabloDiesEndGame = function() {
+	this.playDiabloDiesAudio();
+	this.playPlayerKillsDiabloAudio();
+	this.playPlayerWonAmbientAudio();
+	this.audioDiabloFightAmbient.pause();
+	this.bottomBar.style.display = "none";
+}
+
+UI.prototype.showVictoryScreen = function() {
+	ui.victoryBar.style.display = "block";
+	ui.victoryToMainMenuBtn.style.display = "block";
+}
+UI.prototype.hideVictoryScreen = function() {
+	ui.victoryBar.style.display = "none";
+	ui.victoryToMainMenuBtn.style.display = "none";
+}
+
+UI.prototype.showVictoryText = function() {
+	ui.victoryText.style.display = "block";
+}
+UI.prototype.hideVictoryText = function() {
+	ui.victoryText.style.display = "none";
 }

@@ -11,14 +11,29 @@ function gameLoop()
 	
 	// updates all objects
 	
-	if (globalGameOver == false) {
+	if (globalGameOver == false && globalDiabloDead == false) {
 		hero.update();
 		for(var i in enemy) enemy[i].update();
 		for(var i in item) item[i].update();
-	} else {
-		//FADE PLAYER LIGHT
+	} else if (globalGameOver == true){
+		//PLAYER DIED -> FADE PLAYER LIGHT
 		hero.waypoint.drawObject = false;
 		globalAttenuationFactor *= 1.02;
+	} else if (globalDiabloDead == true) {
+		//PLAYER WON -> RAISE AND STRENGTHEN LIGHT
+		hero.waypoint.drawObject = false;
+		//globalAttenuationFactor *= 0.995;
+		globalAttenuationFactor *= 0.99;
+		pointLightPosition[y] += 0.005;
+		
+		if (globalDiabloDeathTime == null) {
+			globalDiabloDeathTime = lastUpdateTime;
+			setTimeout(ui.showVictoryText, 6000);
+			setTimeout(ui.hideVictoryText, 13000);
+			setTimeout(ui.showVictoryScreen, 19800);
+		} else if (lastUpdateTime - globalDiabloDeathTime > 16000) {
+			globalAttenuationFactor *= 1.25;
+		}
 	}
 	
 	
@@ -159,6 +174,14 @@ function clearGlobals() {
 	pMatrix = mat4.create();
 	globalGameOver = false;
 	globalAttenuationFactor = 0.01;
+	
+	
+	globalDiabloMet = false;
+	globalDiabloHalfHealth = false;
+	globalDiabloQuarterHealth = false;
+	globalDiabloDead = false;
+	
+	globalDiabloDeathTime = null;
 }
 //
 // start
@@ -246,6 +269,7 @@ function start() {
 		loadModels("./assets/wall_z.obj");
 		loadModels("./assets/world_grass.obj");
 		loadModels("./assets/world_plane.obj");
+		loadModels("./assets/diablo.obj")
 		
 		firstLoad = false;
 		
@@ -447,6 +471,19 @@ function loadGame()
 	hero.directionVelocity[z] = hero.directionVelocity[z]*1.2;
 	//hero.position[z] -= 5;
 	//hero.position[x] -= 10;
+	
+	enemy.push(new Hero());
+	enemy[enemy.length-1].name="DIABLO";
+	enemy[enemy.length-1].load("./assets/diablo.obj");
+	enemy[enemy.length-1].position[x]-=5;
+	enemy[enemy.length-1].position[z]-=5;
+	enemy[enemy.length-1].collisionBox[z] -= 5;
+	enemy[enemy.length-1].collisionBox[x] -= 5;
+	enemy[enemy.length-1].viewRange = 20;
+	/*setTimeout(function() {
+		enemy[enemy.length-1].collisionBox[z] -= 10;
+	}, 1000);*/
+	
 	
 	/*
 	enemy.push(new Hero());
