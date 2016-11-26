@@ -32,6 +32,7 @@ function parseObjects(){
 						enemy[enemy.length-1].position[x] = 5*(j-zamik);
 						enemy[enemy.length-1].position[z] = 5*(i-zamik);
 						//enemy[enemy.length-1].rotation[y] = -90;
+						enemy[enemy.length-1].abilities["BasicAttack"].cooldown = 1000;
 						enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
 						break;
 					case 'y':

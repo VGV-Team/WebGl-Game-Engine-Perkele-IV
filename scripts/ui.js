@@ -74,6 +74,62 @@ function UI() {
 	
 	//MAIN MENU
 	this.mainMenuScreen = document.getElementById("mainMenuScreen");
+	
+	//LOADING SCREEN
+	this.loadingScreen = document.getElementById("loadingBar");
+	
+	/* 
+	--------------
+	AUDIO
+	--------------
+	*/
+	//AMBIENT
+	this.audioAmbient = document.getElementById("audioAmbient");
+	this.audioAmbient.volume = 0.2;
+	this.audioAmbient.loop = true;
+	
+	//BASIC Attack
+	this.audioBasicAttack = [];
+	var tmp = document.getElementsByClassName("audioBasicAttack");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioBasicAttack.push(tmp.item(i));
+	}
+	
+	//360Slash - Whirlwind
+	this.audioWhirlwind = document.getElementById("audioWhirlwind");
+	
+	//Heal
+	this.audioHeal = document.getElementById("audioHeal");
+	
+	//Get hit sounds
+	this.audioGetHit = [];
+	this.getHitCount = 0;
+	tmp = document.getElementsByClassName("audioGetHit");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioGetHit.push(tmp.item(i));
+	}
+	
+	//Death
+	this.audioDeath1 = document.getElementById("audioDeath1");
+	this.audioDeath2 = document.getElementById("audioDeath2");
+	this.audioYouDied = document.getElementById("audioYouDied");
+	
+	//Weapon drops
+	this.audioDropNormal = document.getElementById("audioDropNormal");
+	this.audioDropLegendary = document.getElementById("audioDropLegendary");
+	
+	//"Button" - when closing and opening menus
+	this.audioButton = document.getElementById("audioButton");
+	
+	//Pickup audio
+	this.audioPickup = document.getElementById("audioPickup");
+	
+	//Change weapon in inventory
+	this.audioSelectWeapon = document.getElementById("audioSelectWeapon");
+			
+	
 }
 
 
@@ -152,11 +208,28 @@ UI.prototype.update = function() {
 	
 	if (hero.HP <= 0 && !this.isGameOver) {
 		// Show GAME OVER
-		this.showGameOver();
+		//this.showGameOver();
 		this.isGameOver = true;
+		globalGameOver = true;
+		// Show game over with delay
+		
+		this.audioAmbient.pause();
+		this.audioAmbient.load();
+		this.audioDeath1.play();
+		setTimeout(function() {
+			ui.audioDeath2.play()
+		}, 1500);
+		this.audioYouDied.play();
+		
+		setTimeout(function() {
+			ui.showGameOver();
+		}, 6000);
+		//Show "back to menu" button
 		setTimeout(function(){
 			gameOverToMainMenuBtn.style.display = "block";
-		}, 3000);
+		}, 8000);
+		
+		
 	}
 	
 	
@@ -249,6 +322,7 @@ UI.prototype.showEnemyHealthBar = function() {
 }
 
 UI.prototype.toggleInventory = function() {
+	this.audioButton.play();
 	if (this.inventoryOpen == true) {
 		this.inventoryBar.style.display = 'none';
 		this.inventoryOpen = false;
@@ -259,6 +333,7 @@ UI.prototype.toggleInventory = function() {
 }
 
 UI.prototype.toggleCharacterStats = function() {
+	this.audioButton.play();
 	if (this.characterStatsOpen == true) {
 		this.characterBar.style.display = 'none';
 		this.characterStatsOpen = false;
@@ -269,6 +344,7 @@ UI.prototype.toggleCharacterStats = function() {
 }
 
 UI.prototype.toggleMenu = function() {
+	this.audioButton.play();
 	if (this.menuPanelOpen == true) {
 		this.menuBar.style.display = 'none';
 		this.menuPanelOpen = false;
@@ -279,6 +355,7 @@ UI.prototype.toggleMenu = function() {
 }
 
 UI.prototype.toggleHelp = function() {
+	this.audioButton.play();
 	if (this.helpBarOpen == true) {
 		this.helpBar.style.display = 'none';
 		this.helpBarOpen = false;
@@ -290,12 +367,71 @@ UI.prototype.toggleHelp = function() {
 
 UI.prototype.showGameOver = function() {
 	this.gameOverScreen.style.display = "block";
+	/*this.audioAmbient.pause();
+	this.audioAmbient.load();*/
 }
 UI.prototype.gameOverToMainMenu = function() {
+	this.audioButton.play();
 	this.gameOverScreen.style.display = "none";
 	this.mainMenuScreen.style.display = "block";
+	
+	this.inventoryBar.style.display = "none";
+	this.characterBar.style.display = "none";
+	this.menuBar.style.display = "none";
+	this.helpBar.style.display = "none";
+	this.gameOverToMainMenuBtn.style.display = "none";
+	
+	this.audioAmbient.pause();
+	this.audioAmbient.load();
+	
+	start();
 }
 
 UI.prototype.closeMainMenu = function() {
+	this.audioButton.play();
 	this.mainMenuScreen.style.display = "none";
+	this.audioAmbient.play();
+}
+
+UI.prototype.playBasicAttackAudio = function() {
+	var r = Math.floor(Math.random()*this.audioBasicAttack.length);
+	this.audioBasicAttack[r].play();
+}
+
+UI.prototype.playWhirlwindAudio = function() {
+	this.audioWhirlwind.play();
+}
+
+UI.prototype.playHealAudio = function() {
+	this.audioHeal.play();
+}
+
+UI.prototype.playGetHitAudio = function() {
+	
+	var r = Math.floor(Math.random()*this.audioGetHit.length);
+	this.audioGetHit[this.getHitCount++].play();
+	if (this.getHitCount == 10) this.getHitCount = 0;
+}
+
+UI.prototype.showLoadingScreen = function() {
+	this.loadingScreen.style.display = "block";
+}
+UI.prototype.hideLoadingScreen = function() {
+	this.audioButton.play();
+	this.loadingScreen.style.display = "none";
+}
+
+UI.prototype.playNormalDropAudio = function() {
+	this.audioDropNormal.play();
+}
+UI.prototype.playLegendaryDropAudio = function() {
+	this.audioDropLegendary.play();
+}
+
+UI.prototype.playPickupAudio = function() {
+	this.audioPickup.play();
+}
+
+UI.prototype.playSelectWeaponAudio = function() {
+	this.audioSelectWeapon.play();
 }

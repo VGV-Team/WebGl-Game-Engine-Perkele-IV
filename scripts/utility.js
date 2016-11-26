@@ -400,6 +400,7 @@ function handleTextureLoaded(texture) {
 
 function draw(objectToDraw)
 {
+	
 	//TEMP color
 	gl.uniform4f(
 		shaderProgram.tempColor,
@@ -429,6 +430,10 @@ function draw(objectToDraw)
 		gl.disableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 	} else {
 
+	
+		//SET ATTENUATION FACTOR
+		gl.uniform1f(shaderProgram.attenuationFactorUniform, globalAttenuationFactor);
+	
 		//console.log(objectToDraw.name + " using lighting!");
 		gl.uniform1i(shaderProgram.useLightingUniform, 1);
 		gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);

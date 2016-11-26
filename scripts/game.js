@@ -11,9 +11,16 @@ function gameLoop()
 	
 	// updates all objects
 	
-	hero.update();
-	for(var i in enemy) enemy[i].update();
-	for(var i in item) item[i].update();
+	if (globalGameOver == false) {
+		hero.update();
+		for(var i in enemy) enemy[i].update();
+		for(var i in item) item[i].update();
+	} else {
+		//FADE PLAYER LIGHT
+		hero.waypoint.drawObject = false;
+		globalAttenuationFactor *= 1.02;
+	}
+	
 	
 	camera.update();
 	//console.log(getVectorAngle(hero.position, enemy[0].position));
@@ -112,70 +119,141 @@ function drawScene() {
 	
 }
 
+
+function clearGlobals() {
+	//rttFramebuffer = null;
+	//rttTexture = null;
+	//gl = null;
+	//shaderProgram = null;
+	//canvas = null;
+	globalID = 1;
+	hero = null;
+	//world = null;
+	camera = null;
+	enemy = [];
+	item = [];
+	world = [];
+	obstacle = [];
+	ui = null;
+	pointLightPosition = [0.0, 0.0, 0.0, 1.0];
+	directionalLightPos = [0.0, 0.0, 0.0, 1.0];
+	//textureArray = {};
+
+
+	lastUpdateTime = 0;
+	timeTillLastUpdate = 0;
+
+
+	currentlyPressedKeys = {};
+	currentlyPressedMouseCoordinates = [null, null, null];
+	currentlyPressedEntity = null;
+
+	// Is left mouse pressed? boolean for synchronized framebuffer checking
+	leftMousePressed = false;
+	leftMouseMoved = false;
+	leftMouseEvent = null;
+
+
+	mvMatrixStack = [];
+	mvMatrix = mat4.create();
+	pMatrix = mat4.create();
+	globalGameOver = false;
+	globalAttenuationFactor = 0.01;
+}
 //
 // start
 //
 // Called when the canvas is created to get the ball rolling.
 //
 function start() {
-  canvas = document.getElementById("glcanvas");
-  gl = initGL(canvas);      // Initialize the GL context
+  
+  
+  /*
+  canvas.removeEventListener("mousemove", mouseMoveEventFunction , false);
+  canvas.removeEventListener("click", mouseClickEventFunction , false);
+  */
+  if (firstLoad == false) {
+	  ui.showLoadingScreen();
+	  clearInterval(gameLoopInterval);
+	  
+	    
+  }
+  else 
+  {
+	canvas = document.getElementById("glcanvas");
+	gl = initGL(canvas);      // Initialize the GL context
+  }
+	  
+  
+  clearGlobals();
+  
+
+  
 
   // Only continue if WebGL is available and working
   if (gl) {
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);                      // Set clear color to black, fully opaque
-    gl.clearDepth(1.0);                                     // Clear everything
-    gl.enable(gl.DEPTH_TEST);                               // Enable depth testing
-    gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things
-
-    // Initialize the shaders; this is where all the lighting for the
-    // vertices and so forth is established.
-    initShaders();
-	
-	// Init framebuffer
-	initTextureFramebuffer();
     
 	
-	// binds keyboard events
-	document.onkeydown = handleKeyDown;
-    document.onkeyup = handleKeyUp;
-	
-	// binds mouse
-	canvas.addEventListener('mousemove', function(event) {
-		//handleMouseClick(event);
-		leftMouseMoved = true;
-		leftMousePressEvent = event;
-	}, false);
-	
-	canvas.addEventListener('click', function(event) {
-		//handleMouseClick(event);
-		leftMousePressed = true;
-		leftMousePressEvent = event;
-	}, false);
-	
+	if (firstLoad) {
+		gl.clearColor(0.0, 0.0, 0.0, 1.0);                      // Set clear color to black, fully opaque
+		gl.clearDepth(1.0);                                     // Clear everything
+		gl.enable(gl.DEPTH_TEST);                               // Enable depth testing
+		gl.depthFunc(gl.LEQUAL);                                // Near things obscure far things
 
+		// Initialize the shaders; this is where all the lighting for the
+		// vertices and so forth is established.
+		initShaders();
+		
+		// Init framebuffer
+		initTextureFramebuffer();
+		
+		
+		// binds keyboard events
+		document.onkeydown = handleKeyDown;
+		document.onkeyup = handleKeyUp;
+				
+		// binds mouse
+		var mouseMoveEventFunction = function(event) {
+			//handleMouseClick(event);
+			leftMouseMoved = true;
+			leftMousePressEvent = event;
+		}
+		canvas.addEventListener('mousemove', mouseMoveEventFunction , false);
+		
+		var mouseClickEventFunction = function(event) {
+			//handleMouseClick(event);
+			leftMousePressed = true;
+			leftMousePressEvent = event;
+		}
+		canvas.addEventListener('click', mouseClickEventFunction, false);
+		
+		
+		//////////////// OBJECT LOADING AND INITIALIZING ////////////////
 	
-	//////////////// OBJECT LOADING AND INITIALIZING ////////////////
-	
-	loadModels("./assets/bucaNew.obj");
-	loadModels("./assets/crate.obj");
-	loadModels("./assets/feralGhoul.obj");
-	loadModels("./assets/grass.obj");
-	loadModels("./assets/Ironman.obj");
-	loadModels("./assets/mouse_click_waypoint.obj");
-	loadModels("./assets/slasher.obj");
-	loadModels("./assets/stair_x.obj");
-	loadModels("./assets/stair_z.obj");
-	loadModels("./assets/sword.obj");
-	loadModels("./assets/Trunk.obj");
-	loadModels("./assets/wall.obj");
-	loadModels("./assets/wall_x.obj");
-	loadModels("./assets/wall_z.obj");
-	loadModels("./assets/world_grass.obj");
-	loadModels("./assets/world_plane.obj");
-	
-	// wait some time for models to load
-	setTimeout(loadGame,5000);
+		loadModels("./assets/bucaNew.obj");
+		loadModels("./assets/crate.obj");
+		loadModels("./assets/feralGhoul.obj");
+		loadModels("./assets/grass.obj");
+		loadModels("./assets/Ironman.obj");
+		loadModels("./assets/mouse_click_waypoint.obj");
+		loadModels("./assets/slasher.obj");
+		loadModels("./assets/stair_x.obj");
+		loadModels("./assets/stair_z.obj");
+		loadModels("./assets/sword.obj");
+		loadModels("./assets/Trunk.obj");
+		loadModels("./assets/wall.obj");
+		loadModels("./assets/wall_x.obj");
+		loadModels("./assets/wall_z.obj");
+		loadModels("./assets/world_grass.obj");
+		loadModels("./assets/world_plane.obj");
+		
+		firstLoad = false;
+		
+		// wait some time for models to load
+		setTimeout(loadGame,5000);
+	}
+	else loadGame();
+
   }
 }
 
@@ -463,6 +541,16 @@ function loadGame()
 	
 	ui.updateInventoryItemList();
 	
+	ui.hideLoadingScreen();
+	
+
+	// Set up to draw the scene periodically.
+	gameLoopInterval = setInterval(gameLoop, 15);
+
+	//setTimeout(function() {
+		
+	//}, 4000);
+
 	
 	
 	
@@ -470,5 +558,5 @@ function loadGame()
 	
 	
 	// Set up to draw the scene periodically.
-	setInterval(gameLoop, 15);
+	//setInterval(gameLoop, 15);
 }

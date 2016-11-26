@@ -10,11 +10,11 @@ function Hero() {
 	this.maxFury = 100;
 	this.furyDecay = 3; //1 per sec
 	this.criticalChance = 5; //0-100%
-	this.discovery = 50; //% chance of epic drop
+	this.discovery = 100; //% chance of epic drop
 	
 	//abilities
 	this.abilities = [];
-	this.abilities["BasicAttack"] = new Ability("BasicAttack", 500, -10, 1);
+	this.abilities["BasicAttack"] = new Ability("BasicAttack", 700, -10, 1);
 	this.abilities.length = 1;
 	
 	//temporary
@@ -55,6 +55,10 @@ Hero.prototype.load = function(objectLocation) {
 	this.waypoint.vec4Color = [1.0,0.25,0.25,1.0];
 	this.waypoint.drawObject = false;
 	if (this == hero) {
+		
+		this.HP = 1000;
+		this.maxHP = 1000;
+		
 		this.inventory.push({
 			itemName: "SHOVEL",
 			attack: 1,
@@ -101,6 +105,7 @@ Hero.prototype.changeEquippedWeapon = function (itemIndex) {
 	this.criticalChance += this.equippedWeapon.criticalChance;
 	ui.updateWeaponDescription();
 	ui.updateInventoryItemList();
+	ui.playSelectWeaponAudio();
 }
 
 Hero.prototype.draw = function() {
@@ -123,7 +128,7 @@ Hero.prototype.updatePlayer = function()
 		if (this.slashRotationCount >= 360/this.slashRotation) {
 			this.slashRotationCount = 0;
 			this.slashAnim = false;
-			rotation[y] += 360;
+			this.rotation[y] += 360;
 		}
 	}
 	
@@ -239,8 +244,11 @@ Hero.prototype.update = function()
 			//console.log("ATT2");
 			this.alreadyAttacked = true;
 			// No fury cost so we don't need an else
-			if (this.abilities["BasicAttack"].use(this))
+			if (this.abilities["BasicAttack"].use(this)) {
+				if (this == hero) ui.playBasicAttackAudio();
 				basicAttack(this, this.target);
+			}
+				
 		}
 	}
 	
@@ -273,6 +281,9 @@ Hero.prototype.update = function()
 		this.target.drawObject = false;
 		this.target.calculateCollision = false;
 		//console.log(this.target);
+		
+		ui.playPickupAudio();
+		
 		this.inventory.push(this.target.stats);
 		ui.updateInventoryItemList();
 		
@@ -297,6 +308,7 @@ Hero.prototype.useAbility = function(abilityName) {
 		if (this.abilities["360Slash"].use(this)) {
 			
 			this.slashAnim = true;
+			ui.playWhirlwindAudio();
 			
 			// Check all enemies
 			for (var e in enemy) {
@@ -319,6 +331,8 @@ Hero.prototype.useAbility = function(abilityName) {
 	
 	if (abilityName == "Heal") {
 		if (this.abilities["Heal"].use(this)) {
+			
+			ui.playHealAudio();
 			
 			//Heal
 			this.HP += this.maxHP/2;

@@ -145,7 +145,10 @@ function initShaders() {
     // TEXTURE KOORDINATE
   shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
   gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-
+  
+  //ATTENUATION FACTOR
+  
+  shaderProgram.attenuationFactorUniform = gl.getUniformLocation(shaderProgram, "attenuationFactor");
 
 }
 

@@ -20,7 +20,7 @@ var canvas;
 var globalID = 1;
 
 var hero;
-var world;
+//var world;
 var camera;
 
 var enemy;
@@ -69,6 +69,11 @@ var PRELOADnormalBuffer = [];
 var PRELOADvertexIndexBuffer = [];
 var PRELOADtextureFile = [];
 
+
+var firstLoad = true;
+var globalGameOver = false;
+var gameLoopInterval;
+var globalAttenuationFactor = 0.01;
 
 
 var itemNames = [

@@ -15,7 +15,7 @@ function Entity() {
 	this.directionVelocity = [1.0, 1.0, 1.0];
 	
 	this.vertexPositionBuffer = null;
-	this.textureBufer = null;
+	this.textureBuffer = null;
 	this.normalBuffer = null;
 	this.vertexIndexBuffer = null;
 	this.textureFile = null;
@@ -148,7 +148,7 @@ Entity.prototype.updateMovement = function() {
 		//console.log("sp: " + this.direction[x] + " " + this.direction[z] + " " + this.position[x] + " " + this.position[z]);
 	
 		if(collision!=null) {
-			console.log(this.name + " " + collision.name);
+			//console.log(this.name + " " + collision.name);
 			if(collision == this.target) return; // if we hit our target then no need to move further
 			
 			
