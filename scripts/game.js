@@ -269,8 +269,10 @@ function start() {
 		loadModels("./assets/wall_x.obj");
 		loadModels("./assets/wall_z.obj");
 		loadModels("./assets/world_grass.obj");
+		loadModels("./assets/world_diablo_blood.obj");
+		loadModels("./assets/world_floor_normal.obj");
 		loadModels("./assets/world_plane.obj");
-		loadModels("./assets/diablo.obj")
+		loadModels("./assets/diablo.obj");
 		
 		firstLoad = false;
 		
@@ -296,14 +298,14 @@ function loadGame()
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
-	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].load("./assets/world_floor_normal.obj");
 	world[world.length - 1].position[y]+=5;
 	// world[world.length - 1].normalBuffer = null; - not working because load is async
 	//world[world.length - 1].position[y]+=10;
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
-	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].load("./assets/world_diablo_blood.obj");
 	world[world.length - 1].position[z]-=75;
 	world[world.length - 1].position[y]+=10;
 	
@@ -322,14 +324,14 @@ function loadGame()
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
-	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].load("./assets/world_floor_normal.obj");
 	world[world.length - 1].position[z]-=40;
 	world[world.length - 1].position[x]-=60;
 	world[world.length - 1].position[y]+=3;
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
-	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].load("./assets/world_floor_normal.obj");
 	world[world.length - 1].position[z]+=35;
 	world[world.length - 1].position[x]-=60;
 	world[world.length - 1].position[y]+=7;
