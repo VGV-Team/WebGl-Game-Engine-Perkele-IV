@@ -194,6 +194,15 @@ function UI() {
 	for(var i = 0; i < tmp.length; i++)
 	{
 		this.audioEnemyAttack.push(tmp.item(i));
+		this.audioEnemyAttack[this.audioEnemyAttack.length - 1].volume = 0.4;
+	}
+	
+	//DIABLO immortal laugh
+	this.audioDiabloImmortalLaugh = [];
+	tmp = document.getElementsByClassName("audioDiabloImmortalLaugh");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioDiabloImmortalLaugh.push(tmp.item(i));
 	}
 	
 }
@@ -557,8 +566,8 @@ UI.prototype.playDiabloDiesAudio = function() {
 	this.audioDiabloDies[r].play();
 }
 UI.prototype.playPlayerKillsDiabloAudio = function() {
-	var r = Math.floor(Math.random()*this.audioPlayerKillsDiablo.length);
-	this.audioPlayerKillsDiablo[r].play();
+	var r = Math.floor(Math.random()*ui.audioPlayerKillsDiablo.length);
+	ui.audioPlayerKillsDiablo[r].play();
 }
 
 UI.prototype.playPlayerWonAmbientAudio = function() {
@@ -567,9 +576,10 @@ UI.prototype.playPlayerWonAmbientAudio = function() {
 
 UI.prototype.diabloDiesEndGame = function() {
 	this.playDiabloDiesAudio();
-	this.playPlayerKillsDiabloAudio();
+	setTimeout(this.playPlayerKillsDiabloAudio, 3000);
 	this.playPlayerWonAmbientAudio();
 	this.audioDiabloFightAmbient.pause();
+	this.stopDiabloImmortalLaughAudio();
 	this.bottomBar.style.display = "none";
 	for (var e in enemy) {
 		enemy[e].drawObject = false;
@@ -602,4 +612,20 @@ UI.prototype.playEnemyAttackAudio = function() {
 	var r = Math.floor(Math.random()*this.audioEnemyAttack.length);
 	this.audioEnemyAttack[this.enemyAttackCount++].play();
 	if (this.enemyAttackCount == this.audioEnemyAttack.length) this.enemyAttackCount = 0;
+}
+
+UI.prototype.playDiabloImmortalLaughAudio = function() {
+	var r = Math.floor(Math.random()*this.audioDiabloImmortalLaugh.length);
+	var ok = true;
+	for (var i in this.audioDiabloImmortalLaugh) {
+		if (this.audioDiabloImmortalLaugh[i].paused === false) {ok=false;break;}
+	}
+	if (ok) this.audioDiabloImmortalLaugh[r].play();
+}
+
+UI.prototype.stopDiabloImmortalLaughAudio = function() {
+	for(var i in this.audioDiabloImmortalLaugh) {
+		this.audioDiabloImmortalLaugh[i].pause();
+		this.audioDiabloImmortalLaugh[i].load();
+	}
 }

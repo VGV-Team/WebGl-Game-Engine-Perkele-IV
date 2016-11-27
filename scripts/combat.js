@@ -52,6 +52,7 @@ function basicAttack(attackerObject, hitObject) {
 			else 
 			{
 				// play sound for diablo
+				ui.playDiabloImmortalLaughAudio();
 				// play sound for gandalf
 				hitObject.HP = 1; //+= damage;
 				//console.log("not");
