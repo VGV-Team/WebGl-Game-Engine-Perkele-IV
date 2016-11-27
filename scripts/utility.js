@@ -248,6 +248,15 @@ function drawObjectToFrameBuffer(objectToDraw) {
 		
 		setMatrixUniforms();
 		gl.drawElements(gl.TRIANGLES, objectToDraw.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+	
+		/*
+		mat4.scale(mvMatrix, [1.5, 1.0, 1.5]);
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objectToDraw.vertexIndexBuffer);
+		setMatrixUniforms();
+		gl.drawElements(gl.TRIANGLES, objectToDraw.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+		*/
+		
+	
 	}
 		
 	//////////////////
@@ -701,7 +710,7 @@ function loadModels(objectURL)
 			} else if (vals.length == 2 && vals[0] == "usemtl") {
 				PRELOADtextureFile[objectURL] = vals[1];
 				initTexture(vals[1]);
-			} else if (vals.length == 3 && vals[0] == "vt") {
+			} else if (/*vals.length == 3 &&*/ vals[0] == "vt") {
 				vertexTextureCoords.push(parseFloat(vals[1]));
 				vertexTextureCoords.push(parseFloat(vals[2]));		
 				vertexTextureCount += 1;	

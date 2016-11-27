@@ -9,8 +9,8 @@ function Hero() {
 	this.fury = 0;
 	this.maxFury = 100;
 	this.furyDecay = 3; //1 per sec
-	this.criticalChance = 5; //0-100%
-	this.discovery = 100; //% chance of epic drop
+	this.criticalChance = 10; //0-100%
+	this.discovery = 50; //% chance of epic drop
 	
 	//abilities
 	this.abilities = [];
@@ -65,6 +65,7 @@ Hero.prototype.load = function(objectLocation) {
 			criticalChance: 0,
 			rarity: "COMMON"
 		});
+		/*
 		this.inventory.push({
 			itemName: "GUARD SWORD",
 			attack: 5,
@@ -83,7 +84,7 @@ Hero.prototype.load = function(objectLocation) {
 			criticalChance: 10,
 			rarity: "EPIC"
 		});
-
+		*/
 		this.changeEquippedWeapon(0);
 		
 		this.abilities["360Slash"] = new Ability("360Slash", 7000, 50, 1.2);
