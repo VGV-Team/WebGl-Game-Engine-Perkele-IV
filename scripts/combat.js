@@ -127,8 +127,8 @@ function basicAttack(attackerObject, hitObject) {
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 5)+0);
 				item[item.length-1].stats.itemName = commonItemNames[Math.floor((Math.random() * commonItemNames.length))];
 			}
-
-
+			item[item.length-1].scale = [1.5,1.0,3.0];
+			item[item.length-1].rotation[y] = 45;
 			
 	
 		}

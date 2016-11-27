@@ -228,6 +228,7 @@ function drawObjectToFrameBuffer(objectToDraw) {
 	
 	mat4.scale(mvMatrix, objectToDraw.scale);
 	
+	
 	// Scaling for easier clicking
 	//if (objectToDraw.ID > world[world.length - 1].ID) mat4.scale(mvMatrix, [1.5, 1.0, 1.5]);
 	//---------------------------------------------------------------------------------------------------
