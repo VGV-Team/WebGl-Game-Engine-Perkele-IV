@@ -132,8 +132,8 @@ function parseObjects(){
 						enemy[enemy.length-1].collisionBox[z] -= 5;
 						enemy[enemy.length-1].collisionBox[x] -= 5;
 						enemy[enemy.length-1].viewRange = 20;
-						enemy[enemy.length-1].HP = 2000;
-						enemy[enemy.length-1].maxHP = 2000;
+						enemy[enemy.length-1].HP = 1500;
+						enemy[enemy.length-1].maxHP = 1500;
 						enemy[enemy.length-1].strength = 70;
 						break;
 						
