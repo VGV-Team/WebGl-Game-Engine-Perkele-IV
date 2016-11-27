@@ -17,6 +17,7 @@ function basicAttack(attackerObject, hitObject) {
 	
 	if (hitObject == hero) {
 		ui.playGetHitAudio();
+		ui.playEnemyAttackAudio();
 	}
 	
 	if (hitObject == hero && attackerObject.name == "DIABLO") {

@@ -185,6 +185,17 @@ function UI() {
 	this.victoryBar = document.getElementById("victoryBar");
 	this.victoryToMainMenuBtn = document.getElementById("victoryToMainMenuBtn");
 	this.victoryText = document.getElementById("victoryText");
+	
+	
+	//ENEMY Attack
+	this.audioEnemyAttack = [];
+	this.enemyAttackCount = 0;
+	tmp = document.getElementsByClassName("audioEnemyAttack");
+	for(var i = 0; i < tmp.length; i++)
+	{
+		this.audioEnemyAttack.push(tmp.item(i));
+	}
+	
 }
 
 
@@ -584,4 +595,11 @@ UI.prototype.hideVictoryText = function() {
 UI.prototype.fadeOutDiabloFightAmbient = function() {
 	if (this.audioDiabloFightAmbient.volume > timeTillLastUpdate/6) this.audioDiabloFightAmbient.volume -= timeTillLastUpdate/6;
 	else this.audioDiabloFightAmbient.volume = 0;
+}
+
+UI.prototype.playEnemyAttackAudio = function() {
+	
+	var r = Math.floor(Math.random()*this.audioEnemyAttack.length);
+	this.audioEnemyAttack[this.enemyAttackCount++].play();
+	if (this.enemyAttackCount == this.audioEnemyAttack.length) this.enemyAttackCount = 0;
 }
