@@ -1072,7 +1072,8 @@ function getRange(object1, object2)
 //////////////////////////////// NEW SIMPLE COLLISION DETECTION ////////////////////////////////
 function checkCollisionBetweenTwoObjectsSimple(object1, object2)
 {
-	
+	if(object1.calculateCollision == false || object2.calculateCollision == false) return false;
+
 	var yDir = false;
 	var y11 = object1.position[y]+object1.offset[y]-object1.collisionBox[y]/2; // o1 down
 	var y12 = object1.position[y]+object1.offset[y]+object1.collisionBox[y]/2; // o1 up
@@ -1302,7 +1303,9 @@ function checkCollisionBetweenTwoObjects(object1, object2)
 // For object1 is used rircle and for object2 is used box
 function checkCollisionWithObjectRound(object1, object2)
 {
-	if(object1.collisionBox == null) console.log(object1.name)
+	//if(object1.collisionBox == null) console.log(object1.name)
+	if(object1.calculateCollision == false || object2.calculateCollision == false) return false;
+
 	var radius = (object1.collisionBox[x]+object1.collisionBox[z])/2/2;
 	//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
 	if(
@@ -1325,6 +1328,8 @@ function checkCollisionWithObjectRound(object1, object2)
 // returns true if coordinates collide, else returns false
 function checkCollisionWithObject(coordinates, object)
 {
+	if(object1.calculateCollision == false || object2.calculateCollision == false) return false;
+
 	//console.log(enemy[i].position[x] + "|" +enemy[i].position[z] + "  " + coordinates[x] + "|" +coordinates[z] + "  " + (enemy[i].position[x]-enemy[i].collisionBox[x]/2) + "|" + (enemy[i].position[x]+enemy[i].collisionBox[x]/2));
 	if(
 		(object.position[x]+object.offset[x]-object.collisionBox[x]/2) <= coordinates[x] &&

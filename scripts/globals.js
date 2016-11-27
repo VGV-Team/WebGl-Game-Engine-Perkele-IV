@@ -76,6 +76,7 @@ var gameLoopInterval;
 var globalAttenuationFactor = 0.01;
 
 //ENDGAME VARS
+var globalDiabloEscapeWall = null;
 var globalDiabloMet = false;
 var globalDiabloHalfHealth = false;
 var globalDiabloQuarterHealth = false;

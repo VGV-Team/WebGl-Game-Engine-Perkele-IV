@@ -8,7 +8,7 @@ var lines=[
 "               a   k    a               ",
 "               a k   k  a               ",
 "   wssssssssw  a        a               ",
-"   ax       a  wsss ssssw               ",
+"   ax       a  wsssQssssw               ",
 "   a c   y  a                           ",
 "   a        a                           ",
 "   a c   x  a                           ",
@@ -185,6 +185,18 @@ function parseObjects(){
 						obstacle[obstacle.length - 1].position[y] = t[i][j][0];
 						obstacle[obstacle.length - 1].collisionBox[x] -= 0.1;
 						obstacle[obstacle.length - 1].collisionBox[z] -= 1.1;
+						break;
+					case 'Q': // retreat path
+						obstacle.push(new World());
+						obstacle[obstacle.length - 1].name = "Obstacle";
+						obstacle[obstacle.length - 1].load("./assets/wall_x.obj");
+						obstacle[obstacle.length - 1].position[x] = 5*(j-zamik);
+						obstacle[obstacle.length - 1].position[z] = 5*(i-zamik);
+						obstacle[obstacle.length - 1].position[y] = t[i][j][0];
+						obstacle[obstacle.length - 1].drawObject = false;
+						obstacle[obstacle.length - 1].calculateCollision = false;
+						obstacle[obstacle.length - 1].isActive = false;
+						globalDiabloEscapeWall = obstacle[obstacle.length - 1];
 						break;
 						
 					deafult: break;

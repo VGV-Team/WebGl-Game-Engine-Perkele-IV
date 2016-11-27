@@ -189,6 +189,15 @@ Hero.prototype.updateAI = function()
 		if (globalDiabloMet == false && this.name == "DIABLO") {
 			globalDiabloMet = true;
 			ui.playDiabloBoastAudio();
+			if(globalDiabloEscapeWall != null)
+			{
+				globalDiabloEscapeWall.drawObject = true;
+				globalDiabloEscapeWall.calculateCollision = true;
+				globalDiabloEscapeWall.isActive = true;
+			}
+			// block player retreat path
+			
+			
 		}
 		
 		
