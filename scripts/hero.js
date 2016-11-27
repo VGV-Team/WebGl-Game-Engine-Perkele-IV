@@ -87,7 +87,7 @@ Hero.prototype.load = function(objectLocation) {
 		*/
 		this.changeEquippedWeapon(0);
 		
-		this.abilities["360Slash"] = new Ability("360Slash", 7000, 50, 1.2);
+		this.abilities["360Slash"] = new Ability("360Slash", 3500, 50, 1.2);
 		this.abilities["Heal"] = new Ability("Heal", 7500, 25, 0);
 	}
 	

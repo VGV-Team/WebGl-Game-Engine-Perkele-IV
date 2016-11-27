@@ -85,6 +85,15 @@ var globalDiabloDeathTime;
 
 
 var epicItemNames = [
+"Nejc's Katana",
+"Nejc's Stick",
+"Ziga's Gladius",
+"Ziga's Spear",
+"Mitja's Twin Blades",
+"Mitja's Axe"
+];
+
+var legendaryItemNames = [
 "The Ciril's destiny",
 "The Ciril's hope",
 "The Ciril's fate",
@@ -94,7 +103,7 @@ var epicItemNames = [
 "The Ciril's rage"
 ];
 
-var legendaryItemNames = [
+var rareItemNames = [
 "The Matija's destiny",
 "The Matija's hope",
 "The Matija's fate",
@@ -104,19 +113,16 @@ var legendaryItemNames = [
 "The Matija's rage"
 ];
 
-var rareItemNames = [
-"The qwe's destiny",
-"The qwe's hope",
-"The qwe's fate",
-"The qwe's will",
-"The qwe's power",
-"The qwe's soul",
-"The qwe's rage"
-];
-
 var commonItemNames = [
 "Hammer",
 "Sickle",
-"Club"
-
+"Club",
+"Sword",
+"Bash",
+"Naginata",
+"Spear",
+"Tachi",
+"Spade",
+"Mattock",
+"Pickaxe"
 ];

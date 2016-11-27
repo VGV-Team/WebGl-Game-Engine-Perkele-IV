@@ -42,9 +42,10 @@ var t=[
 
 ];
 			
-var zamik=t.length/2;
+var zamik;
 			
 function loadTerrain(){
+	zamik=t.length/2;
 	for(var i=0; i<t.length; i++)
 			for(var j=0; j<t[i].length; j++){
 				/*for(var k=0; k<t[i][j][0]-1; k++){
@@ -132,6 +133,7 @@ function stairsX(a, b, c, d, e){
 		obstacle[obstacle.length - 1].position[x] = 5*(b-zamik);
 		obstacle[obstacle.length - 1].position[z] = 5*(a+1-zamik)-2.5;
 		obstacle[obstacle.length - 1].position[y] = i-1+0.5;
+		
 	}
 }
 
@@ -143,12 +145,14 @@ function stairsZ(a, b, c, d, e){
 		world[world.length - 1].position[x]=5*(b-zamik);
 		world[world.length - 1].position[y]=c-0.5;
 		world[world.length - 1].position[z]=5*(a-zamik);
+		
 		world.push(new World());
 		world[world.length - 1].name = "World";
 		world[world.length - 1].load("./assets/stair_z.obj");
 		world[world.length - 1].position[x]=5*(b-zamik);
 		world[world.length - 1].position[y]=c-1;
 		world[world.length - 1].position[z]=5*(a-zamik)+2.5;
+		
 	}
 	
 	else{
@@ -158,12 +162,14 @@ function stairsZ(a, b, c, d, e){
 		world[world.length - 1].position[x]=5*(b-zamik);
 		world[world.length - 1].position[y]=c-1;
 		world[world.length - 1].position[z]=5*(a-zamik);
+		
 		world.push(new World());
 		world[world.length - 1].name = "World";
 		world[world.length - 1].load("./assets/stair_z.obj");
 		world[world.length - 1].position[x]=5*(b-zamik);
 		world[world.length - 1].position[y]=c-0.5;
 		world[world.length - 1].position[z]=5*(a-zamik)+2.5;
+		
 	}
 		
 	
@@ -183,5 +189,6 @@ function stairsZ(a, b, c, d, e){
 		obstacle[obstacle.length - 1].position[x] = 5*(b+1-zamik)-2.5;
 		obstacle[obstacle.length - 1].position[z] = 5*(a-zamik);
 		obstacle[obstacle.length - 1].position[y] = i-1+0.5;
+		
 	}
 }

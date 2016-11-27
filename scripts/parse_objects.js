@@ -167,6 +167,7 @@ function parseObjects(){
 						obstacle[obstacle.length - 1].position[z] = 5*(i-zamik);
 						obstacle[obstacle.length - 1].position[y] = t[i][j][0];
 						break;
+						
 					case 'c':
 						obstacle.push(new World());
 						obstacle[obstacle.length - 1].name = "Obstacle";
