@@ -19,6 +19,7 @@ function gameLoop()
 		//PLAYER DIED -> FADE PLAYER LIGHT
 		hero.waypoint.drawObject = false;
 		globalAttenuationFactor *= 1.02;
+		if (globalDiabloMet) ui.fadeOutDiabloFightAmbient();
 	} else if (globalDiabloDead == true) {
 		//PLAYER WON -> RAISE AND STRENGTHEN LIGHT
 		hero.waypoint.drawObject = false;

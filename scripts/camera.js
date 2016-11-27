@@ -12,8 +12,8 @@ function Camera()
 	// multiplier of camera speed
 	
 	// for top down camera
-	this.offset = [0.0, -10.0, -10.0];
-	this.rotation = [50.0, 0.0, 0.0];
+	this.offset = [0.0, -10.0, -8.0];
+	this.rotation = [60.0, 0.0, 0.0];
 	
 	// for free camera
 	//this.offset = [-6.5, -12, -6.5]

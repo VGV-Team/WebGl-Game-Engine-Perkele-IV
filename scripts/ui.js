@@ -265,6 +265,7 @@ UI.prototype.update = function() {
 	//console.log(this.audioDiabloFightAmbient);
 	//DIABLO BASED
 	if (globalDiabloMet == true && this.audioDiabloFightStarted == false) {
+		this.audioDiabloFightAmbient.volume = 1;
 		this.audioDiabloFightAmbient.play();
 		this.audioDiabloFightAmbient.loop = true;
 		this.audioAmbient.pause();
@@ -281,11 +282,12 @@ UI.prototype.update = function() {
 		
 		this.audioAmbient.pause();
 		this.audioAmbient.load();
-		this.audioDiabloFightAmbient.pause();
-		this.audioDiabloFightAmbient.load();
+		/*this.audioDiabloFightAmbient.pause();
+		this.audioDiabloFightAmbient.load();*/
 		this.audioDeath1.play();
 		if (globalDiabloMet == true) {
 			this.playDiabloKillsHeroAudio();
+			this.fadeOutDiabloFightAmbient();
 		}
 		setTimeout(function() {
 			ui.audioDeath2.play()
@@ -555,6 +557,9 @@ UI.prototype.diabloDiesEndGame = function() {
 	this.playPlayerWonAmbientAudio();
 	this.audioDiabloFightAmbient.pause();
 	this.bottomBar.style.display = "none";
+	for (var e in enemy) {
+		enemy[e].drawObject = false;
+	}
 }
 
 UI.prototype.showVictoryScreen = function() {
@@ -571,4 +576,9 @@ UI.prototype.showVictoryText = function() {
 }
 UI.prototype.hideVictoryText = function() {
 	ui.victoryText.style.display = "none";
+}
+
+UI.prototype.fadeOutDiabloFightAmbient = function() {
+	if (this.audioDiabloFightAmbient.volume > timeTillLastUpdate/6) this.audioDiabloFightAmbient.volume -= timeTillLastUpdate/6;
+	else this.audioDiabloFightAmbient.volume = 0;
 }

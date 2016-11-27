@@ -68,6 +68,9 @@ function parseObjects(){
 						//enemy[enemy.length-1].rotation[y] = -90;
 						enemy[enemy.length-1].abilities["BasicAttack"].cooldown = 1000;
 						enemy[enemy.length-1].vec4Color = [0.5,0.25,0.75,1.0];
+						enemy[enemy.length-1].maxHP = 100;
+						enemy[enemy.length-1].HP = 100;
+						enemy[enemy.length-1].strength = 15;
 						break;
 					case 'y':
 						enemy.push(new Hero());
@@ -76,15 +79,21 @@ function parseObjects(){
 						enemy[enemy.length-1].position[x] = 5*(j-zamik);
 						enemy[enemy.length-1].position[z] = 5*(i-zamik);
 						enemy[enemy.length-1].position[y] = t[i][j][0];
+						enemy[enemy.length-1].maxHP = 250;
+						enemy[enemy.length-1].HP = 250;
+						enemy[enemy.length-1].strength = 25;
 						//enemy[enemy.length-1].rotation[y] = -90;
 						break;
 					case 'k':
 						enemy.push(new Hero());
 						enemy[enemy.length-1].load("./assets/slasher.obj");
-						enemy[enemy.length-1].name = "Wat iz dis???";
+						enemy[enemy.length-1].name = "Abomination";
 						enemy[enemy.length-1].position[x] = 5*(j-zamik);
 						enemy[enemy.length-1].position[z] = 5*(i-zamik);
 						enemy[enemy.length-1].position[y] = t[i][j][0];
+						enemy[enemy.length-1].maxHP = 500;
+						enemy[enemy.length-1].HP = 500;
+						enemy[enemy.length-1].strength = 50;
 						//enemy[enemy.length-1].rotation[y] = -90;
 						break;
 					case 'd':	
@@ -97,6 +106,9 @@ function parseObjects(){
 						enemy[enemy.length-1].collisionBox[z] -= 5;
 						enemy[enemy.length-1].collisionBox[x] -= 5;
 						enemy[enemy.length-1].viewRange = 20;
+						enemy[enemy.length-1].HP = 2000;
+						enemy[enemy.length-1].maxHP = 2000;
+						enemy[enemy.length-1].strength = 70;
 						break;
 					case 's':
 						obstacle.push(new World());

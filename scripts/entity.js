@@ -39,7 +39,17 @@ Entity.prototype.load = function(objectLocation) {
 	this.ID = globalID;
 	globalID++;
 	//console.log(this.name + " TAKES ID " + this.ID);
-	this.frameBufferColor = [this.ID/255.0, 0.0, 0.0, 1.0];
+	var r = 0.0;
+	var g = 0.0;
+	var b = 0.0;
+	
+	r = this.ID;
+	while (r > 255) {
+		g += 1.0;
+		r -= 255;
+	}
+	
+	this.frameBufferColor = [r/255.0, g/255.0, b, 1.0];
 };
 
 Entity.prototype.draw = function() {

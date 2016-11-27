@@ -26,7 +26,7 @@ function getObjectIDFromCoordinates(xPos, yPos) {
 	var pressedID = -1;
 	var pixels = new Uint8Array(1 * 1 * 4);
 	gl.readPixels(xPos, yPos, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-	pressedID = pixels[0];
+	pressedID = pixels[0] + pixels[1]*255;
 	return pressedID;
 }
 
