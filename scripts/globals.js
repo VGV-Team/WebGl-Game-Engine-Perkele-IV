@@ -84,8 +84,9 @@ var globalDiabloDead = false;
 var globalDiabloDeathTime;
 
 
-var itemNames = [
+var epicItemNames = [
 "The Ciril's destiny",
+"The Ciril's hope",
 "The Ciril's fate",
 "The Ciril's will",
 "The Ciril's power",
@@ -93,3 +94,29 @@ var itemNames = [
 "The Ciril's rage"
 ];
 
+var legendaryItemNames = [
+"The Matija's destiny",
+"The Matija's hope",
+"The Matija's fate",
+"The Matija's will",
+"The Matija's power",
+"The Matija's soul",
+"The Matija's rage"
+];
+
+var rareItemNames = [
+"The qwe's destiny",
+"The qwe's hope",
+"The qwe's fate",
+"The qwe's will",
+"The qwe's power",
+"The qwe's soul",
+"The qwe's rage"
+];
+
+var commonItemNames = [
+"Hammer",
+"Sickle",
+"Club"
+
+];

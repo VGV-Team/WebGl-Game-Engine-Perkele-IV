@@ -2,18 +2,18 @@ function basicAttack(attackerObject, hitObject) {
 	
 	//console.log(attackerObject.name + " is attacking " + hitObject.name);
 	
-	
+	var damage=0;
 	var criticalRand = Math.floor((Math.random() * 100));
 	if (criticalRand <= attackerObject.criticalChance) {
 		// Critical hit!
 		console.log(attackerObject.name + " does a CRITICAL HIT!");
-		hitObject.HP -= attackerObject.strength * 2;
+		damage = attackerObject.strength * 2;
 		
 	} else {
 		// Normal attack
-		hitObject.HP -= attackerObject.strength;
+		 damage = attackerObject.strength;
 	}
-	
+	hitObject.HP -= damage
 	
 	if (hitObject == hero) {
 		ui.playGetHitAudio();
@@ -36,11 +36,27 @@ function basicAttack(attackerObject, hitObject) {
 		} else if (globalDiabloQuarterHealth == false && hitObject.HP <= hitObject.maxHP/4) {
 			globalDiabloQuarterHealth = true;
 			ui.playDiabloQuarterHealthAudio();
-		} else if (hitObject.HP <= 0){
-			// YOU WON
-			globalDiabloDead = true;
-			ui.diabloDiesEndGame();
-			//TODO: call ui.vicotry() or sth
+		} 
+		
+		if (hitObject.HP <= 0){
+			//console.log(hitObject.HP + " " + attackerObject.currentlyEu.stats.itemName)
+			if(attackerObject==hero && attackerObject.equippedWeapon.itemName == "Glamdring")
+			{
+				// YOU WON
+				globalDiabloDead = true;
+				ui.diabloDiesEndGame();
+				//TODO: call ui.vicotry() or sth
+				//console.log("end");
+			}
+			else 
+			{
+				// play sound for diablo
+				// play sound for gandalf
+				hitObject.HP = 1; //+= damage;
+				//console.log("not");
+			}
+			
+			
 		}
 	}
 	
@@ -74,7 +90,7 @@ function basicAttack(attackerObject, hitObject) {
 			
 			
 			item[item.length-1].stats = { };
-			item[item.length-1].stats.itemName = itemNames[Math.floor((Math.random() * itemNames.length))];
+			
 			
 			var type = Math.floor((Math.random() * 100))
 			if(type>95) 
@@ -83,6 +99,7 @@ function basicAttack(attackerObject, hitObject) {
 				item[item.length-1].stats.rarity = "EPIC"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 20)+20);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 10)+10);
+				item[item.length-1].stats.itemName = epicItemNames[Math.floor((Math.random() * epicItemNames.length))];
 			
 			}
 			else if(type>85) 
@@ -91,6 +108,7 @@ function basicAttack(attackerObject, hitObject) {
 				item[item.length-1].stats.rarity = "LEGENDARY"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 10)+15);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 5)+5);
+				item[item.length-1].stats.itemName = legendaryItemNames[Math.floor((Math.random() * legendaryItemNames.length))];
 			}
 			else if(type>70) 
 			{
@@ -98,6 +116,7 @@ function basicAttack(attackerObject, hitObject) {
 				item[item.length-1].stats.rarity = "RARE"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 10)+5);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 10)+0);
+				item[item.length-1].stats.itemName = rareItemNames[Math.floor((Math.random() * rareItemNames.length))];
 			}
 			else 
 			{
@@ -105,6 +124,7 @@ function basicAttack(attackerObject, hitObject) {
 				item[item.length-1].stats.rarity = "COMMON"; 
 				item[item.length-1].stats.attack = Math.floor((Math.random() * 5)+1);
 				item[item.length-1].stats.criticalChance = Math.floor((Math.random() * 5)+0);
+				item[item.length-1].stats.itemName = commonItemNames[Math.floor((Math.random() * commonItemNames.length))];
 			}
 
 

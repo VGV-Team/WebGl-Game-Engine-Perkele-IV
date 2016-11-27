@@ -208,7 +208,7 @@ UI.prototype.update = function() {
 			var i = currentlyPressedEntity;
 			this.enemyHealthBarPercentage.style.width = "100%";
 			this.enemyHealthBarPercentage.style.background = getStyleColorBasedOnRarity(i.stats.rarity);
-			this.enemyHealthBarName.innerHTML = "Item: " + i.stats.itemName;
+			this.enemyHealthBarName.innerHTML = /*"Item: " +*/ i.stats.itemName;
 			this.showEnemyHealthBar();
 			
 			
@@ -360,6 +360,9 @@ function getStyleColorBasedOnRarity(rarity) {
 			break;
 		case "EPIC":
 			color = "orange";
+			break;
+		case "SPECIAL":
+			color = "white";
 			break;
 		default:
 			color = "red";

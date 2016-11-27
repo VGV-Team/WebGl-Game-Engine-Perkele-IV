@@ -257,6 +257,7 @@ function start() {
 		loadModels("./assets/bucaNew.obj");
 		loadModels("./assets/crate.obj");
 		loadModels("./assets/feralGhoul.obj");
+		loadModels("./assets/frog.obj");
 		loadModels("./assets/grass.obj");
 		loadModels("./assets/Ironman.obj");
 		loadModels("./assets/mouse_click_waypoint.obj");
@@ -343,6 +344,8 @@ function loadGame()
 	enemy[enemy.length-1].position[x] += 5;
 	enemy[enemy.length-1].position[z] += 5;
 	*/
+	
+	
 	
 	
 	/*
