@@ -296,14 +296,42 @@ function loadGame()
 	world.push(new World());
 	world[world.length - 1].name = "World";
 	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].position[y]+=5;
 	// world[world.length - 1].normalBuffer = null; - not working because load is async
 	//world[world.length - 1].position[y]+=10;
 	
 	world.push(new World());
 	world[world.length - 1].name = "World";
 	world[world.length - 1].load("./assets/world_grass.obj");
-	world[world.length - 1].position[x]-=50;
-	world[world.length - 1].position[y]+=5;
+	world[world.length - 1].position[z]-=75;
+	world[world.length - 1].position[y]+=10;
+	
+	world.push(new World());
+	world[world.length - 1].name = "World";
+	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].position[x]+=75;
+	world[world.length - 1].position[y]+=0;
+	
+	
+	world.push(new World());
+	world[world.length - 1].name = "World";
+	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].position[z]+=75;
+	world[world.length - 1].position[y]+=0;
+	
+	world.push(new World());
+	world[world.length - 1].name = "World";
+	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].position[z]-=40;
+	world[world.length - 1].position[x]-=60;
+	world[world.length - 1].position[y]+=3;
+	
+	world.push(new World());
+	world[world.length - 1].name = "World";
+	world[world.length - 1].load("./assets/world_grass.obj");
+	world[world.length - 1].position[z]+=35;
+	world[world.length - 1].position[x]-=60;
+	world[world.length - 1].position[y]+=7;
 	
 	/*
 	enemy.push(new Hero());
@@ -472,14 +500,7 @@ function loadGame()
 	//hero.position[z] -= 5;
 	//hero.position[x] -= 10;
 	
-	enemy.push(new Hero());
-	enemy[enemy.length-1].name="DIABLO";
-	enemy[enemy.length-1].load("./assets/diablo.obj");
-	enemy[enemy.length-1].position[x]-=5;
-	enemy[enemy.length-1].position[z]-=5;
-	enemy[enemy.length-1].collisionBox[z] -= 5;
-	enemy[enemy.length-1].collisionBox[x] -= 5;
-	enemy[enemy.length-1].viewRange = 20;
+	
 	/*setTimeout(function() {
 		enemy[enemy.length-1].collisionBox[z] -= 10;
 	}, 1000);*/

@@ -19,7 +19,7 @@ function Camera()
 	//this.offset = [-6.5, -12, -6.5]
 	//this.rotation = [60.0, -45.0, 0.0];
 	
-	this.freeCamera = true;
+	this.freeCamera = false;
 }
 Camera.prototype = Object.create(Entity.prototype);
 
