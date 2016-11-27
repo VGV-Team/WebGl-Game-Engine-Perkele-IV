@@ -60,10 +60,10 @@ Hero.prototype.load = function(objectLocation) {
 		this.maxHP = 1000;
 		
 		this.inventory.push({
-			itemName: "SHOVEL",
+			itemName: "Glamdring",
 			attack: 1,
 			criticalChance: 0,
-			rarity: "COMMON"
+			rarity: "SPECIAL"
 		});
 		/*
 		this.inventory.push({
@@ -88,7 +88,7 @@ Hero.prototype.load = function(objectLocation) {
 		this.changeEquippedWeapon(0);
 		
 		this.abilities["360Slash"] = new Ability("360Slash", 7000, 50, 1.2);
-		this.abilities["Heal"] = new Ability("Heal", 10000, 25, 0);
+		this.abilities["Heal"] = new Ability("Heal", 7500, 25, 0);
 	}
 	
 	
